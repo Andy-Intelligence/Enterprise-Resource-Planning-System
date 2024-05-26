@@ -60,7 +60,7 @@ import CreateBOQmaterials from "@/components/CreateBOQmaterials";
 import IssueExtraInfo from "@/components/IssueExtraInfo";
 import IssueTimeSheet from "@/components/IssueTimeSheet";
 
-const page = () => {
+const Issuepage = () => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [showTimeScheduleModal, setShowTimeScheduleModal] = useState(false);
@@ -199,4 +199,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Issuepage;

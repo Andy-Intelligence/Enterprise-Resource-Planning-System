@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "ERP",
   description: "PWA ERP application",
   generator: "Next.js",
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
   // keywords: ["nextjs", "nextjs13", "next13", "pwa", "next-pwa"],
   // themeColor: [{ media: "(prefers-color-scheme: dark)", color: "#fff" }],
   // authors: [

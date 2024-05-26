@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import DataTableRow from '@/components/DataTableRow';
 import { MdDelete } from 'react-icons/md';
 
-const page = () => {
+const Attachmentpage = () => {
   const router = useRouter()
 
     const [showModal, setShowModal] = useState(false);
@@ -135,4 +135,4 @@ const page = () => {
   );
 }
 
-export default page
+export default Attachmentpage

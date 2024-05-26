@@ -3,7 +3,7 @@ import MaterialsTable from '@/components/MaterialsTable';
 import React from 'react'
 import { useRouter } from 'next/navigation';
 
-const page = () => {
+const Materialpage = () => {
     const router = useRouter()
     const materials = [
       {
@@ -50,4 +50,4 @@ const page = () => {
   );
 }
 
-export default page
+export default Materialpage
