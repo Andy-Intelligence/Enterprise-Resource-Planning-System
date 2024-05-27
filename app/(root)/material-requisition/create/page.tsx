@@ -6,7 +6,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -15,12 +14,20 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 
+const statusOptions = [
+  { value: "draft", label: "Draft" },
+  { value: "waiting", label: "Waiting Availability" },
+  { value: "partial", label: "Partially Available" },
+  { value: "available", label: "Available" },
+  { value: "done", label: "Done" },
+];
+
 const NewMaterialRequisitionForm: React.FC = () => {
   const router = useRouter();
   const [initialDemand, setInitialDemand] = useState([
     { product: "", quantity: "", status: "" },
   ]);
-  const [selectedRow, setSelectedRow] = useState<number | null>(null);
+  const [formStatus, setFormStatus] = useState("draft");
 
   const handleAddItem = () => {
     setInitialDemand([
@@ -37,12 +44,60 @@ const NewMaterialRequisitionForm: React.FC = () => {
   };
 
   return (
-    <div className="border rounded-lg p-4">
+    <div className="border rounded-lg p-4 relative">
       <div className="text-3xl font-bold mb-4">Material Requisition / New</div>
-      <div className="mb-4">
-        <Button className="mr-2">Save</Button>
-        <Button variant="outline">Discard</Button>
+
+      {/* Status Section */}
+     
+
+      <div className="flex gap-2 items-center justify-between mb-4">
+        <div className="flex gap-2 items-center">
+          <Button className="px-4 py-2 bg-blue-500 text-white rounded-md">
+            Save
+          </Button>
+          <Button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            variant="outline"
+          >
+            Discard
+          </Button>
+          <Button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            variant="outline"
+          >
+            Mark as Todo
+          </Button>
+          <Button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            variant="outline"
+          >
+            Validate
+          </Button>
+          <Button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            variant="outline"
+          >
+            Create Purchase Order
+          </Button>
+        </div>
+        <div className="flex items-center space-x-2">
+          {statusOptions.map((status, index) => (
+            <button
+              key={status.value}
+              className={`px-2 py-1 text-xs rounded-full ${
+                formStatus === status.value
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+              style={{ minWidth: "80px", textAlign: "center" }}
+              onClick={() => setFormStatus(status.value)}
+            >
+              {status.label}
+            </button>
+          ))}
+        </div>
       </div>
+
       <form>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           {/* Left Section */}
@@ -53,7 +108,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
                 <SelectTrigger id="partner">
                   <SelectValue placeholder="Select a partner" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-gray-200">
                   <SelectGroup>
                     <SelectItem value="partner1">Partner 1</SelectItem>
                     <SelectItem value="partner2">Partner 2</SelectItem>
@@ -68,7 +123,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
                 <SelectTrigger id="taskJobOrder">
                   <SelectValue placeholder="Select a task/job order" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-gray-200">
                   <SelectGroup>
                     <SelectItem value="task1">Task 1</SelectItem>
                     <SelectItem value="task2">Task 2</SelectItem>
@@ -84,7 +139,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
                   <SelectValue placeholder="Select a user" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectGroup>
+                  <SelectGroup className="bg-gray-200">
                     <SelectItem value="user1">User 1</SelectItem>
                     <SelectItem value="user2">User 2</SelectItem>
                     <SelectItem value="user3">User 3</SelectItem>
@@ -99,7 +154,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
                   <SelectValue placeholder="Select a project" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectGroup>
+                  <SelectGroup className="bg-gray-200">
                     <SelectItem value="project1">Project 1</SelectItem>
                     <SelectItem value="project2">Project 2</SelectItem>
                     <SelectItem value="project3">Project 3</SelectItem>
@@ -118,7 +173,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
                   <SelectValue placeholder="Select an account" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectGroup>
+                  <SelectGroup className="bg-gray-200">
                     <SelectItem value="account1">Account 1</SelectItem>
                     <SelectItem value="account2">Account 2</SelectItem>
                     <SelectItem value="account3">Account 3</SelectItem>
@@ -139,9 +194,19 @@ const NewMaterialRequisitionForm: React.FC = () => {
 
         <Tabs defaultValue="initialDemand" className="w-full">
           <TabsList>
-            <TabsTrigger value="initialDemand">Initial Demand</TabsTrigger>
-            <TabsTrigger value="additionalInfo">Additional Info</TabsTrigger>
-          </TabsList>
+            <TabsTrigger
+              className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
+              value="initialDemand"
+            >
+              Initial Demand
+            </TabsTrigger>
+            <TabsTrigger
+              className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
+              value="additionalInfo"
+            >
+              Additional Info
+            </TabsTrigger>
+            </TabsList>
           <TabsContent value="initialDemand">
             <div className="mt-4">
               <table className="min-w-full bg-white">
@@ -177,14 +242,23 @@ const NewMaterialRequisitionForm: React.FC = () => {
                         />
                       </td>
                       <td className="py-2 px-4 border-b">
-                        <input
-                          type="text"
-                          value={row.status}
-                          onChange={(e) =>
-                            handleInputChange(index, "status", e.target.value)
-                          }
-                          className="border rounded-md px-2 py-1 w-full"
-                        />
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {statusOptions.map((status) => (
+                                <SelectItem
+                                  key={status.value}
+                                  value={status.value}
+                                >
+                                  {status.label}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
                       </td>
                       <td className="py-2 px-4 border-b text-center">
                         <button
