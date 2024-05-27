@@ -1,29 +1,40 @@
-"use client"
-import MaterialsTable from '@/components/MaterialsTable';
-import React from 'react'
-import { useRouter } from 'next/navigation';
+"use client";
+import React from "react";
+import { useRouter } from "next/navigation";
+import MaterialsTable from "@/components/MaterialsTable";
 
-const Materialpage = () => {
-    const router = useRouter()
-    const materials = [
-      {
-        internalReference: "IR001",
-        name: "Material 1",
-        salePrice: "$100.00",
-        quantityOnHand: "50",
-        forecastQuantity: "30",
-        barcode: "1234567890",
-      },
-      {
-        internalReference: "IR002",
-        name: "Material 2",
-        salePrice: "$200.00",
-        quantityOnHand: "20",
-        forecastQuantity: "10",
-        barcode: "0987654321",
-      },
-      // Add more materials as needed
-    ];
+interface Material {
+  internalReference: string;
+  name: string;
+  salePrice: string;
+  quantityOnHand: string;
+  forecastQuantity: string;
+  barcode: string;
+}
+
+const Materialpage: React.FC = () => {
+  const router = useRouter();
+
+  const materials: Material[] = [
+    {
+      internalReference: "IR001",
+      name: "Material 1",
+      salePrice: "$100.00",
+      quantityOnHand: "50",
+      forecastQuantity: "30",
+      barcode: "1234567890",
+    },
+    {
+      internalReference: "IR002",
+      name: "Material 2",
+      salePrice: "$200.00",
+      quantityOnHand: "20",
+      forecastQuantity: "10",
+      barcode: "0987654321",
+    },
+    // Add more materials as needed
+  ];
+
   return (
     <div className="container mx-auto p-4">
       <div className="text-3xl font-bold mb-4">Materials</div>
@@ -48,6 +59,6 @@ const Materialpage = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Materialpage
+export default Materialpage;

@@ -29,7 +29,11 @@ export const sidebarLinks = [
     route: "/materials",
     label: "Materials",
   },
-
+  {
+    imgURL: "/icons/materialrequisition.svg",
+    route: "/material-requisition",
+    label: "Requisition",
+  },
 ];
 
 // good_user / good_password - Bank of America
