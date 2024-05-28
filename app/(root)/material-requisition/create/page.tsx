@@ -13,13 +13,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+const vendorsList = [
+  { name: "Vendor 1", phone: "123-456-7890", email: "vendor1@example.com" },
+  { name: "Vendor 2", phone: "987-654-3210", email: "vendor2@example.com" },
+  { name: "Vendor 3", phone: "456-789-0123", email: "vendor3@example.com" },
+];
 
 const statusOptions = [
-  { value: "draft", label: "Draft" },
-  { value: "waiting", label: "Waiting Availability" },
-  { value: "partial", label: "Partially Available" },
-  { value: "available", label: "Available" },
-  { value: "done", label: "Done" },
+  { label: "Draft", value: "draft" },
+  { label: "Pending", value: "pending" },
+  { label: "Approved", value: "approved" },
+  { label: "Rejected", value: "rejected" },
 ];
 
 const NewMaterialRequisitionForm: React.FC = () => {
@@ -28,6 +39,11 @@ const NewMaterialRequisitionForm: React.FC = () => {
     { product: "", quantity: "", status: "" },
   ]);
   const [formStatus, setFormStatus] = useState("draft");
+  const [vendors, setVendors] = useState(vendorsList);
+  const [searchInput, setSearchInput] = useState("");
+  const [selectedVendors, setSelectedVendors] = useState<typeof vendorsList>(
+    []
+  );
 
   const handleAddItem = () => {
     setInitialDemand([
@@ -43,13 +59,18 @@ const NewMaterialRequisitionForm: React.FC = () => {
     setInitialDemand(newData);
   };
 
+  const filteredVendors = vendorsList.filter((vendor) =>
+    vendor.name.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
+  const handleVendorSelect = (vendor: (typeof vendorsList)[0]) => {
+    setSelectedVendors([...selectedVendors, vendor]);
+    setSearchInput("");
+  };
+
   return (
     <div className="border rounded-lg p-4 relative">
       <div className="text-3xl font-bold mb-4">Material Requisition / New</div>
-
-      {/* Status Section */}
-     
-
       <div className="flex gap-2 items-center justify-between mb-4">
         <div className="flex gap-2 items-center">
           <Button className="px-4 py-2 bg-blue-500 text-white rounded-md">
@@ -73,12 +94,118 @@ const NewMaterialRequisitionForm: React.FC = () => {
           >
             Validate
           </Button>
-          <Button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            variant="outline"
-          >
-            Create Purchase Order
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                variant="outline"
+              >
+                Create Purchase Order
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-gray-200">
+              <DialogTitle>Create Purchase Order</DialogTitle>
+              <Tabs defaultValue="vendors" className="w-full">
+                <TabsList>
+                  <TabsTrigger
+                    className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
+                    value="vendors"
+                  >
+                    Vendors
+                  </TabsTrigger>
+                  <TabsTrigger
+                    className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
+                     value="products"
+                  >
+                    Products
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="vendors">
+                  <div className="mt-4">
+                    <table className="min-w-full bg-white">
+                      <thead>
+                        <tr>
+                          <th className="py-2 px-4 border-b">Name</th>
+                          <th className="py-2 px-4 border-b">Phone</th>
+                          <th className="py-2 px-4 border-b">Email</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selectedVendors.map((vendor, index) => (
+                          <tr key={index}>
+                            <td className="py-2 px-4 border-b">
+                              {vendor.name}
+                            </td>
+                            <td className="py-2 px-4 border-b">
+                              {vendor.phone}
+                            </td>
+                            <td className="py-2 px-4 border-b">
+                              {vendor.email}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4">
+                          Add Vendor
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-gray-200">
+                        <DialogTitle>Select Vendor</DialogTitle>
+                        <div>
+                          <Input
+                            type="text"
+                            placeholder="Search vendors"
+                            className="mb-4"
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                          />
+                          <table className="min-w-full bg-white">
+                            <thead>
+                              <tr>
+                                <th className="py-2 px-4 border-b">Name</th>
+                                <th className="py-2 px-4 border-b">Phone</th>
+                                <th className="py-2 px-4 border-b">Email</th>
+                                <th className="py-2 px-4 border-b">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {filteredVendors.map((vendor, index) => (
+                                <tr key={index}>
+                                  <td className="py-2 px-4 border-b">
+                                    {vendor.name}
+                                  </td>
+                                  <td className="py-2 px-4 border-b">
+                                    {vendor.phone}
+                                  </td>
+                                  <td className="py-2 px-4 border-b">
+                                    {vendor.email}
+                                  </td>
+                                  <td className="py-2 px-4 border-b text-center">
+                                    <Button
+                                      className="text-blue-500"
+                                      onClick={() => handleVendorSelect(vendor)}
+                                    >
+                                      Select
+                                    </Button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                </TabsContent>
+                <TabsContent value="products">
+                  <div className="mt-4">Products content goes here.</div>
+                </TabsContent>
+              </Tabs>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className="flex items-center space-x-2">
           {statusOptions.map((status, index) => (
@@ -100,7 +227,6 @@ const NewMaterialRequisitionForm: React.FC = () => {
 
       <form>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          {/* Left Section */}
           <div>
             <div className="mb-4">
               <Label htmlFor="partner">Partner</Label>
@@ -164,7 +290,6 @@ const NewMaterialRequisitionForm: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Section */}
           <div>
             <div className="mb-4">
               <Label htmlFor="analyticAccount">Analytic Account</Label>
@@ -206,7 +331,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
             >
               Additional Info
             </TabsTrigger>
-            </TabsList>
+          </TabsList>
           <TabsContent value="initialDemand">
             <div className="mt-4">
               <table className="min-w-full bg-white">
