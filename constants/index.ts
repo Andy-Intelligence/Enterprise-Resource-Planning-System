@@ -44,6 +44,11 @@ export const sidebarLinks = [
     route: "/contractors",
     label: "Contractors",
   },
+  {
+    imgURL: "/icons/budget.svg",
+    route: "/budget",
+    label: "Budget",
+  },
 ];
 
 // good_user / good_password - Bank of America
