@@ -20,17 +20,26 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-
-
 const statusOptions = [
   { label: "RFQ", value: "rfq" },
   { label: "RFQ Sent", value: "rfq sent" },
   { label: "Purchase Order", value: "purchase order" },
 ];
 
+interface DemandItem {
+  product: string;
+  description: string;
+  scheduledDate: string;
+  quantity: string;
+  unitPrice: string;
+  taxes: string;
+  subTotal: string;
+  status: string;
+}
+
 const QuotationComponent: React.FC = () => {
   const router = useRouter();
-  const [initialDemand, setInitialDemand] = useState([
+  const [initialDemand, setInitialDemand] = useState<DemandItem[]>([
     {
       product: "Product 1",
       description: "Description 1",
@@ -52,9 +61,8 @@ const QuotationComponent: React.FC = () => {
       status: "Status 2",
     },
   ]);
-  const [formStatus, setFormStatus] = useState("draft");
-  const [searchInput, setSearchInput] = useState("");
-  
+  const [formStatus, setFormStatus] = useState<string>("draft");
+  const [selectedRow, setSelectedRow] = useState<DemandItem | null>(null);
 
   const handleAddItem = () => {
     setInitialDemand([
@@ -79,7 +87,9 @@ const QuotationComponent: React.FC = () => {
     setInitialDemand(newData);
   };
 
-
+  const openDialog = (row: DemandItem) => {
+    setSelectedRow(row);
+  };
 
   return (
     <div className="border rounded-lg p-4 relative">
@@ -111,7 +121,7 @@ const QuotationComponent: React.FC = () => {
           </Button>
         </div>
         <div className="flex items-center space-x-2">
-          {statusOptions.map((status, index) => (
+          {statusOptions.map((status) => (
             <button
               key={status.value}
               className={`px-2 py-1 text-xs rounded-full ${
@@ -132,22 +142,29 @@ const QuotationComponent: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <div className="mb-4">
-              <Label htmlFor="requestQuotation">Request for Quotation</Label>
+              <Label className="font-bold" htmlFor="requestQuotation">
+                Request for Quotation
+              </Label>
               <div>PO0008</div>
             </div>
             <div className="mb-4">
-              <Label htmlFor="partner">Vendor</Label>
+              <Label className="font-bold" htmlFor="partner">
+                Vendor
+              </Label>
               <div>Abigail</div>
             </div>
             <div className="mb-4">
-              <Label htmlFor="vendorReference">Vendor Reference</Label>
+              <Label className="font-bold" htmlFor="vendorReference">
+                Vendor Reference
+              </Label>
               <div>r00090034</div>
             </div>
           </div>
-
           <div>
             <div className="mb-4">
-              <Label htmlFor="orderDate">Order Date</Label>
+              <Label className="font-bold"  htmlFor="orderDate">
+                Order Date
+              </Label>
               <div>10/31/2017 17:42:10</div>
             </div>
           </div>
@@ -185,31 +202,80 @@ const QuotationComponent: React.FC = () => {
                 </thead>
                 <tbody>
                   {initialDemand.map((row, index) => (
-                    <tr key={index}>
-                      <td className="py-2 px-4 border-b">{row.product}</td>
-                      <td className="py-2 px-4 border-b">{row.description}</td>
-                      <td className="py-2 px-4 border-b">
-                        {row.scheduledDate}
-                      </td>
-                      <td className="py-2 px-4 border-b">{row.quantity}</td>
-                      <td className="py-2 px-4 border-b">{row.unitPrice}</td>
-                      <td className="py-2 px-4 border-b">{row.taxes}</td>
-                      <td className="py-2 px-4 border-b">{row.subTotal}</td>
-                      <td className="py-2 px-4 border-b">{row.status}</td>
-                      <td className="py-2 px-4 border-b text-center">
-                        <Button
-                          variant="ghost"
-                          onClick={() => {
-                            const newData = initialDemand.filter(
-                              (_, i) => i !== index
-                            );
-                            setInitialDemand(newData);
-                          }}
-                        >
-                          Remove
-                        </Button>
-                      </td>
-                    </tr>
+                    <Dialog key={index} onOpenChange={() => openDialog(row)}>
+                      <DialogTrigger asChild>
+                        <tr key={index}>
+                          <td className="py-2 px-4 border-b">{row.product}</td>
+                          <td className="py-2 px-4 border-b">
+                            {row.description}
+                          </td>
+                          <td className="py-2 px-4 border-b">
+                            {row.scheduledDate}
+                          </td>
+                          <td className="py-2 px-4 border-b">{row.quantity}</td>
+                          <td className="py-2 px-4 border-b">
+                            {row.unitPrice}
+                          </td>
+                          <td className="py-2 px-4 border-b">{row.taxes}</td>
+                          <td className="py-2 px-4 border-b">{row.subTotal}</td>
+                          <td className="py-2 px-4 border-b text-center">
+                            <Button
+                              variant="ghost"
+                              onClick={() => {
+                                const newData = initialDemand.filter(
+                                  (_, i) => i !== index
+                                );
+                                setInitialDemand(newData);
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          </td>
+                        </tr>
+                      </DialogTrigger>
+                      {selectedRow && (
+                        <DialogContent className="bg-gray-200">
+                          <DialogTitle>Open: Order Lines</DialogTitle>
+                          <div className="p-4">
+                            <p>
+                              <strong>Product:</strong> {selectedRow.product}
+                            </p>
+                            <p>
+                              <strong>Quantity:</strong> {selectedRow.quantity}
+                            </p>
+                            <p>
+                              <strong>Unit Price:</strong>{" "}
+                              {selectedRow.unitPrice}
+                            </p>
+                            <p>
+                              <strong>Taxes:</strong> {selectedRow.taxes}
+                            </p>
+                            <p>
+                              <strong>Scheduled Date:</strong>{" "}
+                              {selectedRow.scheduledDate}
+                            </p>
+                            <Tabs defaultValue="notes" className="w-full mt-4">
+                              <TabsList>
+                                <TabsTrigger value="notes">Notes</TabsTrigger>
+                                <TabsTrigger value="invoices">
+                                  Invoices and Incoming Shipments
+                                </TabsTrigger>
+                              </TabsList>
+                              <TabsContent value="notes">
+                                <textarea
+                                  rows={4}
+                                  className="w-full border rounded-md p-2"
+                                  placeholder="Write your notes here..."
+                                ></textarea>
+                              </TabsContent>
+                              <TabsContent value="invoices">
+                                <p>Invoices and Incoming Shipments</p>
+                              </TabsContent>
+                            </Tabs>
+                          </div>
+                        </DialogContent>
+                      )}
+                    </Dialog>
                   ))}
                 </tbody>
               </table>
@@ -218,9 +284,7 @@ const QuotationComponent: React.FC = () => {
               </Button>
             </div>
           </TabsContent>
-          <TabsContent value="di">
-          di
-          </TabsContent>
+          <TabsContent value="di">di</TabsContent>
         </Tabs>
       </form>
       <div className="flex w-full justify-end mb-4">
@@ -244,201 +308,3 @@ const QuotationComponent: React.FC = () => {
 };
 
 export default QuotationComponent;
-
-
-
-
-
-
-
-
-
-
-            //   <Dialog>
-            //     <DialogTrigger asChild>
-            //       <Button className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4">
-            //         Add Vendor
-            //       </Button>
-            //     </DialogTrigger>
-            //     <DialogContent className="bg-gray-200">
-            //       <DialogTitle>Select Vendor</DialogTitle>
-            //       <div>
-            //         <Input
-            //           type="text"
-            //           placeholder="Search vendors"
-            //           className="mb-4"
-            //           value={searchInput}
-            //           onChange={(e) => setSearchInput(e.target.value)}
-            //         />
-            //         <table className="min-w-full bg-white">
-            //           <thead>
-            //             <tr>
-            //               <th className="py-2 px-4 border-b">Name</th>
-            //               <th className="py-2 px-4 border-b">Phone</th>
-            //               <th className="py-2 px-4 border-b">Email</th>
-            //               <th className="py-2 px-4 border-b">Actions</th>
-            //             </tr>
-            //           </thead>
-            //           <tbody>
-            //             {filteredVendors.map((vendor, index) => (
-            //               <tr key={index}>
-            //                 <td className="py-2 px-4 border-b">
-            //                   {vendor.name}
-            //                 </td>
-            //                 <td className="py-2 px-4 border-b">
-            //                   {vendor.phone}
-            //                 </td>
-            //                 <td className="py-2 px-4 border-b">
-            //                   {vendor.email}
-            //                 </td>
-            //                 <td className="py-2 px-4 border-b text-center">
-            //                   <Button
-            //                     className="text-blue-500"
-            //                     onClick={() => handleVendorSelect(vendor)}
-            //                   >
-            //                     Select
-            //                   </Button>
-            //                 </td>
-            //               </tr>
-            //             ))}
-            //           </tbody>
-            //         </table>
-            //       </div>
-            //     </DialogContent>
-            //   </Dialog>;
-
-
-
-
-                // <Dialog>
-                //   <DialogTrigger asChild>
-                //     <Button
-                //       className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                //       variant="outline"
-                //     >
-                //       Create Purchase Order
-                //     </Button>
-                //   </DialogTrigger>
-                //   <DialogContent className="bg-gray-200">
-                //     <DialogTitle>Create Purchase Order</DialogTitle>
-                //     <Tabs defaultValue="vendors" className="w-full">
-                //       <TabsList>
-                //         <TabsTrigger
-                //           className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
-                //           value="vendors"
-                //         >
-                //           Vendors
-                //         </TabsTrigger>
-                //         <TabsTrigger
-                //           className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
-                //           value="products"
-                //         >
-                //           Products
-                //         </TabsTrigger>
-                //       </TabsList>
-                //       <TabsContent value="vendors">
-                //         <div className="mt-4">
-                //           <table className="min-w-full bg-white">
-                //             <thead>
-                //               <tr>
-                //                 <th className="py-2 px-4 border-b">Name</th>
-                //                 <th className="py-2 px-4 border-b">Phone</th>
-                //                 <th className="py-2 px-4 border-b">Email</th>
-                //               </tr>
-                //             </thead>
-                //             <tbody>
-                //               {selectedVendors.map((vendor, index) => (
-                //                 <tr key={index}>
-                //                   <td className="py-2 px-4 border-b">
-                //                     {vendor.name}
-                //                   </td>
-                //                   <td className="py-2 px-4 border-b">
-                //                     {vendor.phone}
-                //                   </td>
-                //                   <td className="py-2 px-4 border-b">
-                //                     {vendor.email}
-                //                   </td>
-                //                 </tr>
-                //               ))}
-                //             </tbody>
-                //           </table>
-                //         </div>
-                //       </TabsContent>
-                //       <TabsContent value="products">
-                //         <div className="mt-4">Products content goes here.</div>
-                //       </TabsContent>
-                //     </Tabs>
-                //   </DialogContent>
-                // </Dialog>;
-
-
-
-
-
-                            // {
-                            //   initialDemand.map((row, index) => (
-                            //     <tr key={index}>
-                            //       <td className="py-2 px-4 border-b">
-                            //         <input
-                            //           type="text"
-                            //           value={row.product}
-                            //           onChange={(e) =>
-                            //             handleInputChange(
-                            //               index,
-                            //               "product",
-                            //               e.target.value
-                            //             )
-                            //           }
-                            //           className="border rounded-md px-2 py-1 w-full"
-                            //         />
-                            //       </td>
-                            //       <td className="py-2 px-4 border-b">
-                            //         <input
-                            //           type="number"
-                            //           value={row.quantity}
-                            //           onChange={(e) =>
-                            //             handleInputChange(
-                            //               index,
-                            //               "quantity",
-                            //               e.target.value
-                            //             )
-                            //           }
-                            //           className="border rounded-md px-2 py-1 w-full"
-                            //         />
-                            //       </td>
-                            //       <td className="py-2 px-4 border-b">
-                            //         <Select>
-                            //           <SelectTrigger>
-                            //             <SelectValue placeholder="Select status" />
-                            //           </SelectTrigger>
-                            //           <SelectContent>
-                            //             <SelectGroup>
-                            //               {statusOptions.map((status) => (
-                            //                 <SelectItem
-                            //                   key={status.value}
-                            //                   value={status.value}
-                            //                 >
-                            //                   {status.label}
-                            //                 </SelectItem>
-                            //               ))}
-                            //             </SelectGroup>
-                            //           </SelectContent>
-                            //         </Select>
-                            //       </td>
-                            //       <td className="py-2 px-4 border-b text-center">
-                            //         <button
-                            //           type="button"
-                            //           className="text-red-500"
-                            //           onClick={() => {
-                            //             const newData = initialDemand.filter(
-                            //               (_, i) => i !== index
-                            //             );
-                            //             setInitialDemand(newData);
-                            //           }}
-                            //         >
-                            //           Remove
-                            //         </button>
-                            //       </td>
-                            //     </tr>
-                            //   ));
-                            // }
