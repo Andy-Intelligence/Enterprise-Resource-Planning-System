@@ -1,56 +1,36 @@
 "use client";
-import React from "react";
-import { LuDiamond } from "react-icons/lu";
-import { LuDot } from "react-icons/lu";
-import { FaStar } from "react-icons/fa";
 
-const ProjectCard = () => {
+import React from "react";
+import { FaShoppingCart } from "react-icons/fa";
+import { FaMoneyBillWave } from "react-icons/fa";
+
+const ContractorCard: React.FC = () => {
+  // Dummy data
+  const imageUrl =
+    "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_760/https://dutumgroup.com/wp-content/uploads/2024/03/image-4-760x507.png";
+  const name = "Contractor Company";
+  const location = "123 Main St, City, Country";
+  const email = "contact@contractor.com";
+  const numberOfProjects = 2;
+  const amount = 50000;
+
   return (
-    <div className="border rounded-lg p-4 flex flex-col justify-between relative">
-      <div className="absolute top-0 right-0 mt-2 mr-2">
-        <FaStar className="text-yellow-400" />
+    <div className="border rounded-lg p-4 flex flex-row items-center">
+      <div className="w-1/4">
+        <img src={imageUrl} alt={name} className="w-full h-auto object-cover" />
       </div>
-      <div className="text-xl font-semibold mb-4">Project Title</div>
-      <div className="flex flex-col items-start w-full mb-4">
-        <div className="flex items-center justify-center">
-          <span>Project Manager </span>
-          <LuDot />
-          <span className="flex items-center justify-center text-black text-sm">
-            John Doe
-          </span>
-        </div>
-        <div className="flex items-center justify-center">
-          <span>Contact </span>
-          <LuDot />
-          <span className="flex items-center justify-center text-black text-sm">
-            johndoe@example.com
-          </span>
-        </div>
-      </div>
-      <div className="flex-grow"></div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <LuDiamond className="text-yellow-400" />
-          <div className="flex items-center justify-center">
-            <span>Tasks </span>
-            <LuDot />
-            <span className="flex items-center justify-center text-black text-sm">
-              50
-            </span>
+      <div className="w-3/4 pl-4">
+        <div className="text-xl font-semibold mb-2">{name}</div>
+        <div className="text-gray-600 mb-1">{location}</div>
+        <div className="text-gray-600 mb-2">{email}</div>
+        <div className="flex space-x-4">
+          <div className="flex items-center">
+            <FaShoppingCart className="text-gray-600 mr-1" />
+            <span>{numberOfProjects}</span>
           </div>
-          <div className="flex items-center justify-center">
-            <span>Issues </span>
-            <LuDot />
-            <span className="flex items-center justify-center text-black text-sm">
-              50
-            </span>
-          </div>
-          <div className="flex items-center justify-center">
-            <span>FeedBack </span>
-            <LuDot />
-            <span className="flex items-center justify-center text-black text-sm">
-              50
-            </span>
+          <div className="flex items-center">
+            <FaMoneyBillWave className="text-gray-600 mr-1" />
+            <span>&#8358;{amount}</span>
           </div>
         </div>
       </div>
@@ -58,4 +38,4 @@ const ProjectCard = () => {
   );
 };
 
-export default ProjectCard;
+export default ContractorCard;
