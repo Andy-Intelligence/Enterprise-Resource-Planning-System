@@ -435,6 +435,7 @@ const BudgetComponent: React.FC = () => {
           <Button
             className="px-4 py-2 bg-blue-500 text-white rounded-md"
             variant="outline"
+            onClick={()=>{router.push("/budget/create")}}
           >
             Create
           </Button>
@@ -696,48 +697,7 @@ const BudgetComponent: React.FC = () => {
                   }
                 />
               </div>
-              {/* <div className="mb-4">
-                <Label className="font-bold" htmlFor="practicalAmount">
-                  Practical Amount
-                </Label>
-                <Input
-                  type="number"
-                  value={newRow.practicalAmount}
-                  onChange={(e) =>
-                    handleNewRowChange(
-                      "practicalAmount",
-                      Number(e.target.value)
-                    )
-                  }
-                />
-              </div>
-              <div className="mb-4">
-                <Label className="font-bold" htmlFor="theoreticalAmount">
-                  Theoretical Amount
-                </Label>
-                <Input
-                  type="number"
-                  value={newRow.theoreticalAmount}
-                  onChange={(e) =>
-                    handleNewRowChange(
-                      "theoreticalAmount",
-                      Number(e.target.value)
-                    )
-                  }
-                />
-              </div>
-              <div className="mb-4">
-                <Label className="font-bold" htmlFor="achievement">
-                  Achievement
-                </Label>
-                <Input
-                  type="text"
-                  value={newRow.achievement}
-                  onChange={(e) =>
-                    handleNewRowChange("achievement", e.target.value)
-                  }
-                />
-              </div> */}
+        
               <div className="flex justify-end space-x-2">
                 <Button
                   variant="outline"
