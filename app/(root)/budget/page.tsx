@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import BudgetsTable from "@/components/BudgetsTable";
 
 interface Budget {
+  id: string;
   budgetName: string;
   startDate: string;
   endDate: string;
@@ -17,6 +18,7 @@ const Budgetpage: React.FC = () => {
 
   const budgets: Budget[] = [
     {
+      id: "1",
       budgetName: "Marketing Budget",
       startDate: "2024-01-01",
       endDate: "2024-12-31",
@@ -24,6 +26,7 @@ const Budgetpage: React.FC = () => {
       status: "Active",
     },
     {
+      id: "2",
       budgetName: "Development Budget",
       startDate: "2024-01-01",
       endDate: "2024-12-31",

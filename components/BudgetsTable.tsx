@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface Budget {
+  id: string;
   budgetName: string;
   startDate: string;
   endDate: string;
@@ -15,6 +17,12 @@ interface BudgetTableProps {
 }
 
 const BudgetsTable: React.FC<BudgetTableProps> = ({ budgets }) => {
+  const router = useRouter();
+
+  const handleRowClick = (id: string) => {
+    router.push(`/budget/${id}`);
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white">
@@ -29,8 +37,12 @@ const BudgetsTable: React.FC<BudgetTableProps> = ({ budgets }) => {
           </tr>
         </thead>
         <tbody>
-          {budgets.map((budget, index) => (
-            <tr key={index}>
+          {budgets.map((budget) => (
+            <tr
+              key={budget.id}
+              className="cursor-pointer"
+              onClick={() => handleRowClick(budget.id)}
+            >
               <td className="py-2 px-4 border-b text-center">
                 <input type="checkbox" />
               </td>
