@@ -54,6 +54,11 @@ export const sidebarLinks = [
     route: "/cost-code",
     label: "Cost Code",
   },
+  {
+    imgURL: "/icons/costHeader.svg",
+    route: "/cost-header",
+    label: "Cost Header",
+  },
 ];
 
 // good_user / good_password - Bank of America
