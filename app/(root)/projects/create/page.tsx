@@ -188,9 +188,9 @@ const NewProjectForm = () => {
           <TabsList className="flex items-center justify-start w-full">
             <TabsTrigger
               className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
-              value="settings"
+              value="details"
             >
-              Settings
+              Details
             </TabsTrigger>
             {/* <TabsTrigger
               className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
@@ -223,7 +223,7 @@ const NewProjectForm = () => {
               Work Package
             </TabsTrigger> */}
           </TabsList>
-          <TabsContent value="settings">
+          <TabsContent value="details">
             <CreateProjectSettings />
           </TabsContent>
           {/* <TabsContent value="rso">
