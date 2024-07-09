@@ -87,7 +87,8 @@ const NewProjectForm = () => {
               className="border rounded-md px-4 py-2 mb-4"
               placeholder="Project Name"
             />
-            <div className="mb-4 flex items-center justify-start">
+            {/* revivew later */}
+            {/* <div className="mb-4 flex items-center justify-start">
               <div className="flex items-center justify-center gap-1">
                 <input type="checkbox" className="" />
                 <label className="block text-sm font-semibold">Tasks</label>
@@ -104,7 +105,7 @@ const NewProjectForm = () => {
                   Allow Timesheet
                 </label>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="w-1/2">
             <div className="flex flex-wrap -mx-2">
@@ -191,7 +192,7 @@ const NewProjectForm = () => {
             >
               Settings
             </TabsTrigger>
-            <TabsTrigger
+            {/* <TabsTrigger
               className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
               value="rso"
             >
@@ -220,12 +221,12 @@ const NewProjectForm = () => {
               value="workpackage"
             >
               Work Package
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
           <TabsContent value="settings">
             <CreateProjectSettings />
           </TabsContent>
-          <TabsContent value="rso">
+          {/* <TabsContent value="rso">
             <CreateProjectRelatedSalesOrder />
           </TabsContent>
           <TabsContent value="rpo">
@@ -239,7 +240,7 @@ const NewProjectForm = () => {
           </TabsContent>
           <TabsContent value="workpackage">
             <CreateProjectWorkPackage />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </form>
     </div>

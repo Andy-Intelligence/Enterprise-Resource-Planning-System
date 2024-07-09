@@ -85,23 +85,23 @@ const CreateProjectSettings = () => {
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-4">
             <label className="block text-sm font-semibold w-32">
-              Project Sub Task
+              Sub Contractors
             </label>
             <Select>
               <SelectTrigger className="w-[180px] bg-gray-200">
-                <SelectValue placeholder="Select a sub task" />
+                <SelectValue placeholder="sub contractor" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup className="bg-gray-100">
-                  <SelectLabel>SubTask</SelectLabel>
-                  <SelectItem value="subtask1">SubTask 1</SelectItem>
-                  <SelectItem value="subtask2">SubTask 2</SelectItem>
-                  <SelectItem value="subtask3">SubTask 3</SelectItem>
+                  <SelectLabel>Sub Contractors</SelectLabel>
+                  <SelectItem value="subcont1">subcont1</SelectItem>
+                  <SelectItem value="subcont2">subcont2</SelectItem>
+                  <SelectItem value="subcont3">subcont3</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
-          <div className="flex gap-2 mb-4 items-center">
+          {/* <div className="flex gap-2 mb-4 items-center">
             <label className="block text-sm font-semibold w-32">Privacy</label>
             <div>
               <label className="inline-flex items-center">
@@ -117,25 +117,25 @@ const CreateProjectSettings = () => {
                 <span className="ml-2">Visible by following Customers</span>
               </label>
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center gap-2">
-            <label className="block text-sm font-semibold w-32">Customer</label>
+            <label className="block text-sm font-semibold w-32">Client</label>
             <Select>
               <SelectTrigger className="w-[180px] bg-gray-200">
-                <SelectValue placeholder="Select a customer" />
+                <SelectValue placeholder="Select a client" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup className="bg-gray-100">
-                  <SelectLabel>Customer </SelectLabel>
-                  <SelectItem value="customer1">Customer 1</SelectItem>
-                  <SelectItem value="customer2">Customer 2</SelectItem>
-                  <SelectItem value="customer3">Customer 3</SelectItem>
+                  <SelectLabel>Client </SelectLabel>
+                  <SelectItem value="customer1">Client 1</SelectItem>
+                  <SelectItem value="customer2">Client 2</SelectItem>
+                  <SelectItem value="customer3">Client 3</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
             <Dialog open={showModal} onOpenChange={setShowModal}>
               <DialogTrigger className="flex items-center justify-center gap-1 px-4 py-2 mr-2 bg-blue-500 text-white rounded-md">
-                <FaPlus /> <div>Add Manager</div>
+                <FaPlus /> <div>Add Client</div>
               </DialogTrigger>
               <DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-screen bg-gray-200 ">
                 <CreateEditCustomer />
@@ -147,7 +147,7 @@ const CreateProjectSettings = () => {
       <div>
         <div className="grid grid-cols-2 gap-8">
           {/* Configuration Section */}
-          <div className="col-span-1">
+          {/* <div className="col-span-1">
             <div className="mb-4">
               <h2 className="text-lg font-semibold mb-2 text-bankGradient">
                 Configuration
@@ -160,7 +160,7 @@ const CreateProjectSettings = () => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Time Scheduling Section */}
           <div className="col-span-1">
