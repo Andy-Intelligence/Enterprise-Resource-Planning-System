@@ -203,38 +203,20 @@ const CreateProjectSettings = () => {
           <div className="col-span-2">
             <div className="mb-4">
               <h2 className="text-lg font-semibold mb-2 text-bankGradient">
-                Custom
+                Budget
               </h2>
-              <div className="flex items-center justify-start">
-                <label className="block text-sm font-semibold w-32">
-                  Markup Cost
-                </label>
-                {/* <input
-                          type="text"
-                          className="border rounded-md px-4 py-2 mt-1 w-32"
-                        /> */}
-                <span className="">0.00</span>
-              </div>
-              <div className="flex items-center justify-start">
-                <label className="block text-sm font-semibold w-32">
-                  Estimated Cost
-                </label>
-                {/* <input
-                          type="text"
-                          className="border rounded-md px-4 py-2 mt-1 w-32"
-                        /> */}
-                <span className="">0.00</span>
-              </div>
-              <div className="flex items-center justify-start">
-                <label className="block text-sm font-semibold w-32">
-                  Project Cost
-                </label>
-                {/* <input
-                          type="text"
-                          className="border rounded-md px-4 py-2 mt-1 w-32"
-                        /> */}
-                <span className="">0.00</span>
-              </div>
+              <Select>
+                <SelectTrigger className="w-[180px] bg-gray-200">
+                  <SelectValue placeholder="Select Budget" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup className="bg-gray-100">
+                    <SelectLabel>Budget </SelectLabel>
+                    <SelectItem value="1">40hour/week</SelectItem>
+                    <SelectItem value="2">60hour/week</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>

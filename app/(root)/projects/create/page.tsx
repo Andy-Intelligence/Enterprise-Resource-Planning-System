@@ -184,7 +184,7 @@ const NewProjectForm = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="settings" className="w-full">
+        <Tabs defaultValue="details" className="w-full">
           <TabsList className="flex items-center justify-start w-full">
             <TabsTrigger
               className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
@@ -248,3 +248,12 @@ const NewProjectForm = () => {
 };
 
 export default NewProjectForm;
+
+
+
+
+
+
+
+
+
