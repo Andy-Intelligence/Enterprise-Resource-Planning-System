@@ -212,8 +212,8 @@ const CreateProjectSettings = () => {
                 <SelectContent>
                   <SelectGroup className="bg-gray-100">
                     <SelectLabel>Budget </SelectLabel>
-                    <SelectItem value="1">40hour/week</SelectItem>
-                    <SelectItem value="2">60hour/week</SelectItem>
+                    <SelectItem value="1">Budget 1</SelectItem>
+                    <SelectItem value="2">Budget 2</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
