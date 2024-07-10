@@ -19,6 +19,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 const vendorsList = [
   { name: "Vendor 1", phone: "123-456-7890", email: "vendor1@example.com" },
@@ -70,7 +71,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
 
   return (
     <div className="border rounded-lg p-4 relative">
-      <div className="text-3xl font-bold mb-4">Material Requisition / New</div>
+      <div className="text-3xl font-bold mb-4"> Requisition / New</div>
       <div className="flex gap-2 items-center justify-between mb-4">
         <div className="flex gap-2 items-center">
           <Button className="px-4 py-2 bg-blue-500 text-white rounded-md">
@@ -115,7 +116,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
                   </TabsTrigger>
                   <TabsTrigger
                     className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
-                     value="products"
+                    value="products"
                   >
                     Products
                   </TabsTrigger>
@@ -229,25 +230,24 @@ const NewMaterialRequisitionForm: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <div className="mb-4">
-              <Label htmlFor="partner">Partner</Label>
-              <Select>
-                <SelectTrigger id="partner">
-                  <SelectValue placeholder="Select a partner" />
-                </SelectTrigger>
-                <SelectContent className="bg-gray-200">
-                  <SelectGroup>
-                    <SelectItem value="partner1">Partner 1</SelectItem>
-                    <SelectItem value="partner2">Partner 2</SelectItem>
-                    <SelectItem value="partner3">Partner 3</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="taskJobOrderUser">Request By</Label>
+              <div>current user id</div>
             </div>
             <div className="mb-4">
-              <Label htmlFor="taskJobOrder">Task/Job Orders</Label>
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  placeholder="description."
+                  id="description"
+                />
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <Label htmlFor="taskJobOrder">Task</Label>
               <Select>
                 <SelectTrigger id="taskJobOrder">
-                  <SelectValue placeholder="Select a task/job order" />
+                  <SelectValue placeholder="Select a task" />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-200">
                   <SelectGroup>
@@ -259,24 +259,9 @@ const NewMaterialRequisitionForm: React.FC = () => {
               </Select>
             </div>
             <div className="mb-4">
-              <Label htmlFor="taskJobOrderUser">Task/Job Orders User</Label>
+              <Label htmlFor="constructionProject"> Project</Label>
               <Select>
-                <SelectTrigger id="taskJobOrderUser">
-                  <SelectValue placeholder="Select a user" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup className="bg-gray-200">
-                    <SelectItem value="user1">User 1</SelectItem>
-                    <SelectItem value="user2">User 2</SelectItem>
-                    <SelectItem value="user3">User 3</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="constructionProject">Construction Project</Label>
-              <Select>
-                <SelectTrigger id="constructionProject">
+                <SelectTrigger id="project">
                   <SelectValue placeholder="Select a project" />
                 </SelectTrigger>
                 <SelectContent>
@@ -292,27 +277,8 @@ const NewMaterialRequisitionForm: React.FC = () => {
 
           <div>
             <div className="mb-4">
-              <Label htmlFor="analyticAccount">Analytic Account</Label>
-              <Select>
-                <SelectTrigger id="analyticAccount">
-                  <SelectValue placeholder="Select an account" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup className="bg-gray-200">
-                    <SelectItem value="account1">Account 1</SelectItem>
-                    <SelectItem value="account2">Account 2</SelectItem>
-                    <SelectItem value="account3">Account 3</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="mb-4">
               <Label htmlFor="scheduledDate">Scheduled Date</Label>
               <Input type="date" id="scheduledDate" />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="sourceDocument">Source Document</Label>
-              <Input type="text" id="sourceDocument" />
             </div>
           </div>
         </div>
@@ -337,7 +303,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
               <table className="min-w-full bg-white">
                 <thead>
                   <tr>
-                    <th className="py-2 px-4 border-b">Product</th>
+                    <th className="py-2 px-4 border-b">Item</th>
                     <th className="py-2 px-4 border-b">Quantity</th>
                     <th className="py-2 px-4 border-b">Status</th>
                     <th className="py-2 px-4 border-b">Actions</th>
@@ -483,3 +449,16 @@ const NewMaterialRequisitionForm: React.FC = () => {
 };
 
 export default NewMaterialRequisitionForm;
+
+
+
+
+
+
+
+
+
+
+
+
+
