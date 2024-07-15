@@ -45,6 +45,11 @@ export const sidebarLinks = [
     label: "Contractors",
   },
   {
+    imgURL: "/icons/supplier.svg",
+    route: "/suppliers",
+    label: "Suppliers",
+  },
+  {
     imgURL: "/icons/budget.svg",
     route: "/budget",
     label: "Budget",

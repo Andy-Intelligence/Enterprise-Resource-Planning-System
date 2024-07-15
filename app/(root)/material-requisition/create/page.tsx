@@ -83,18 +83,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
           >
             Discard
           </Button>
-          <Button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            variant="outline"
-          >
-            Mark as Todo
-          </Button>
-          <Button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            variant="outline"
-          >
-            Validate
-          </Button>
+ 
           <Dialog>
             <DialogTrigger asChild>
               <Button
@@ -104,16 +93,10 @@ const NewMaterialRequisitionForm: React.FC = () => {
                 Create Purchase Order
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-gray-200">
+            <DialogContent className="bg-gray-200 overflow-y-scroll max-h-screen">
               <DialogTitle>Create Purchase Order</DialogTitle>
-              <Tabs defaultValue="vendors" className="w-full">
+              <Tabs defaultValue="products" className="w-full">
                 <TabsList>
-                  <TabsTrigger
-                    className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
-                    value="vendors"
-                  >
-                    Vendors
-                  </TabsTrigger>
                   <TabsTrigger
                     className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
                     value="products"
@@ -121,88 +104,57 @@ const NewMaterialRequisitionForm: React.FC = () => {
                     Products
                   </TabsTrigger>
                 </TabsList>
-                <TabsContent value="vendors">
-                  <div className="mt-4">
-                    <table className="min-w-full bg-white">
-                      <thead>
-                        <tr>
-                          <th className="py-2 px-4 border-b">Name</th>
-                          <th className="py-2 px-4 border-b">Phone</th>
-                          <th className="py-2 px-4 border-b">Email</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {selectedVendors.map((vendor, index) => (
-                          <tr key={index}>
-                            <td className="py-2 px-4 border-b">
-                              {vendor.name}
-                            </td>
-                            <td className="py-2 px-4 border-b">
-                              {vendor.phone}
-                            </td>
-                            <td className="py-2 px-4 border-b">
-                              {vendor.email}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4">
-                          Add Vendor
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="bg-gray-200">
-                        <DialogTitle>Select Vendor</DialogTitle>
-                        <div>
-                          <Input
-                            type="text"
-                            placeholder="Search vendors"
-                            className="mb-4"
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
-                          />
-                          <table className="min-w-full bg-white">
-                            <thead>
-                              <tr>
-                                <th className="py-2 px-4 border-b">Name</th>
-                                <th className="py-2 px-4 border-b">Phone</th>
-                                <th className="py-2 px-4 border-b">Email</th>
-                                <th className="py-2 px-4 border-b">Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {filteredVendors.map((vendor, index) => (
-                                <tr key={index}>
-                                  <td className="py-2 px-4 border-b">
-                                    {vendor.name}
-                                  </td>
-                                  <td className="py-2 px-4 border-b">
-                                    {vendor.phone}
-                                  </td>
-                                  <td className="py-2 px-4 border-b">
-                                    {vendor.email}
-                                  </td>
-                                  <td className="py-2 px-4 border-b text-center">
-                                    <Button
-                                      className="text-blue-500"
-                                      onClick={() => handleVendorSelect(vendor)}
-                                    >
-                                      Select
-                                    </Button>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </TabsContent>
                 <TabsContent value="products">
-                  <div className="mt-4">Products content goes here.</div>
+                  <div className="mt-4">
+                    <form className="grid grid-cols-1 gap-4">
+                      <div>
+                        <Label htmlFor="purchaseOrderId">
+                          Purchase Order ID
+                        </Label>
+                        <Input type="text" id="purchaseOrderId" />
+                      </div>
+                      <div>
+                        <Label htmlFor="requesitionId">Requisition ID</Label>
+                        <Input type="text" id="requesitionId" />
+                      </div>
+                      <div>
+                        <Label htmlFor="assignBy">Assign By</Label>
+                        <Input type="text" id="assignBy" />
+                      </div>
+                      <div>
+                        <Label htmlFor="supplierName">Supplier Name</Label>
+                        <Input type="text" id="supplierName" />
+                      </div>
+                      <div>
+                        <Label htmlFor="orderDate">Order Date</Label>
+                        <Input type="date" id="orderDate" />
+                      </div>
+                      <div>
+                        <Label htmlFor="expectedDeliveryDate">
+                          Expected Delivery Date
+                        </Label>
+                        <Input type="date" id="expectedDeliveryDate" />
+                      </div>
+                      <div>
+                        <Label htmlFor="paymentTerms">Payment Terms</Label>
+                        <Input type="text" id="paymentTerms" />
+                      </div>
+                      <div>
+                        <Label htmlFor="paymentDueDate">Payment Due Date</Label>
+                        <Input type="date" id="paymentDueDate" />
+                      </div>
+                      <div>
+                        <Label htmlFor="shippingMethod">Shipping Method</Label>
+                        <Input type="text" id="shippingMethod" />
+                      </div>
+                      <div>
+                        <Label htmlFor="deliveryAddress">
+                          Delivery Address
+                        </Label>
+                        <Input type="text" id="deliveryAddress" />
+                      </div>
+                    </form>
+                  </div>
                 </TabsContent>
               </Tabs>
             </DialogContent>
@@ -236,10 +188,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
             <div className="mb-4">
               <div className="grid w-full gap-1.5">
                 <Label htmlFor="description">Description</Label>
-                <Textarea
-                  placeholder="description."
-                  id="description"
-                />
+                <Textarea placeholder="description." id="description" />
               </div>
             </div>
 
@@ -289,13 +238,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
               className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
               value="initialDemand"
             >
-              Initial Demand
-            </TabsTrigger>
-            <TabsTrigger
-              className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
-              value="additionalInfo"
-            >
-              Additional Info
+               Demand
             </TabsTrigger>
           </TabsList>
           <TabsContent value="initialDemand">
@@ -374,74 +317,6 @@ const NewMaterialRequisitionForm: React.FC = () => {
               </Button>
             </div>
           </TabsContent>
-          <TabsContent value="additionalInfo">
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <div className="mb-4">
-                  <Label htmlFor="deliveryType">Delivery Type</Label>
-                  <Select>
-                    <SelectTrigger id="deliveryType">
-                      <SelectValue placeholder="Select delivery type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="type1">Type 1</SelectItem>
-                        <SelectItem value="type2">Type 2</SelectItem>
-                        <SelectItem value="type3">Type 3</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="mb-4">
-                  <Label htmlFor="pickingType">Picking Type</Label>
-                  <Select>
-                    <SelectTrigger id="pickingType">
-                      <SelectValue placeholder="Select picking type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="picking1">Picking 1</SelectItem>
-                        <SelectItem value="picking2">Picking 2</SelectItem>
-                        <SelectItem value="picking3">Picking 3</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div>
-                <div className="mb-4">
-                  <Label htmlFor="procurementGroup">Procurement Group</Label>
-                  <Select>
-                    <SelectTrigger id="procurementGroup">
-                      <SelectValue placeholder="Select procurement group" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="group1">Group 1</SelectItem>
-                        <SelectItem value="group2">Group 2</SelectItem>
-                        <SelectItem value="group3">Group 3</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="mb-4">
-                  <Label htmlFor="priority">Priority</Label>
-                  <Select>
-                    <SelectTrigger id="priority">
-                      <SelectValue placeholder="Select priority" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="low">Low</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="high">High</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
         </Tabs>
       </form>
     </div>
@@ -449,16 +324,6 @@ const NewMaterialRequisitionForm: React.FC = () => {
 };
 
 export default NewMaterialRequisitionForm;
-
-
-
-
-
-
-
-
-
-
 
 
 
