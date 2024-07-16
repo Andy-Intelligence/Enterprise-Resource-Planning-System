@@ -294,6 +294,14 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface PurchaseOrderItem {
   id: string;
@@ -348,8 +356,8 @@ const CreatePurchaseOrder: React.FC = () => {
     transportType: "By Road",
     shippingAddress: "",
     termsAndConditions: "",
-    packingAmount:0,
-    totalOrderValue:0,
+    packingAmount: 0,
+    totalOrderValue: 0,
   });
 
   const handleAddProduct = () => {
@@ -601,13 +609,148 @@ const CreatePurchaseOrder: React.FC = () => {
             </tbody>
           </table>
         </div>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md mb-4"
-          onClick={() => setIsDialogOpen(true)}
-        >
-          Add Product
-        </button>
-        <div className="text-2xl font-bold mb-4">
+
+        <Dialog>
+          <DialogTrigger>
+            {" "}
+            <span className="px-4 py-2 bg-blue-500 text-white rounded-md mb-4">
+              Add Product
+            </span>
+          </DialogTrigger>
+          <DialogContent className="bg-gray-200 overflow-y-scroll max-h-screen">
+            <div className="flex items-center justify-center">
+              <div className="">
+                <div className="mb-4">
+                  <label className="block mb-2">Product Name</label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.productName}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        productName: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Product Code</label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.productCode}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        productCode: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Required Quantity</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.requiredQuantity}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        requiredQuantity: parseInt(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Order Qty</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.orderQty}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        orderQty: parseInt(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Finished Qty</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.finishedQty}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        finishedQty: parseInt(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Unit</label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.unit}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        unit: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Delivery Date</label>
+                  <input
+                    type="date"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.deliveryDate}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        deliveryDate: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Unit Price</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.unitPrice}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        unitPrice: parseFloat(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    className="px-4 py-2 bg-gray-500 text-white rounded-md mr-2"
+                    onClick={() => setIsDialogOpen(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    onClick={handleAddProduct}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+        <div className="text-2xl font-bold mb-4 mt-4">
           Total Items: {poItems.length}
         </div>
       </div>
@@ -732,138 +875,6 @@ const CreatePurchaseOrder: React.FC = () => {
       </div>
 
       {/* Dialog for Adding Product */}
-      {isDialogOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-75 z-50">
-          <div className="bg-white p-4 rounded-md">
-            <div className="mb-4">
-              <label className="block mb-2">Product Name</label>
-              <input
-                type="text"
-                className="w-full px-4 py-2 border rounded-md"
-                value={newPoItem.productName}
-                onChange={(e) =>
-                  setNewPoItem({
-                    ...newPoItem,
-                    productName: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2">Product Code</label>
-              <input
-                type="text"
-                className="w-full px-4 py-2 border rounded-md"
-                value={newPoItem.productCode}
-                onChange={(e) =>
-                  setNewPoItem({
-                    ...newPoItem,
-                    productCode: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2">Required Quantity</label>
-              <input
-                type="number"
-                className="w-full px-4 py-2 border rounded-md"
-                value={newPoItem.requiredQuantity}
-                onChange={(e) =>
-                  setNewPoItem({
-                    ...newPoItem,
-                    requiredQuantity: parseInt(e.target.value),
-                  })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2">Order Qty</label>
-              <input
-                type="number"
-                className="w-full px-4 py-2 border rounded-md"
-                value={newPoItem.orderQty}
-                onChange={(e) =>
-                  setNewPoItem({
-                    ...newPoItem,
-                    orderQty: parseInt(e.target.value),
-                  })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2">Finished Qty</label>
-              <input
-                type="number"
-                className="w-full px-4 py-2 border rounded-md"
-                value={newPoItem.finishedQty}
-                onChange={(e) =>
-                  setNewPoItem({
-                    ...newPoItem,
-                    finishedQty: parseInt(e.target.value),
-                  })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2">Unit</label>
-              <input
-                type="text"
-                className="w-full px-4 py-2 border rounded-md"
-                value={newPoItem.unit}
-                onChange={(e) =>
-                  setNewPoItem({
-                    ...newPoItem,
-                    unit: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2">Delivery Date</label>
-              <input
-                type="date"
-                className="w-full px-4 py-2 border rounded-md"
-                value={newPoItem.deliveryDate}
-                onChange={(e) =>
-                  setNewPoItem({
-                    ...newPoItem,
-                    deliveryDate: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2">Unit Price</label>
-              <input
-                type="number"
-                className="w-full px-4 py-2 border rounded-md"
-                value={newPoItem.unitPrice}
-                onChange={(e) =>
-                  setNewPoItem({
-                    ...newPoItem,
-                    unitPrice: parseFloat(e.target.value),
-                  })
-                }
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                className="px-4 py-2 bg-gray-500 text-white rounded-md mr-2"
-                onClick={() => setIsDialogOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                onClick={handleAddProduct}
-              >
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
