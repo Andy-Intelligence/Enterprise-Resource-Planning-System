@@ -20,6 +20,11 @@ export const sidebarLinks = [
     label: "BOQ",
   },
   {
+    imgURL: "/icons/boq.svg",
+    route: "/quotes",
+    label: "Quotes",
+  },
+  {
     imgURL: "/icons/issue.svg",
     route: "/issues",
     label: "Issues",
