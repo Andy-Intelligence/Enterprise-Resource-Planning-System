@@ -2,12 +2,12 @@
 import React from "react";
 
 interface Material {
-  internalReference: string;
+  itemCode: string;
   name: string;
   salePrice: string;
   quantityOnHand: string;
   forecastQuantity: string;
-  barcode: string;
+  image: string;
 }
 
 interface MaterialRowProps {
@@ -22,12 +22,12 @@ const MaterialRowComponent: React.FC<MaterialRowProps> = ({ index, data }) => {
         <input type="checkbox" />
       </td>
       <td className="py-2 px-4 border-b">{index}</td>
-      <td className="py-2 px-4 border-b">{data.internalReference}</td>
+      <td className="py-2 px-4 border-b">{data.itemCode}</td>
       <td className="py-2 px-4 border-b">{data.name}</td>
       <td className="py-2 px-4 border-b">{data.salePrice}</td>
       <td className="py-2 px-4 border-b">{data.quantityOnHand}</td>
       <td className="py-2 px-4 border-b">{data.forecastQuantity}</td>
-      <td className="py-2 px-4 border-b">{data.barcode}</td>
+      <td className="py-2 px-4 border-b">{data.image}</td>
     </tr>
   );
 };

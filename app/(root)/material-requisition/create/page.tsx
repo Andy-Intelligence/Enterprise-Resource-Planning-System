@@ -83,7 +83,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
           >
             Discard
           </Button>
- 
+
           <Dialog>
             <DialogTrigger asChild>
               <Button
@@ -95,68 +95,62 @@ const NewMaterialRequisitionForm: React.FC = () => {
             </DialogTrigger>
             <DialogContent className="bg-gray-200 overflow-y-scroll max-h-screen">
               <DialogTitle>Create Purchase Order</DialogTitle>
-              <Tabs defaultValue="products" className="w-full">
-                <TabsList>
-                  <TabsTrigger
-                    className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
-                    value="products"
-                  >
-                    Products
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="products">
-                  <div className="mt-4">
-                    <form className="grid grid-cols-1 gap-4">
-                      <div>
-                        <Label htmlFor="purchaseOrderId">
-                          Purchase Order ID
-                        </Label>
-                        <Input type="text" id="purchaseOrderId" />
-                      </div>
-                      <div>
-                        <Label htmlFor="requesitionId">Requisition ID</Label>
-                        <Input type="text" id="requesitionId" />
-                      </div>
-                      <div>
-                        <Label htmlFor="assignBy">Assign By</Label>
-                        <Input type="text" id="assignBy" />
-                      </div>
-                      <div>
-                        <Label htmlFor="supplierName">Supplier Name</Label>
-                        <Input type="text" id="supplierName" />
-                      </div>
-                      <div>
-                        <Label htmlFor="orderDate">Order Date</Label>
-                        <Input type="date" id="orderDate" />
-                      </div>
-                      <div>
-                        <Label htmlFor="expectedDeliveryDate">
-                          Expected Delivery Date
-                        </Label>
-                        <Input type="date" id="expectedDeliveryDate" />
-                      </div>
-                      <div>
-                        <Label htmlFor="paymentTerms">Payment Terms</Label>
-                        <Input type="text" id="paymentTerms" />
-                      </div>
-                      <div>
-                        <Label htmlFor="paymentDueDate">Payment Due Date</Label>
-                        <Input type="date" id="paymentDueDate" />
-                      </div>
-                      <div>
-                        <Label htmlFor="shippingMethod">Shipping Method</Label>
-                        <Input type="text" id="shippingMethod" />
-                      </div>
-                      <div>
-                        <Label htmlFor="deliveryAddress">
-                          Delivery Address
-                        </Label>
-                        <Input type="text" id="deliveryAddress" />
-                      </div>
-                    </form>
+              <div className="mt-4">
+                <form className="grid grid-cols-1 gap-4">
+                  <div>
+                    <Label htmlFor="purchaseOrderId">Purchase Order ID</Label>
+                    <Input type="text" id="purchaseOrderId" />
                   </div>
-                </TabsContent>
-              </Tabs>
+                  <div>
+                    <Label htmlFor="requesitionId">Requisition ID</Label>
+                    <Input type="text" id="requesitionId" />
+                  </div>
+                  <div>
+                    <Label htmlFor="assignBy">Assign By</Label>
+                    <Input type="text" id="assignBy" />
+                  </div>
+                  <div>
+                    <Label htmlFor="supplierName">Supplier Name</Label>
+                    <Input type="text" id="supplierName" />
+                  </div>
+                  <div>
+                    <Label htmlFor="orderDate">Order Date</Label>
+                    <Input type="date" id="orderDate" />
+                  </div>
+                  <div>
+                    <Label htmlFor="expectedDeliveryDate">
+                      Expected Delivery Date
+                    </Label>
+                    <Input type="date" id="expectedDeliveryDate" />
+                  </div>
+                  <div>
+                    <Label htmlFor="paymentTerms">Payment Terms</Label>
+                    <Input type="text" id="paymentTerms" />
+                  </div>
+                  <div>
+                    <Label htmlFor="paymentDueDate">Payment Due Date</Label>
+                    <Input type="date" id="paymentDueDate" />
+                  </div>
+                  <div>
+                    <Label htmlFor="shippingMethod">Shipping Method</Label>
+                    <Input type="text" id="shippingMethod" />
+                  </div>
+                  <div>
+                    <Label htmlFor="deliveryAddress">Delivery Address</Label>
+                    <Input type="text" id="deliveryAddress" />
+                  </div>
+                </form>
+              </div>
+
+              <Button className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                Save
+              </Button>
+              <Button
+                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                variant="outline"
+              >
+                Discard
+              </Button>
             </DialogContent>
           </Dialog>
         </div>
@@ -238,7 +232,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
               className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
               value="initialDemand"
             >
-               Demand
+              Demand
             </TabsTrigger>
           </TabsList>
           <TabsContent value="initialDemand">

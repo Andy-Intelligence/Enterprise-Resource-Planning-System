@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 import MaterialsTable from "@/components/MaterialsTable";
 
 interface Material {
-  internalReference: string;
+  itemCode: string;
   name: string;
   salePrice: string;
   quantityOnHand: string;
   forecastQuantity: string;
-  barcode: string;
+  image: string;
 }
 
 const Materialpage: React.FC = () => {
@@ -17,27 +17,27 @@ const Materialpage: React.FC = () => {
 
   const materials: Material[] = [
     {
-      internalReference: "IR001",
+      itemCode: "IR001",
       name: "Material 1",
       salePrice: "$100.00",
       quantityOnHand: "50",
       forecastQuantity: "30",
-      barcode: "1234567890",
+      image: "1234567890",
     },
     {
-      internalReference: "IR002",
+      itemCode: "IR002",
       name: "Material 2",
       salePrice: "$200.00",
       quantityOnHand: "20",
       forecastQuantity: "10",
-      barcode: "0987654321",
+      image: "0987654321",
     },
     // Add more materials as needed
   ];
 
   return (
     <div className="container mx-auto p-4">
-      <div className="text-3xl font-bold mb-4">Materials</div>
+      <div className="text-3xl font-bold mb-4">Items</div>
       <div className="flex justify-end mb-4">
         <input
           type="text"
