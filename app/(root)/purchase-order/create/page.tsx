@@ -1,295 +1,4 @@
-// "use client";
 
-// import React, { useState } from "react";
-// import { useRouter } from "next/navigation";
-
-// interface ProductDetails {
-//   id: string;
-//   productName: string;
-//   productCode: string;
-//   requiredQuantity: number;
-//   orderQty: number;
-//   finishedQty: number;
-//   unit: string;
-//   deliveryDate: string;
-//   unitPrice: number;
-// }
-
-// const CreatePurchaseOrder: React.FC = () => {
-//   const router = useRouter();
-//   const [productDetails, setProductDetails] = useState<ProductDetails[]>([]);
-//   const [isDialogOpen, setIsDialogOpen] = useState(false);
-//   const [newProductDetail, setNewProductDetail] = useState<
-//     Partial<ProductDetails>
-//   >({
-//     productName: "",
-//     productCode: "",
-//     requiredQuantity: 0,
-//     orderQty: 0,
-//     finishedQty: 0,
-//     unit: "",
-//     deliveryDate: "",
-//     unitPrice: 0,
-//   });
-//   const [poDetails, setPoDetails] = useState({
-//     vendorCode: "",
-//     vendorName: "",
-//     paymentTerms: "",
-//     otherReference: "",
-//     termsOfDelivery: "",
-//     note: "",
-//     poType: "Purchase Order",
-//     poDate: "",
-//     prNumber: "",
-//     poNumber: "",
-//     poRaisedBy: "Admin",
-//     transportType: "By Road",
-//     shippingAddress: "",
-//     packingAmount: 0,
-//     totalOrderValue: 0,
-//     termsAndConditions: "",
-//   });
-
-//   const handleAddProduct = () => {
-//     setProductDetails([
-//       ...productDetails,
-//       {
-//         ...newProductDetail,
-//         id: (productDetails.length + 1).toString(),
-//       } as ProductDetails,
-//     ]);
-//     setIsDialogOpen(false);
-//     setNewProductDetail({
-//       productName: "",
-//       productCode: "",
-//       requiredQuantity: 0,
-//       orderQty: 0,
-//       finishedQty: 0,
-//       unit: "",
-//       deliveryDate: "",
-//       unitPrice: 0,
-//     });
-//   };
-
-//   const handleInputChange = (
-//     e: React.ChangeEvent<
-//       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-//     >
-//   ) => {
-//     const { name, value } = e.target;
-//     setPoDetails({ ...poDetails, [name]: value });
-//   };
-
-//   return (
-//     <div className="container mx-auto p-4">
-//       <div className="text-3xl font-bold mb-4">Create Purchase Order</div>
-
-//       {/* Vendor Information Section */}
-//       <div className="mb-4">
-//         <div className="text-2xl font-bold mb-4">Vendor Information</div>
-//         <div className="mb-4">
-//           <label className="block mb-2">Vendor Code</label>
-//           <input
-//             type="text"
-//             name="vendorCode"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.vendorCode}
-//             onChange={handleInputChange}
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">Vendor Name</label>
-//           <input
-//             type="text"
-//             name="vendorName"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.vendorName}
-//             onChange={handleInputChange}
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">Payment Terms</label>
-//           <select
-//             name="paymentTerms"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.paymentTerms}
-//             onChange={handleInputChange}
-//           >
-//             <option value="">Select Payment Terms</option>
-//             <option value="Net 30">Net 30</option>
-//             <option value="Net 60">Net 60</option>
-//             <option value="Net 90">Net 90</option>
-//           </select>
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">Other Reference</label>
-//           <input
-//             type="text"
-//             name="otherReference"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.otherReference}
-//             onChange={handleInputChange}
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">Terms of Delivery</label>
-//           <input
-//             type="text"
-//             name="termsOfDelivery"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.termsOfDelivery}
-//             onChange={handleInputChange}
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">Note</label>
-//           <textarea
-//             name="note"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.note}
-//             onChange={handleInputChange}
-//           ></textarea>
-//         </div>
-//       </div>
-
-//       {/* PO Details Section */}
-//       <div className="mb-4">
-//         <div className="text-2xl font-bold mb-4">PO Details</div>
-//         <div className="mb-4">
-//           <label className="block mb-2">PO Type</label>
-//           <select
-//             name="poType"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.poType}
-//             onChange={handleInputChange}
-//           >
-//             <option value="Purchase Order">Purchase Order</option>
-//           </select>
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">PO Date</label>
-//           <input
-//             type="date"
-//             name="poDate"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.poDate}
-//             onChange={handleInputChange}
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">Select PR Number</label>
-//           <input
-//             type="text"
-//             name="prNumber"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.prNumber}
-//             onChange={handleInputChange}
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">PO Number</label>
-//           <input
-//             type="text"
-//             name="poNumber"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.poNumber}
-//             onChange={handleInputChange}
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">PO Raised By</label>
-//           <select
-//             name="poRaisedBy"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.poRaisedBy}
-//             onChange={handleInputChange}
-//           >
-//             <option value="Admin">Admin</option>
-//           </select>
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">Transport Type</label>
-//           <select
-//             name="transportType"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.transportType}
-//             onChange={handleInputChange}
-//           >
-//             <option value="By Road">By Road</option>
-//             <option value="By Air">By Air</option>
-//             <option value="By Sea">By Sea</option>
-//           </select>
-//         </div>
-//         <div className="mb-4">
-//           <label className="block mb-2">Shipping Address</label>
-//           <textarea
-//             name="shippingAddress"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={poDetails.shippingAddress}
-//             onChange={handleInputChange}
-//           ></textarea>
-//         </div>
-//       </div>
-
-//       {/* Product Details Section */}
-//       <div className="mb-4">
-//         <div className="text-2xl font-bold mb-4">Product Details</div>
-//         <div className="overflow-x-auto mb-4">
-//           <table className="min-w-full bg-white">
-//             <thead>
-//               <tr>
-//                 <th className="py-2 px-4 border-b">Product Name</th>
-//                 <th className="py-2 px-4 border-b">Product Code</th>
-//                 <th className="py-2 px-4 border-b">Required Quantity</th>
-//                 <th className="py-2 px-4 border-b">Order Qty</th>
-//                 <th className="py-2 px-4 border-b">Finished Qty</th>
-//                 <th className="py-2 px-4 border-b">Unit</th>
-//                 <th className="py-2 px-4 border-b">Delivery Date</th>
-//                 <th className="py-2 px-4 border-b">Unit Price</th>
-//                 <th className="py-2 px-4 border-b">Action</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {productDetails.map((item) => (
-//                 <tr key={item.id}>
-//                   <td className="py-2 px-4 border-b">{item.productName}</td>
-//                   <td className="py-2 px-4 border-b">{item.productCode}</td>
-//                   <td className="py-2 px-4 border-b">
-//                     {item.requiredQuantity}
-//                   </td>
-//                   <td className="py-2 px-4 border-b">{item.orderQty}</td>
-//                   <td className="py-2 px-4 border-b">{item.finishedQty}</td>
-//                   <td className="py-2 px-4 border-b">{item.unit}</td>
-//                   <td className="py-2 px-4 border-b">{item.deliveryDate}</td>
-//                   <td className="py-2 px-4 border-b">{item.unitPrice}</td>
-//                   <td className="py-2 px-4 border-b">
-//                     <button
-//                       className="px-2 py-1 bg-red-500 text-white rounded-md"
-//                       onClick={() =>
-//                         setProductDetails(
-//                           productDetails.filter((i) => i.id !== item.id)
-//                         )
-//                       }
-//                     >
-//                       Remove
-//                     </button>
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//         <button
-//           className="px-4 py-2 bg-blue-500 text-white rounded-md mb-4"
-//           onClick={() => setIsDialogOpen(true)}
-//         >
-//           Add Item
-//         </button>
-
-//         <div className="text-2xl font-bold mb-4">
-//           Total Items: {productDetails.length}
-//         </div>
-//       </div>
 "use client";
 
 import React, { useState } from "react";
@@ -728,6 +437,90 @@ const CreatePurchaseOrder: React.FC = () => {
                       setNewPoItem({
                         ...newPoItem,
                         unitPrice: parseFloat(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Amount</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.amount}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        amount: parseFloat(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Discount %</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.discountPercent}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        discountPercent: parseFloat(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Discount Amount</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.discountAmount}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        discountAmount: parseFloat(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">GST %</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.gstPercent}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        gstPercent: parseFloat(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">GST Amount</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.gstAmount}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        gstAmount: parseFloat(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2">Total Amount</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 border rounded-md"
+                    value={newPoItem.totalAmount}
+                    onChange={(e) =>
+                      setNewPoItem({
+                        ...newPoItem,
+                        totalAmount: parseFloat(e.target.value),
                       })
                     }
                   />
