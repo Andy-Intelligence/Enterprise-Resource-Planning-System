@@ -70,6 +70,11 @@ export const sidebarLinks = [
     label: "Cost Code",
   },
   {
+    imgURL: "/icons/report.svg",
+    route: "/report/create",
+    label: "Report",
+  },
+  {
     imgURL: "/icons/costHeader.svg",
     route: "/cost-header",
     label: "Cost Header",
