@@ -67,7 +67,7 @@ const CreateInventoryItem: React.FC = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="text-3xl font-bold mb-4">Create Inventory Item</div>
-      <div className="flex justify-between mb-4">
+      <div className="flex items-center justify-start space-x-2 mb-4">
         <button
           className="px-4 py-2 bg-blue-500 text-white rounded-md"
           onClick={handleSave}
