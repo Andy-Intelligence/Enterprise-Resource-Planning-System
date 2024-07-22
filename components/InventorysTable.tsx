@@ -22,7 +22,7 @@ const InventorysTable: React.FC<InventorysTableProps> = ({ inventorys }) => {
   const [filterType, setFilterType] = useState("");
 
   const handleRowClick = (id: string) => {
-    router.push(`/cost-header/${id}`);
+    router.push(`/item/${id}`);
   };
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
