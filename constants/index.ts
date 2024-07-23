@@ -31,11 +31,6 @@ export const sidebarLinks = [
   },
   {
     imgURL: "/icons/material.svg",
-    route: "/materials",
-    label: "Items",
-  },
-  {
-    imgURL: "/icons/material.svg",
     route: "/inventory",
     label: "Inventory",
   },
