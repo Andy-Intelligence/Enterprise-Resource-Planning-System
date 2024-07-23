@@ -30,11 +30,23 @@ const Sidebar = ({ user }: SidebarProps) => {
     { imgURL: "/icons/supplier.svg", route: "/suppliers", label: "Suppliers" },
     { imgURL: "/icons/invoice.svg", route: "/invoices", label: "Invoices" },
     { imgURL: "/icons/boq.svg", route: "/quotes", label: "Quotes" },
+    {
+      imgURL: "/icons/materialrequisition.svg",
+      route: "/material-requisition",
+      label: "Requisition",
+    },
+    {
+      imgURL: "/icons/requestquotation.svg",
+      route: "/request-quotation",
+      label: "Quotation",
+    },
   ];
 
   const operationsLinks = [
     { imgURL: "/icons/task.svg", route: "/tasks", label: "Tasks" },
     { imgURL: "/icons/issue.svg", route: "/issues", label: "Issues" },
+    { imgURL: "/icons/boq.svg", route: "/boq", label: "BOQ" },
+    { imgURL: "/icons/budget.svg", route: "/budget", label: "Budget" },
   ];
 
   const humanResourceLinks = [
@@ -47,14 +59,14 @@ const Sidebar = ({ user }: SidebarProps) => {
 
   const independentLinks = [
     {
-      imgURL: "/icons/project.png",
-      route: "/projects",
-      label: "Projects",
-    },
-    {
       imgURL: "/icons/report.svg",
       route: "/report/create",
       label: "Reports",
+    },
+    {
+      imgURL: "/icons/project.png",
+      route: "/projects",
+      label: "Projects",
     },
   ];
 
@@ -73,37 +85,8 @@ const Sidebar = ({ user }: SidebarProps) => {
         </Link>
 
         <Accordion type="single" collapsible>
-          {independentLinks.map((item) => {
-            const isActive =
-              pathname === item.route || pathname.startsWith(`${item.route}/`);
-            return (
-              <Link
-                href={item.route}
-                key={item.label}
-                className={cn("sidebar-link", {
-                  "bg-bank-gradient": isActive,
-                })}
-              >
-                <div className="relative size-6">
-                  <Image
-                    src={item.imgURL}
-                    alt={item.label}
-                    fill
-                    className={cn({ "brightness-[3] invert-0": isActive })}
-                  />
-                </div>
-                <p
-                  className={cn("sidebar-label", {
-                    "!text-white": isActive,
-                  })}
-                >
-                  {item.label}
-                </p>
-              </Link>
-            );
-          })}
           <AccordionItem value="procurement">
-            <AccordionTrigger className="text-black-2">
+            <AccordionTrigger className="text-bankGradient">
               Procurement
             </AccordionTrigger>
             <AccordionContent>
@@ -141,7 +124,7 @@ const Sidebar = ({ user }: SidebarProps) => {
           </AccordionItem>
 
           <AccordionItem value="operations">
-            <AccordionTrigger className="text-black-2">
+            <AccordionTrigger className="text-bankGradient">
               Operations
             </AccordionTrigger>
             <AccordionContent>
@@ -179,7 +162,7 @@ const Sidebar = ({ user }: SidebarProps) => {
           </AccordionItem>
 
           <AccordionItem value="humanResource">
-            <AccordionTrigger className="text-black-2">
+            <AccordionTrigger className="text-bankGradient">
               Human Resource
             </AccordionTrigger>
             <AccordionContent>
@@ -216,6 +199,36 @@ const Sidebar = ({ user }: SidebarProps) => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+
+        {independentLinks.map((item) => {
+          const isActive =
+            pathname === item.route || pathname.startsWith(`${item.route}/`);
+          return (
+            <Link
+              href={item.route}
+              key={item.label}
+              className={cn("sidebar-link", {
+                "bg-bank-gradient": isActive,
+              })}
+            >
+              <div className="relative size-6">
+                <Image
+                  src={item.imgURL}
+                  alt={item.label}
+                  fill
+                  className={cn({ "brightness-[3] invert-0": isActive })}
+                />
+              </div>
+              <p
+                className={cn("sidebar-label", {
+                  "!text-white": isActive,
+                })}
+              >
+                {item.label}
+              </p>
+            </Link>
+          );
+        })}
       </nav>
     </section>
   );
