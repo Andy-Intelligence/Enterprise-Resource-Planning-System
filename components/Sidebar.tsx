@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/accordion";
 
 interface SidebarProps {
-  user: any; // Adjust the type of user as needed
+  user?: any; // Adjust the type of user as needed
 }
 
 const Sidebar = ({ user }: SidebarProps) => {
