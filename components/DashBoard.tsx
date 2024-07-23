@@ -64,14 +64,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      <Head>
-        <title>ERP Dashboard</title>
-      </Head>
-
-      <header className="bg-blue-600 p-4 text-white text-center">
-        ERP Dashboard
-      </header>
-
       <main className="flex flex-grow p-4 space-x-4">
         {/* Left Section: Project Overview and Milestones */}
         <section className="flex-1 space-y-4">
@@ -92,18 +84,6 @@ const Dashboard = () => {
         {/* Center Section: Financial Summary and KPIs */}
         <section className="flex-1 space-y-4">
           <div className="bg-white p-4 shadow-md rounded-md">
-            <h2 className="text-xl font-bold mb-4">Financial Summary</h2>
-            <div className="mb-4">
-              <div className="bg-gray-100 p-2 rounded-md shadow-sm">
-                <p>Total Budget: $1,200,000</p>
-                <p>Total Actual Spend: $1,000,000</p>
-                <p>Revenue: $2,000,000</p>
-                <p>Expenses: $800,000</p>
-              </div>
-            </div>
-            <Pie data={financialData} options={{ responsive: true }} />
-          </div>
-          <div className="bg-white p-4 shadow-md rounded-md">
             <h2 className="text-xl font-bold mb-4">
               Key Performance Indicators (KPIs)
             </h2>
@@ -115,6 +95,18 @@ const Dashboard = () => {
               </div>
             </div>
             <Bar data={kpiData} options={{ responsive: true }} />
+          </div>
+          <div className="bg-white p-4 shadow-md rounded-md">
+            <h2 className="text-xl font-bold mb-4">Financial Summary</h2>
+            <div className="mb-4">
+              <div className="bg-gray-100 p-2 rounded-md shadow-sm">
+                <p>Total Budget: $1,200,000</p>
+                <p>Total Actual Spend: $1,000,000</p>
+                <p>Revenue: $2,000,000</p>
+                <p>Expenses: $800,000</p>
+              </div>
+            </div>
+            <Pie data={financialData} options={{ responsive: true }} />
           </div>
         </section>
 
@@ -144,9 +136,6 @@ const Dashboard = () => {
         </section>
       </main>
 
-      <footer className="bg-gray-800 p-4 text-white text-center">
-        &copy; 2024 Construction Company
-      </footer>
     </div>
   );
 };
