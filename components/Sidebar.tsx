@@ -45,6 +45,19 @@ const Sidebar = ({ user }: SidebarProps) => {
     },
   ];
 
+  const independentLinks = [
+    {
+      imgURL: "/icons/project.png",
+      route: "/projects",
+      label: "Projects",
+    },
+    {
+      imgURL: "/icons/report.svg",
+      route: "/report/create",
+      label: "Reports",
+    },
+  ];
+
   return (
     <section className="sidebar min-w-fit">
       <nav className="flex flex-col gap-4">
@@ -60,8 +73,37 @@ const Sidebar = ({ user }: SidebarProps) => {
         </Link>
 
         <Accordion type="single" collapsible>
+          {independentLinks.map((item) => {
+            const isActive =
+              pathname === item.route || pathname.startsWith(`${item.route}/`);
+            return (
+              <Link
+                href={item.route}
+                key={item.label}
+                className={cn("sidebar-link", {
+                  "bg-bank-gradient": isActive,
+                })}
+              >
+                <div className="relative size-6">
+                  <Image
+                    src={item.imgURL}
+                    alt={item.label}
+                    fill
+                    className={cn({ "brightness-[3] invert-0": isActive })}
+                  />
+                </div>
+                <p
+                  className={cn("sidebar-label", {
+                    "!text-white": isActive,
+                  })}
+                >
+                  {item.label}
+                </p>
+              </Link>
+            );
+          })}
           <AccordionItem value="procurement">
-            <AccordionTrigger className="text-bankGradient">
+            <AccordionTrigger className="text-black-2">
               Procurement
             </AccordionTrigger>
             <AccordionContent>
@@ -99,7 +141,7 @@ const Sidebar = ({ user }: SidebarProps) => {
           </AccordionItem>
 
           <AccordionItem value="operations">
-            <AccordionTrigger className="text-bankGradient">
+            <AccordionTrigger className="text-black-2">
               Operations
             </AccordionTrigger>
             <AccordionContent>
@@ -136,8 +178,8 @@ const Sidebar = ({ user }: SidebarProps) => {
             </AccordionContent>
           </AccordionItem>
 
-          <AccordionItem className="w-full" value="humanResource">
-            <AccordionTrigger className="text-bankGradient">
+          <AccordionItem value="humanResource">
+            <AccordionTrigger className="text-black-2">
               Human Resource
             </AccordionTrigger>
             <AccordionContent>
