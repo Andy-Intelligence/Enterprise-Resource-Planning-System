@@ -1,6 +1,10 @@
-// "use client";
-// import React, { useState } from "react";
-// import ReactQuill from "react-quill";
+
+
+// import React, { useState, useEffect } from "react";
+// import dynamic from "next/dynamic"; // Import dynamic from next/dynamic
+
+// const ReactQuill = dynamic(() => import("react-quill"), { ssr: false }); // Use dynamic import for ReactQuill and disable SSR
+
 // import "react-quill/dist/quill.snow.css";
 // import hljs from "highlight.js";
 // import "highlight.js/styles/github.css";
@@ -51,13 +55,15 @@
 //     setEditorHtml(html);
 //   };
 
+//   useEffect(() => {
+//     // This code runs only on the client-side
+//     // You can add any client-side specific logic here
+//   }, []); // Empty dependency array ensures this effect runs only once after the initial render
+
 //   return (
-//     <div className="h-fit ">
+//     <div className="h-fit">
 //       <ReactQuill
-//         //   style={{height:"4rem"}}
 //         theme="snow"
-//         // value={editorHtml}
-//         // onChange={handleEditorChange}
 //         value={value}
 //         onChange={setValue}
 //         modules={modules}
@@ -69,6 +75,7 @@
 // };
 
 // export default CreateTaskDescription;
+
 
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic"; // Import dynamic from next/dynamic
@@ -98,10 +105,16 @@ const modules = {
   },
 };
 
-const CreateTaskDescription = () => {
-  const [editorHtml, setEditorHtml] = useState("");
-  const [value, setValue] = useState("");
+// Define the interface for the props
+interface CreateTaskDescriptionProps {
+  value: string;
+  onChange: (value: string) => void;
+}
 
+const CreateTaskDescription: React.FC<CreateTaskDescriptionProps> = ({
+  value,
+  onChange,
+}) => {
   const formats = [
     "header",
     "bold",
@@ -121,10 +134,6 @@ const CreateTaskDescription = () => {
     "video",
   ];
 
-  const handleEditorChange = (html: any) => {
-    setEditorHtml(html);
-  };
-
   useEffect(() => {
     // This code runs only on the client-side
     // You can add any client-side specific logic here
@@ -135,7 +144,7 @@ const CreateTaskDescription = () => {
       <ReactQuill
         theme="snow"
         value={value}
-        onChange={setValue}
+        onChange={onChange}
         modules={modules}
         formats={formats}
         className="min-h-10"
@@ -145,3 +154,4 @@ const CreateTaskDescription = () => {
 };
 
 export default CreateTaskDescription;
+
