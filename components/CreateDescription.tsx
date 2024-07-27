@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic"; // Import dynamic from next/dynamic
 
@@ -28,12 +27,12 @@ const modules = {
 };
 
 // Define the interface for the props
-interface CreateTaskDescriptionProps {
+interface CreateDescriptionProps {
   value: string;
   onChange: (value: string) => void;
 }
 
-const CreateTaskDescription: React.FC<CreateTaskDescriptionProps> = ({
+const CreateDescription: React.FC<CreateDescriptionProps> = ({
   value,
   onChange,
 }) => {
@@ -75,5 +74,4 @@ const CreateTaskDescription: React.FC<CreateTaskDescriptionProps> = ({
   );
 };
 
-export default CreateTaskDescription;
-
+export default CreateDescription;
