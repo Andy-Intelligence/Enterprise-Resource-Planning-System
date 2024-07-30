@@ -47,6 +47,7 @@ const Sidebar = ({ user }: SidebarProps) => {
     { imgURL: "/icons/issue.svg", route: "/issues", label: "Issues" },
     { imgURL: "/icons/boq.svg", route: "/boq", label: "BOQ" },
     { imgURL: "/icons/budget.svg", route: "/budget", label: "Budget" },
+    { imgURL: "/icons/site.svg", route: "/sites", label: "Site" },
   ];
 
   const humanResourceLinks = [

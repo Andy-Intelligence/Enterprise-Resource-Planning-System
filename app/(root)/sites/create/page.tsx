@@ -1,10 +1,8 @@
-
-
-
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import CreateTaskDescription from "@/components/CreateTaskDescription";
+import CreateDescription from "@/components/CreateDescription";
 
 const stageOptions = [
   "Planning and Design",
@@ -24,48 +22,67 @@ const stageOptions = [
   "Final Inspections and Punch List",
   "Project Handover and Occupancy",
 ];
+interface SiteFormData {
+  inspectionOfficer: string;
+  project: string;
+  startDate: string;
+  deadline: string;
+  address: string;
+  stage: string;
+  note: string;
+  images: File[];
+}
 
-const NewTaskForm: React.FC = () => {
+const NewSiteForm: React.FC = () => {
   const router = useRouter();
-  const [task, setTask] = useState({
-    title: "",
+  const [site, setSite] = useState<SiteFormData>({
+    inspectionOfficer: "",
     project: "",
-    hoursPlanned: "",
-    assignedTo: "",
+    startDate: "",
+    deadline: "",
+    address: "",
     stage: "",
-    description: "",
-    deadline: "", // New field for deadline
+    note: "",
+    images: [],
   });
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setTask({ ...task, [name]: value });
+    setSite({ ...site, [name]: value });
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSite({
+        ...site,
+        images: [...site.images, ...Array.from(e.target.files)],
+      });
+    }
   };
 
   const handleSave = () => {
-    // Handle save logic here
-    console.log("Task saved:", task);
-    // Redirect or reset the form as needed
+    console.log("Site saved:", site);
+    // Add save logic here
   };
 
   const handleDiscard = () => {
-    // Handle discard logic here
-    setTask({
-      title: "",
+    setSite({
+      inspectionOfficer: "",
       project: "",
-      hoursPlanned: "",
-      assignedTo: "",
+      startDate: "",
+      deadline: "",
+      address: "",
       stage: "",
-      description: "",
-      deadline: "", // Reset deadline field
+      note: "",
+      images: [],
     });
   };
 
   return (
     <div className="container mx-auto p-4">
-      <div className="text-3xl font-bold mb-4">Tasks / New</div>
+      <div className="text-3xl font-bold mb-4">Site / New</div>
       <div className="mb-4">
         <button
           className="px-4 py-2 mr-2 bg-blue-500 text-white rounded-md"
@@ -82,21 +99,26 @@ const NewTaskForm: React.FC = () => {
       </div>
       <form>
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Task Title</label>
-          <input
-            type="text"
-            name="title"
-            value={task.title}
+          <label className="block text-sm font-semibold mb-2">
+            Inspection Officer
+          </label>
+          <select
+            name="inspectionOfficer"
+            value={site.inspectionOfficer}
             onChange={handleInputChange}
             className="border rounded-md px-4 py-2 w-full"
-            placeholder="Task Title"
-          />
+          >
+            <option value="">Select Inspection Officer</option>
+            <option value="officer1">Officer 1</option>
+            <option value="officer2">Officer 2</option>
+            <option value="officer3">Officer 3</option>
+          </select>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2">Project</label>
           <select
             name="project"
-            value={task.project}
+            value={site.project}
             onChange={handleInputChange}
             className="border rounded-md px-4 py-2 w-full"
           >
@@ -107,39 +129,43 @@ const NewTaskForm: React.FC = () => {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">
-            Hours Planned
-          </label>
+          <label className="block text-sm font-semibold mb-2">Start Date</label>
           <input
-            type="number"
-            name="hoursPlanned"
-            value={task.hoursPlanned}
+            type="date"
+            name="startDate"
+            value={site.startDate}
             onChange={handleInputChange}
             className="border rounded-md px-4 py-2 w-full"
-            placeholder="Hours Planned"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold mb-2">Deadline</label>
+          <input
+            type="date"
+            name="deadline"
+            value={site.deadline}
+            onChange={handleInputChange}
+            className="border rounded-md px-4 py-2 w-full"
           />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2">
-            Assigned To
+            Site Address
           </label>
-          <select
-            name="assignedTo"
-            value={task.assignedTo}
+          <input
+            type="text"
+            name="address"
+            value={site.address}
             onChange={handleInputChange}
             className="border rounded-md px-4 py-2 w-full"
-          >
-            <option value="">Select User</option>
-            <option value="user1">User 1</option>
-            <option value="user2">User 2</option>
-            <option value="user3">User 3</option>
-          </select>
+            placeholder="Site Address"
+          />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Stage</label>
+          <label className="block text-sm font-semibold mb-2">Site Stage</label>
           <select
             name="stage"
-            value={task.stage}
+            value={site.stage}
             onChange={handleInputChange}
             className="border rounded-md px-4 py-2 w-full"
           >
@@ -152,24 +178,21 @@ const NewTaskForm: React.FC = () => {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Deadline</label>
-          <input
-            type="date"
-            name="deadline"
-            value={task.deadline}
-            onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
+          <label className="block text-sm font-semibold mb-2">Note</label>
+          <CreateDescription
+            value={site.note}
+            onChange={(value: string) => setSite({ ...site, note: value })}
           />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2">
-            Description
+            Site Images
           </label>
-          <CreateTaskDescription
-            value={task.description}
-            onChange={(value: string) =>
-              setTask({ ...task, description: value })
-            }
+          <input
+            type="file"
+            multiple
+            onChange={handleImageUpload}
+            className="border rounded-md px-4 py-2 w-full"
           />
         </div>
       </form>
@@ -177,4 +200,4 @@ const NewTaskForm: React.FC = () => {
   );
 };
 
-export default NewTaskForm;
+export default NewSiteForm;
