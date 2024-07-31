@@ -57,6 +57,18 @@ const Sidebar = ({ user }: SidebarProps) => {
       label: "Contractors",
     },
   ];
+  const settingLinks = [
+    {
+      imgURL: "/icons/profile.svg",
+      route: "/profile",
+      label: "Profile",
+    },
+    {
+      imgURL: "/icons/employee.svg",
+      route: "/employee",
+      label: "Employee",
+    },
+  ];
 
   const independentLinks = [
     {
@@ -168,6 +180,43 @@ const Sidebar = ({ user }: SidebarProps) => {
             </AccordionTrigger>
             <AccordionContent>
               {humanResourceLinks.map((item) => {
+                const isActive =
+                  pathname === item.route ||
+                  pathname.startsWith(`${item.route}/`);
+                return (
+                  <Link
+                    href={item.route}
+                    key={item.label}
+                    className={cn("sidebar-link pl-8", {
+                      "bg-bank-gradient": isActive,
+                    })}
+                  >
+                    <div className="relative size-6">
+                      <Image
+                        src={item.imgURL}
+                        alt={item.label}
+                        fill
+                        className={cn({ "brightness-[3] invert-0": isActive })}
+                      />
+                    </div>
+                    <p
+                      className={cn("sidebar-label", {
+                        "!text-white": isActive,
+                      })}
+                    >
+                      {item.label}
+                    </p>
+                  </Link>
+                );
+              })}
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="settingLink">
+            <AccordionTrigger className="text-bankGradient">
+              Setting {" "}
+            </AccordionTrigger>
+            <AccordionContent>
+              {settingLinks.map((item) => {
                 const isActive =
                   pathname === item.route ||
                   pathname.startsWith(`${item.route}/`);
