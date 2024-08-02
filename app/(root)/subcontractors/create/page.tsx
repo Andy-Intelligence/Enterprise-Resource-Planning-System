@@ -68,7 +68,7 @@ const SubContractorForm: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="text-3xl font-bold mb-4">Sub Contractor Profile</div>
+      <div className="text-3xl font-bold mb-4">Create Subcontractor</div>
       <form>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2">Logo</label>

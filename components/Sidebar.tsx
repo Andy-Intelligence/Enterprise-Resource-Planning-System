@@ -54,7 +54,7 @@ const Sidebar = ({ user }: SidebarProps) => {
     {
       imgURL: "/icons/contractor.svg",
       route: "/subcontractors",
-      label: "Sub-Contractors",
+      label: "Subcontractors",
     },
   ];
   const settingLinks = [

@@ -8,7 +8,7 @@ const SubContractorsComponent = () => {
   const router = useRouter();
   return (
     <div className="container mx-auto p-4">
-      <div className="text-3xl font-bold mb-4">Sub-Contractors</div>
+      <div className="text-3xl font-bold mb-4">Subcontractors</div>
       <div className="flex justify-end mb-4">
         <input
           type="text"
