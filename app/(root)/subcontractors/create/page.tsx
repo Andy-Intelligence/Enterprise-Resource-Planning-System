@@ -2,38 +2,38 @@
 import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 
-interface CompanyProfileData {
+interface SubContractorData {
   logo: File | null;
-  companyName: string;
+  subContractorName: string;
   specialization: string;
   contactAddress: string;
-  website: string;
   email: string;
   phoneNumber: string;
   country: string;
   state: string;
   city: string;
   zipCode: string;
+  projectContract: string;
 }
 
-const CompanyProfileForm: React.FC = () => {
+const SubContractorForm: React.FC = () => {
   const router = useRouter();
-  const [profile, setProfile] = useState<CompanyProfileData>({
+  const [profile, setProfile] = useState<SubContractorData>({
     logo: null,
-    companyName: "",
+    subContractorName: "",
     specialization: "",
     contactAddress: "",
-    website: "",
     email: "",
     phoneNumber: "",
     country: "",
     state: "",
     city: "",
     zipCode: "",
+    projectContract: "",
   });
 
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setProfile({ ...profile, [name]: value });
@@ -46,29 +46,29 @@ const CompanyProfileForm: React.FC = () => {
   };
 
   const handleSave = () => {
-    console.log("Company Profile saved:", profile);
+    console.log("Sub Contractor Profile saved:", profile);
     // Add save logic here
   };
 
   const handleDiscard = () => {
     setProfile({
       logo: null,
-      companyName: "",
+      subContractorName: "",
       specialization: "",
       contactAddress: "",
-      website: "",
       email: "",
       phoneNumber: "",
       country: "",
       state: "",
       city: "",
       zipCode: "",
+      projectContract: "",
     });
   };
 
   return (
     <div className="container mx-auto p-4">
-      <div className="text-3xl font-bold mb-4">Company Profile</div>
+      <div className="text-3xl font-bold mb-4">Sub Contractor Profile</div>
       <form>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2">Logo</label>
@@ -81,15 +81,15 @@ const CompanyProfileForm: React.FC = () => {
         </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2">
-            Company Name
+            Sub Contractor Name
           </label>
           <input
             type="text"
-            name="companyName"
-            value={profile.companyName}
+            name="subContractorName"
+            value={profile.subContractorName}
             onChange={handleInputChange}
             className="border rounded-md px-4 py-2 w-full"
-            placeholder="Company Name"
+            placeholder="Sub Contractor Name"
           />
         </div>
         <div className="mb-4">
@@ -102,7 +102,7 @@ const CompanyProfileForm: React.FC = () => {
             value={profile.specialization}
             onChange={handleInputChange}
             className="border rounded-md px-4 py-2 w-full"
-            placeholder="Company Specialization"
+            placeholder="Sub Contractor Specialization"
           />
         </div>
         <div className="mb-4">
@@ -119,17 +119,6 @@ const CompanyProfileForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Website</label>
-          <input
-            type="url"
-            name="website"
-            value={profile.website}
-            onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-            placeholder="Company Website"
-          />
-        </div>
-        <div className="mb-4">
           <label className="block text-sm font-semibold mb-2">Email</label>
           <input
             type="email"
@@ -137,7 +126,7 @@ const CompanyProfileForm: React.FC = () => {
             value={profile.email}
             onChange={handleInputChange}
             className="border rounded-md px-4 py-2 w-full"
-            placeholder="Company Email"
+            placeholder="Sub Contractor Email"
           />
         </div>
         <div className="mb-4">
@@ -150,7 +139,7 @@ const CompanyProfileForm: React.FC = () => {
             value={profile.phoneNumber}
             onChange={handleInputChange}
             className="border rounded-md px-4 py-2 w-full"
-            placeholder="Company Phone Number"
+            placeholder="Sub Contractor Phone Number"
           />
         </div>
         <div className="mb-4">
@@ -200,6 +189,18 @@ const CompanyProfileForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
+          <label className="block text-sm font-semibold mb-2">
+            Project Contract
+          </label>
+          <textarea
+            name="projectContract"
+            value={profile.projectContract}
+            onChange={handleInputChange}
+            className="border rounded-md px-4 py-2 w-full h-32"
+            placeholder="Explain the project contract here"
+          />
+        </div>
+        <div className="mb-4">
           <button
             type="button"
             className="px-4 py-2 mr-2 bg-blue-500 text-white rounded-md"
@@ -220,4 +221,4 @@ const CompanyProfileForm: React.FC = () => {
   );
 };
 
-export default CompanyProfileForm;
+export default SubContractorForm;

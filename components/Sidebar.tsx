@@ -53,8 +53,8 @@ const Sidebar = ({ user }: SidebarProps) => {
   const humanResourceLinks = [
     {
       imgURL: "/icons/contractor.svg",
-      route: "/contractors",
-      label: "Contractors",
+      route: "/subcontractors",
+      label: "Sub-Contractors",
     },
   ];
   const settingLinks = [
