@@ -56,6 +56,7 @@ const withPWAConfig = pwa({
   disable: process.env.NODE_ENV === "development",
   register: true,
   skipWaiting: true,
+
 });
 
 const withPWA = (nextConfig) => {

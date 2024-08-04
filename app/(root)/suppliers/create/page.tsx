@@ -2,10 +2,18 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FiSave, FiX } from "react-icons/fi";
+
+interface SupplierData {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+}
 
 const CreateSupplier: React.FC = () => {
   const router = useRouter();
-  const [supplier, setSupplier] = useState({
+  const [supplier, setSupplier] = useState<SupplierData>({
     name: "",
     address: "",
     phone: "",
@@ -14,88 +22,108 @@ const CreateSupplier: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setSupplier({ ...supplier, [name]: value });
+    setSupplier((prevSupplier) => ({ ...prevSupplier, [name]: value }));
   };
 
   const handleSave = () => {
-    // Handle save logic here
     console.log("Supplier saved:", supplier);
-    // Redirect or reset the form as needed
+    // Add save logic here
+    router.push("/suppliers");
   };
 
   const handleDiscard = () => {
-    // Handle discard logic here
-    setSupplier({
-      name: "",
-      address: "",
-      phone: "",
-      email: "",
-    });
+    router.push("/suppliers");
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col justify-between items-start mb-4">
-        <div className="text-3xl font-bold mb-4">Create Supplier</div>
-        <div className="flex items-center justify-between space-x-2 w-full">
-          <div className="flex items-center justify-center space-x-2">
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md"
-              onClick={handleSave}
-            >
-              Save
-            </button>
-            <button
-              className="px-4 py-2 bg-gray-500 text-white rounded-md"
-              onClick={handleDiscard}
-            >
-              Discard
-            </button>
-          </div>
+    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          Create Supplier
+        </h1>
+
+        <div className="flex flex-wrap items-center justify-start gap-3 mb-8">
+          <button
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
+            onClick={handleSave}
+          >
+            <FiSave /> Save
+          </button>
+          <button
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2"
+            onClick={handleDiscard}
+          >
+            <FiX /> Discard
+          </button>
         </div>
-      </div>
-      <div className="mb-4">
-        <label className="block mb-2">Supplier Name</label>
-        <input
-          type="text"
-          name="name"
-          value={supplier.name}
-          onChange={handleInputChange}
-          className="w-full px-4 py-2 border rounded-md"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block mb-2">Address</label>
-        <input
-          type="text"
-          name="address"
-          value={supplier.address}
-          onChange={handleInputChange}
-          className="w-full px-4 py-2 border rounded-md"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block mb-2">Phone Number</label>
-        <input
-          type="text"
-          name="phone"
-          value={supplier.phone}
-          onChange={handleInputChange}
-          className="w-full px-4 py-2 border rounded-md"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block mb-2">Email Address</label>
-        <input
-          type="email"
-          name="email"
-          value={supplier.email}
-          onChange={handleInputChange}
-          className="w-full px-4 py-2 border rounded-md"
-        />
+
+        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            label="Supplier Name"
+            name="name"
+            value={supplier.name}
+            onChange={handleInputChange}
+            placeholder="Enter supplier name"
+          />
+          <FormField
+            label="Address"
+            name="address"
+            value={supplier.address}
+            onChange={handleInputChange}
+            placeholder="Enter supplier address"
+          />
+          <FormField
+            label="Phone Number"
+            name="phone"
+            value={supplier.phone}
+            onChange={handleInputChange}
+            placeholder="Enter phone number"
+          />
+          <FormField
+            label="Email Address"
+            name="email"
+            type="email"
+            value={supplier.email}
+            onChange={handleInputChange}
+            placeholder="Enter email address"
+          />
+        </form>
       </div>
     </div>
   );
 };
+
+interface FormFieldProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+  placeholder?: string;
+}
+
+const FormField: React.FC<FormFieldProps> = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+}) => (
+  <div>
+    <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
+      {label}
+    </label>
+    <input
+      type={type}
+      id={name}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+);
 
 export default CreateSupplier;

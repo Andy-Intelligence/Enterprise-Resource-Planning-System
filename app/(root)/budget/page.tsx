@@ -49,7 +49,7 @@ const Budgetpage: React.FC = () => {
       <div className="flex justify-between mb-4">
         <button
           className="px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={() => router.push("/budgets/create")}
+          onClick={() => router.push("/budget/create")}
         >
           Create
         </button>

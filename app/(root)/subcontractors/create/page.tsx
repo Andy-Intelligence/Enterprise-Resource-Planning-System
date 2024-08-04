@@ -1,6 +1,9 @@
 "use client";
+
 import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+import { FiSave, FiX, FiUpload } from "react-icons/fi";
+import CreateDescription from "@/components/CreateDescription";
 
 interface SubContractorData {
   logo: File | null;
@@ -33,7 +36,7 @@ const SubContractorForm: React.FC = () => {
   });
 
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setProfile({ ...profile, [name]: value });
@@ -48,6 +51,7 @@ const SubContractorForm: React.FC = () => {
   const handleSave = () => {
     console.log("Sub Contractor Profile saved:", profile);
     // Add save logic here
+    router.push("/subcontractors");
   };
 
   const handleDiscard = () => {
@@ -64,161 +68,192 @@ const SubContractorForm: React.FC = () => {
       zipCode: "",
       projectContract: "",
     });
+    router.push("/subcontractors");
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="text-3xl font-bold mb-4">Create Subcontractor</div>
-      <form>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Logo</label>
-          <input
-            type="file"
-            onChange={handleLogoUpload}
-            className="border rounded-md px-4 py-2 w-full"
-            accept="image/*"
-          />
+    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          Create Subcontractor
+        </h1>
+
+        <div className="flex flex-wrap items-center justify-start gap-3 mb-8">
+          <button
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
+            onClick={handleSave}
+          >
+            <FiSave /> Save Subcontractor
+          </button>
+          <button
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2"
+            onClick={handleDiscard}
+          >
+            <FiX /> Discard
+          </button>
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">
-            Sub Contractor Name
-          </label>
-          <input
-            type="text"
+
+        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="col-span-2">
+            <label className="block text-gray-700 font-medium mb-2">Logo</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="file"
+                onChange={handleLogoUpload}
+                className="hidden"
+                id="logo-upload"
+                accept="image/*"
+              />
+              <label
+                htmlFor="logo-upload"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2 cursor-pointer"
+              >
+                <FiUpload /> Upload Logo
+              </label>
+              <span className="text-gray-600">
+                {profile.logo ? profile.logo.name : "No file selected"}
+              </span>
+            </div>
+          </div>
+          <FormField
+            label="Sub Contractor Name"
             name="subContractorName"
             value={profile.subContractorName}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-            placeholder="Sub Contractor Name"
+            placeholder="Enter sub contractor name"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">
-            Specialization
-          </label>
-          <input
-            type="text"
+          <FormField
+            label="Specialization"
             name="specialization"
             value={profile.specialization}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-            placeholder="Sub Contractor Specialization"
+            placeholder="Enter specialization"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">
-            Contact Address
-          </label>
-          <input
-            type="text"
+          <FormField
+            label="Contact Address"
             name="contactAddress"
             value={profile.contactAddress}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-            placeholder="Contact Address"
+            placeholder="Enter contact address"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Email</label>
-          <input
-            type="email"
+          <FormField
+            label="Email"
             name="email"
+            type="email"
             value={profile.email}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-            placeholder="Sub Contractor Email"
+            placeholder="Enter email address"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">
-            Phone Number
-          </label>
-          <input
-            type="tel"
+          <FormField
+            label="Phone Number"
             name="phoneNumber"
+            type="tel"
             value={profile.phoneNumber}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-            placeholder="Sub Contractor Phone Number"
+            placeholder="Enter phone number"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Country</label>
-          <select
+          <FormField
+            label="Country"
             name="country"
             value={profile.country}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-          >
-            <option value="">Select Country</option>
-            {/* Add country options here */}
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">State</label>
-          <select
+            options={[
+              { value: "", label: "Select Country" },
+              // Add country options here
+            ]}
+          />
+          <FormField
+            label="State"
             name="state"
             value={profile.state}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-          >
-            <option value="">Select State</option>
-            {/* Add state options here */}
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">City</label>
-          <input
-            type="text"
+            options={[
+              { value: "", label: "Select State" },
+              // Add state options here
+            ]}
+          />
+          <FormField
+            label="City"
             name="city"
             value={profile.city}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-            placeholder="City"
+            placeholder="Enter city"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Zip Code</label>
-          <input
-            type="text"
+          <FormField
+            label="Zip Code"
             name="zipCode"
             value={profile.zipCode}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-            placeholder="Zip Code"
+            placeholder="Enter zip code"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">
-            Project Contract
-          </label>
-          <textarea
-            name="projectContract"
-            value={profile.projectContract}
-            onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full h-32"
-            placeholder="Explain the project contract here"
-          />
-        </div>
-        <div className="mb-4">
-          <button
-            type="button"
-            className="px-4 py-2 mr-2 bg-blue-500 text-white rounded-md"
-            onClick={handleSave}
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            className="px-4 py-2 bg-gray-500 text-white rounded-md"
-            onClick={handleDiscard}
-          >
-            Discard
-          </button>
-        </div>
-      </form>
+          <div className="col-span-2">
+            <label className="block text-gray-700 font-medium mb-2">
+              Project Contract
+            </label>
+            <CreateDescription
+              value={profile.projectContract}
+              onChange={(value: string) =>
+                setProfile({ ...profile, projectContract: value })
+              }
+            />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
+
+interface FormFieldProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  type?: string;
+  placeholder?: string;
+  options?: { value: string; label: string }[];
+}
+
+const FormField: React.FC<FormFieldProps> = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+  options,
+}) => (
+  <div>
+    <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
+      {label}
+    </label>
+    {options ? (
+      <select
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        type={type}
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    )}
+  </div>
+);
 
 export default SubContractorForm;

@@ -1,36 +1,65 @@
 "use client";
 
 import React from "react";
-import { FaShoppingCart } from "react-icons/fa";
-import { FaMoneyBillWave } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaEnvelope,
+  FaShoppingCart,
+  FaMoneyBillWave,
+} from "react-icons/fa";
+import Image from "next/image";
 
 const SubContractorCard: React.FC = () => {
   // Dummy data
   const imageUrl =
     "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_760/https://dutumgroup.com/wp-content/uploads/2024/03/image-4-760x507.png";
-  const name = "Contractor Company";
+  const name = "Subcontractor Company";
   const location = "123 Main St, City, Country";
-  const email = "contact@contractor.com";
-//   const numberOfProjects = 2;
-//   const amount = 50000;
+  const email = "contact@subcontractor.com";
+  const numberOfProjects = 2;
+  const amount = 50000;
 
   return (
-    <div className="border rounded-lg p-4 flex flex-row items-center">
-      <div className="w-1/4">
-        <img src={imageUrl} alt={name} className="w-full h-auto object-cover" />
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+      <div className="relative h-48 w-full">
+        <Image
+          src={imageUrl}
+          alt={name}
+          layout="fill"
+          objectFit="cover"
+          className="transition-opacity duration-300 hover:opacity-90"
+        />
       </div>
-      <div className="w-3/4 pl-4">
-        <div className="text-xl font-semibold mb-2">{name}</div>
-        <div className="text-gray-600 mb-1">{location}</div>
-        <div className="text-gray-600 mb-2">{email}</div>
-        {/* <div className="flex space-x-4">
+      <div className="p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">{name}</h2>
+        <div className="space-y-2 mb-4">
+          <div className="flex items-center text-gray-600">
+            <FaMapMarkerAlt className="mr-2 text-blue-500" />
+            <span>{location}</span>
+          </div>
+          <div className="flex items-center text-gray-600">
+            <FaEnvelope className="mr-2 text-blue-500" />
+            <a
+              href={`mailto:${email}`}
+              className="hover:text-blue-500 transition-colors"
+            >
+              {email}
+            </a>
+          </div>
+        </div>
+        {/* <div className="flex justify-between items-center pt-4 border-t border-gray-200">
           <div className="flex items-center">
-            <FaShoppingCart className="text-gray-600 mr-1" />
-            <span>{numberOfProjects}</span>
+            <FaShoppingCart className="text-green-500 mr-2" />
+            <span className="font-semibold text-gray-700">
+              {numberOfProjects}
+            </span>
+            <span className="ml-1 text-gray-600">Projects</span>
           </div>
           <div className="flex items-center">
-            <FaMoneyBillWave className="text-gray-600 mr-1" />
-            <span>&#8358;{amount}</span>
+            <FaMoneyBillWave className="text-green-500 mr-2" />
+            <span className="font-semibold text-gray-700">
+              &#8358;{amount.toLocaleString()}
+            </span>
           </div>
         </div> */}
       </div>
