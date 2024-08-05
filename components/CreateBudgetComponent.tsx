@@ -1,61 +1,55 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { FiSave, FiX, FiFileText, FiPlus, FiTrash2 } from "react-icons/fi";
 
 interface BudgetRow {
+  id: string;
   budgetaryPosition: string;
-  analyticAccount: string;
   startDate: string;
   endDate: string;
   paidDate: string;
   plannedAmount: number;
   practicalAmount: number;
-  theoreticalAmount: number;
-  achievement: string;
 }
+
+const statusOptions = [
+  { label: "Draft", value: "draft" },
+  { label: "Confirmed", value: "confirmed" },
+];
 
 const CreateBudgetComponent: React.FC = () => {
   const [formStatus, setFormStatus] = useState<string>("draft");
+  const [budgetData, setBudgetData] = useState<BudgetRow[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newRow, setNewRow] = useState<BudgetRow>({
+    id: "",
     budgetaryPosition: "",
-    analyticAccount: "",
     startDate: "",
     endDate: "",
     paidDate: "",
     plannedAmount: 0,
     practicalAmount: 0,
-    theoreticalAmount: 0,
-    achievement: "",
   });
-  const [budgetData, setBudgetData] = useState<BudgetRow[]>([]);
   const [budgetDetails, setBudgetDetails] = useState({
     budget: "",
-    responsible: "",
-    periodStart: "",
-    periodEnd: "",
+    project: "",
   });
 
-  const statusOptions = [
-    { label: "Draft", value: "draft" },
-    { label: "Confirmed", value: "confirmed" },
-  ];
-
-  const handleAddItem = (e: any) => {
-    e.preventDefault();
-    setBudgetData([...budgetData, newRow]);
+  const handleAddItem = () => {
+    setBudgetData([
+      ...budgetData,
+      { ...newRow, id: (budgetData.length + 1).toString() },
+    ]);
+    setIsDialogOpen(false);
     setNewRow({
+      id: "",
       budgetaryPosition: "",
-      analyticAccount: "",
       startDate: "",
       endDate: "",
       paidDate: "",
       plannedAmount: 0,
       practicalAmount: 0,
-      theoreticalAmount: 0,
-      achievement: "",
     });
   };
 
@@ -63,7 +57,7 @@ const CreateBudgetComponent: React.FC = () => {
     setNewRow({ ...newRow, [field]: value });
   };
 
-  const handleBudgetDetailsChange = (field: string, value: string | number) => {
+  const handleBudgetDetailsChange = (field: string, value: string) => {
     setBudgetDetails({ ...budgetDetails, [field]: value });
   };
 
@@ -72,263 +66,263 @@ const CreateBudgetComponent: React.FC = () => {
   };
 
   return (
-    <div className="border rounded-lg p-4 relative">
-      <div className="text-3xl font-bold mb-4">Create Budget</div>
-      <div className="flex gap-2 items-center justify-between mb-4">
-        <div className="flex gap-2 items-center">
-          <Button className="px-4 py-2 bg-blue-500 text-white rounded-md">
-            Edit
-          </Button>
-          <Button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            variant="outline"
-            onClick={handleAddItem}
-          >
-            Create
-          </Button>
-          <Button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-            variant="outline"
-          >
-            Confirm
-          </Button>
-        </div>
-        <div className="flex items-center space-x-2">
-          {statusOptions.map((status) => (
-            <button
-              key={status.value}
-              className={`px-2 py-1 text-xs rounded-full ${
-                formStatus === status.value
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-black"
-              }`}
-              style={{ minWidth: "80px", textAlign: "center" }}
-              onClick={() => setFormStatus(status.value)}
-            >
-              {status.label}
+    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Create Budget</h1>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
+          <div className="flex flex-wrap items-center gap-3">
+            <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2">
+              <FiSave /> Save
             </button>
-          ))}
-        </div>
-      </div>
-
-      <form>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <div className="mb-4">
-              <Label className="font-bold" htmlFor="budget">
-                Budget
-              </Label>
-              <Input
-                id="budget"
-                type="text"
-                value={budgetDetails.budget}
-                onChange={(e) =>
-                  handleBudgetDetailsChange("budget", e.target.value)
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <Label className="font-bold" htmlFor="responsible">
-                Responsible
-              </Label>
-              <Input
-                id="responsible"
-                type="text"
-                value={budgetDetails.responsible}
-                onChange={(e) =>
-                  handleBudgetDetailsChange("responsible", e.target.value)
-                }
-              />
-            </div>
+            <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2">
+              <FiX /> Discard
+            </button>
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2">
+              <FiFileText /> Draft
+            </button>
           </div>
-          <div>
-            <div className="mb-4">
-              <Label className="font-bold" htmlFor="periodStart">
-                Period Start
-              </Label>
-              <Input
-                id="periodStart"
-                type="date"
-                value={budgetDetails.periodStart}
-                onChange={(e) =>
-                  handleBudgetDetailsChange("periodStart", e.target.value)
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <Label className="font-bold" htmlFor="periodEnd">
-                Period End
-              </Label>
-              <Input
-                id="periodEnd"
-                type="date"
-                value={budgetDetails.periodEnd}
-                onChange={(e) =>
-                  handleBudgetDetailsChange("periodEnd", e.target.value)
-                }
-              />
-            </div>
+
+          <div className="flex items-center space-x-2">
+            {statusOptions.map((status) => (
+              <button
+                key={status.value}
+                className={`px-4 py-2 rounded-md transition-colors ${
+                  formStatus === status.value
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+                onClick={() => setFormStatus(status.value)}
+              >
+                {status.label}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="mt-4">
-          <table className="min-w-full bg-white">
-            <thead>
+        <form className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <FormField
+            label="Budget"
+            name="budget"
+            value={budgetDetails.budget}
+            onChange={(e) =>
+              handleBudgetDetailsChange("budget", e.target.value)
+            }
+          />
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              Project
+            </label>
+            <select
+              name="project"
+              value={budgetDetails.project}
+              onChange={(e) =>
+                handleBudgetDetailsChange("project", e.target.value)
+              }
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select Project</option>
+              <option value="project1">Project 1</option>
+              <option value="project2">Project 2</option>
+              <option value="project3">Project 3</option>
+            </select>
+          </div>
+        </form>
+
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Budget Items</h2>
+        <div className="overflow-x-auto mb-4">
+          <table className="min-w-full bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden">
+            <thead className="bg-gray-50">
               <tr>
-                <th className="py-2 px-4 border-b">Budgetary Position</th>
-                <th className="py-2 px-4 border-b">Analytic Account</th>
-                <th className="py-2 px-4 border-b">Start Date</th>
-                <th className="py-2 px-4 border-b">End Date</th>
-                <th className="py-2 px-4 border-b">Paid Date</th>
-                <th className="py-2 px-4 border-b">Planned Amount</th>
-                <th className="py-2 px-4 border-b">Practical Amount</th>
-                <th className="py-2 px-4 border-b">Theoretical Amount</th>
-                <th className="py-2 px-4 border-b">Achievement</th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Budgetary Position
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Start Date
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  End Date
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Paid Date
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Planned Amount
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Practical Amount
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Action
+                </th>
               </tr>
             </thead>
-            <tbody>
-              {budgetData.map((row, index) => (
-                <tr key={index}>
-                  <td className="py-2 px-4 border-b">
-                    {row.budgetaryPosition}
+            <tbody className="divide-y divide-gray-200">
+              {budgetData.map((item, index) => (
+                <tr
+                  key={item.id}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
+                >
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.budgetaryPosition}
                   </td>
-                  <td className="py-2 px-4 border-b">{row.analyticAccount}</td>
-                  <td className="py-2 px-4 border-b">{row.startDate}</td>
-                  <td className="py-2 px-4 border-b">{row.endDate}</td>
-                  <td className="py-2 px-4 border-b">{row.paidDate}</td>
-                  <td className="py-2 px-4 border-b">{row.plannedAmount}</td>
-                  <td className="py-2 px-4 border-b">{row.practicalAmount}</td>
-                  <td className="py-2 px-4 border-b">
-                    {row.theoreticalAmount}
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.startDate}
                   </td>
-                  <td className="py-2 px-4 border-b">{row.achievement}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.endDate}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.paidDate}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    ${item.plannedAmount.toFixed(2)}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    ${item.practicalAmount.toFixed(2)}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    <button
+                      onClick={() =>
+                        setBudgetData(budgetData.filter((_, i) => i !== index))
+                      }
+                      className="text-red-600 hover:text-red-800 transition-colors"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </td>
                 </tr>
               ))}
-              <tr>
-                <td className="py-2 px-4 border-b">
-                  <Input
-                    type="text"
-                    value={newRow.budgetaryPosition}
-                    onChange={(e) =>
-                      handleInputChange("budgetaryPosition", e.target.value)
-                    }
-                  />
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <Input
-                    type="text"
-                    value={newRow.analyticAccount}
-                    onChange={(e) =>
-                      handleInputChange("analyticAccount", e.target.value)
-                    }
-                  />
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <Input
-                    type="date"
-                    value={newRow.startDate}
-                    onChange={(e) =>
-                      handleInputChange("startDate", e.target.value)
-                    }
-                  />
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <Input
-                    type="date"
-                    value={newRow.endDate}
-                    onChange={(e) =>
-                      handleInputChange("endDate", e.target.value)
-                    }
-                  />
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <Input
-                    type="date"
-                    value={newRow.paidDate}
-                    onChange={(e) =>
-                      handleInputChange("paidDate", e.target.value)
-                    }
-                  />
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <Input
-                    type="number"
-                    value={newRow.plannedAmount}
-                    onChange={(e) =>
-                      handleInputChange(
-                        "plannedAmount",
-                        parseFloat(e.target.value)
-                      )
-                    }
-                  />
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <Input
-                    type="number"
-                    value={newRow.practicalAmount}
-                    onChange={(e) =>
-                      handleInputChange(
-                        "practicalAmount",
-                        parseFloat(e.target.value)
-                      )
-                    }
-                  />
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <Input
-                    type="number"
-                    value={newRow.theoreticalAmount}
-                    onChange={(e) =>
-                      handleInputChange(
-                        "theoreticalAmount",
-                        parseFloat(e.target.value)
-                      )
-                    }
-                  />
-                </td>
-                <td className="py-2 px-4 border-b">
-                  <Input
-                    type="text"
-                    value={newRow.achievement}
-                    onChange={(e) =>
-                      handleInputChange("achievement", e.target.value)
-                    }
-                  />
-                </td>
-              </tr>
             </tbody>
             <tfoot>
-              <tr className="bg-gray-200">
-                <td className="py-2 px-4 font-bold border-b">Total</td>
-                <td className="py-2 px-4 border-b"></td>
-                <td className="py-2 px-4 border-b"></td>
-                <td className="py-2 px-4 border-b"></td>
-                <td className="py-2 px-4 border-b"></td>
-                <td className="py-2 px-4 border-b">
-                  {calculateTotal("plannedAmount")}
+              <tr className="bg-gray-100">
+                <td colSpan={4} className="py-3 px-4 font-bold text-right">
+                  Total:
                 </td>
-                <td className="py-2 px-4 border-b">
-                  {calculateTotal("practicalAmount")}
+                <td className="py-3 px-4 font-bold">
+                  ${calculateTotal("plannedAmount").toFixed(2)}
                 </td>
-                <td className="py-2 px-4 border-b">
-                  {calculateTotal("theoreticalAmount")}
+                <td className="py-3 px-4 font-bold">
+                  ${calculateTotal("practicalAmount").toFixed(2)}
                 </td>
-                <td className="py-2 px-4 border-b"></td>
+                <td></td>
               </tr>
             </tfoot>
           </table>
         </div>
-        <div className="mt-4 flex justify-end">
-          <Button
-            onClick={handleAddItem}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
-          >
-            Add Item
-          </Button>
-        </div>
-      </form>
+        <button
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+          onClick={() => setIsDialogOpen(true)}
+        >
+          <FiPlus /> Add Item
+        </button>
+
+        {isDialogOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                Add New Budget Item
+              </h2>
+              <FormField
+                label="Budgetary Position"
+                name="budgetaryPosition"
+                value={newRow.budgetaryPosition}
+                onChange={(e) =>
+                  handleInputChange("budgetaryPosition", e.target.value)
+                }
+              />
+              <FormField
+                label="Start Date"
+                name="startDate"
+                type="date"
+                value={newRow.startDate}
+                onChange={(e) => handleInputChange("startDate", e.target.value)}
+              />
+              <FormField
+                label="End Date"
+                name="endDate"
+                type="date"
+                value={newRow.endDate}
+                onChange={(e) => handleInputChange("endDate", e.target.value)}
+              />
+              <FormField
+                label="Paid Date"
+                name="paidDate"
+                type="date"
+                value={newRow.paidDate}
+                onChange={(e) => handleInputChange("paidDate", e.target.value)}
+              />
+              <FormField
+                label="Planned Amount"
+                name="plannedAmount"
+                type="number"
+                value={newRow.plannedAmount}
+                onChange={(e) =>
+                  handleInputChange("plannedAmount", parseFloat(e.target.value))
+                }
+              />
+              <FormField
+                label="Practical Amount"
+                name="practicalAmount"
+                type="number"
+                value={newRow.practicalAmount}
+                onChange={(e) =>
+                  handleInputChange(
+                    "practicalAmount",
+                    parseFloat(e.target.value)
+                  )
+                }
+              />
+              <div className="flex justify-end mt-6 gap-3">
+                <button
+                  className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+                  onClick={() => setIsDialogOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  onClick={handleAddItem}
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
+
+interface FormFieldProps {
+  label: string;
+  name: string;
+  value?: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+}
+
+const FormField: React.FC<FormFieldProps> = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+}) => (
+  <div>
+    <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
+      {label}
+    </label>
+    <input
+      type={type}
+      id={name}
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+);
 
 export default CreateBudgetComponent;
