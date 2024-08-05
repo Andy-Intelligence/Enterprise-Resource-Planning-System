@@ -1,6 +1,8 @@
 "use client";
+
 import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+import { FiSave, FiX, FiUpload } from "react-icons/fi";
 
 interface EmployeeProfileData {
   passport: File | null;
@@ -48,173 +50,198 @@ const EmployeeProfileForm: React.FC = () => {
   const handleSave = () => {
     console.log("Employee Profile saved:", profile);
     // Add save logic here
+    router.push("/employees");
   };
 
   const handleDiscard = () => {
-    setProfile({
-      passport: null,
-      name: "",
-      position: "",
-      contactAddress: "",
-      department: "",
-      email: "",
-      phoneNumber: "",
-      country: "",
-      state: "",
-      city: "",
-      hireDate: "",
-    });
+    router.push("/employees");
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="text-3xl font-bold mb-4">Employee Profile</div>
-      <form>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Passport</label>
-          <input
-            type="file"
-            onChange={handlePassportUpload}
-            className="border rounded-md px-4 py-2 w-full"
-            accept="image/*"
-          />
+    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          Employee Profile
+        </h1>
+
+        <div className="flex flex-wrap items-center justify-start gap-3 mb-8">
+          <button
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
+            onClick={handleSave}
+          >
+            <FiSave /> Save
+          </button>
+          <button
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2"
+            onClick={handleDiscard}
+          >
+            <FiX /> Discard
+          </button>
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Name</label>
-          <input
-            type="text"
+
+        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="col-span-2">
+            <label className="block text-gray-700 font-medium mb-2">
+              Passport
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                type="file"
+                onChange={handlePassportUpload}
+                className="hidden"
+                id="passport-upload"
+                accept="image/*"
+              />
+              <label
+                htmlFor="passport-upload"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2 cursor-pointer"
+              >
+                <FiUpload /> Upload Passport
+              </label>
+              <span className="text-gray-600">
+                {profile.passport ? profile.passport.name : "No file selected"}
+              </span>
+            </div>
+          </div>
+          <FormField
+            label="Name"
             name="name"
             value={profile.name}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
             placeholder="Employee Full Name"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Position</label>
-          <select
+          <FormField
+            label="Position"
             name="position"
             value={profile.position}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-          >
-            <option value="">Select Position</option>
-            {/* Add position options here */}
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">
-            Contact Address
-          </label>
-          <input
-            type="text"
+            options={[
+              { value: "", label: "Select Position" },
+              // Add position options here
+            ]}
+          />
+          <FormField
+            label="Contact Address"
             name="contactAddress"
             value={profile.contactAddress}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
             placeholder="Contact Address"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Department</label>
-          <select
+          <FormField
+            label="Department"
             name="department"
             value={profile.department}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-          >
-            <option value="">Select Department</option>
-            {/* Add department options here */}
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Email</label>
-          <input
-            type="email"
+            options={[
+              { value: "", label: "Select Department" },
+              // Add department options here
+            ]}
+          />
+          <FormField
+            label="Email"
             name="email"
             value={profile.email}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
+            type="email"
             placeholder="Employee Email"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">
-            Phone Number
-          </label>
-          <input
-            type="tel"
+          <FormField
+            label="Phone Number"
             name="phoneNumber"
             value={profile.phoneNumber}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
+            type="tel"
             placeholder="Employee Phone Number"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Country</label>
-          <select
+          <FormField
+            label="Country"
             name="country"
             value={profile.country}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-          >
-            <option value="">Select Country</option>
-            {/* Add country options here */}
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">State</label>
-          <select
+            options={[
+              { value: "", label: "Select Country" },
+              // Add country options here
+            ]}
+          />
+          <FormField
+            label="State"
             name="state"
             value={profile.state}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
-          >
-            <option value="">Select State</option>
-            {/* Add state options here */}
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">City</label>
-          <input
-            type="text"
+            options={[
+              { value: "", label: "Select State" },
+              // Add state options here
+            ]}
+          />
+          <FormField
+            label="City"
             name="city"
             value={profile.city}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
             placeholder="City"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold mb-2">Hire Date</label>
-          <input
-            type="date"
+          <FormField
+            label="Hire Date"
             name="hireDate"
             value={profile.hireDate}
             onChange={handleInputChange}
-            className="border rounded-md px-4 py-2 w-full"
+            type="date"
           />
-        </div>
-        <div className="mb-4">
-          <button
-            type="button"
-            className="px-4 py-2 mr-2 bg-blue-500 text-white rounded-md"
-            onClick={handleSave}
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            className="px-4 py-2 bg-gray-500 text-white rounded-md"
-            onClick={handleDiscard}
-          >
-            Discard
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };
+
+interface FormFieldProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  type?: string;
+  placeholder?: string;
+  options?: { value: string; label: string }[];
+}
+
+const FormField: React.FC<FormFieldProps> = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+  options,
+}) => (
+  <div>
+    <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
+      {label}
+    </label>
+    {options ? (
+      <select
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        type={type}
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    )}
+  </div>
+);
 
 export default EmployeeProfileForm;
