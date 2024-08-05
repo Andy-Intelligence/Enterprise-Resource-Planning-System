@@ -1,10 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import CostHeadersTable from "@/components/CostHeadersTable";
-import InventorysTable from "@/components/InventorysTable";
-import EmployeesTable from "@/components/EmployeesTable";
+import { FiSearch, FiPlus, FiFilter } from "react-icons/fi";
 
 interface Employee {
   employeeCode: string;
@@ -17,57 +15,161 @@ interface Employee {
 
 const EmployeePage: React.FC = () => {
   const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterType, setFilterType] = useState("");
 
   const employees: Employee[] = [
     {
       employeeCode: "EMP001",
-      image: "string",
+      image: "https://example.com/avatar1.jpg",
       employeeName: "Moge Dami",
       workEmail: "abc@gmail.com",
       department: "Mechanical",
       status: "Active",
     },
     {
-      employeeCode: "EMP001",
-      image: "string",
-      employeeName: "Moge Dami",
-      workEmail: "abc@gmail.com",
+      employeeCode: "EMP002",
+      image: "https://example.com/avatar2.jpg",
+      employeeName: "Jane Doe",
+      workEmail: "jane@gmail.com",
       department: "Electrical",
       status: "Active",
     },
     {
-      employeeCode: "EMP001",
-      image: "string",
-      employeeName: "Moge Dami",
-      workEmail: "abc@gmail.com",
+      employeeCode: "EMP003",
+      image: "https://example.com/avatar3.jpg",
+      employeeName: "John Smith",
+      workEmail: "john@gmail.com",
       department: "Civil",
-      status: "Active",
+      status: "Inactive",
     },
-
-    // Add more cost header entries as needed
+    // Add more employee entries as needed
   ];
 
+  const departmentTypes = ["Mechanical", "Electrical", "Civil"];
+
+  const filteredEmployees = employees.filter(
+    (employee) =>
+      (filterType === "" || employee.department === filterType) &&
+      (searchQuery === "" ||
+        employee.employeeName
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        employee.employeeCode.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="text-3xl font-bold mb-4">Employee</div>
-      <div className="flex justify-end mb-4">
-        <input
-          type="text"
-          placeholder="Search"
-          className="px-4 py-2 border rounded-md"
-        />
-      </div>
-      <div className="flex justify-between mb-4">
+    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">Employees</h1>
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
           onClick={() => router.push("/employee/create")}
         >
-          Create
+          <FiPlus /> Create Employee
         </button>
-        <div className="pagination">Pagination</div>
       </div>
-      <div>
-        <EmployeesTable employees={employees} />
+
+      <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center bg-gray-100 rounded-md px-3 py-2 w-1/2">
+            <FiSearch className="text-gray-400 mr-2" />
+            <input
+              type="text"
+              placeholder="Search employees..."
+              className="bg-transparent w-full focus:outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="flex items-center">
+            <FiFilter className="text-gray-400 mr-2" />
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="bg-gray-100 rounded-md px-3 py-2 focus:outline-none"
+            >
+              <option value="">All Departments</option>
+              {departmentTypes.map((department) => (
+                <option key={department} value={department}>
+                  {department}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="py-3 px-4 text-left">Employee</th>
+                <th className="py-3 px-4 text-left">Employee Code</th>
+                <th className="py-3 px-4 text-left">Work Email</th>
+                <th className="py-3 px-4 text-left">Department</th>
+                <th className="py-3 px-4 text-left">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredEmployees.map((employee) => (
+                <tr
+                  key={employee.employeeCode}
+                  className="cursor-pointer hover:bg-gray-50 transition-colors"
+                  onClick={() =>
+                    router.push(`/employee/${employee.employeeCode}`)
+                  }
+                >
+                  <td className="py-4 px-4 border-b">
+                    <div className="flex items-center">
+                      <img
+                        src={employee.image}
+                        alt={employee.employeeName}
+                        className="w-10 h-10 rounded-full mr-3"
+                      />
+                      <span>{employee.employeeName}</span>
+                    </div>
+                  </td>
+                  <td className="py-4 px-4 border-b">
+                    {employee.employeeCode}
+                  </td>
+                  <td className="py-4 px-4 border-b">{employee.workEmail}</td>
+                  <td className="py-4 px-4 border-b">{employee.department}</td>
+                  <td className="py-4 px-4 border-b">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        employee.status === "Active"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {employee.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center">
+        <p className="text-gray-600">
+          Showing {filteredEmployees.length} of {employees.length} employees
+        </p>
+        <div className="flex gap-2">
+          {[1, 2, 3].map((page) => (
+            <button
+              key={page}
+              className={`px-3 py-1 rounded ${
+                page === 1
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

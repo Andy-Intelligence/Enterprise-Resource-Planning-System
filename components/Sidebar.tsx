@@ -360,6 +360,16 @@ const Sidebar = ({ user }: SidebarProps) => {
           route: "/subcontractors",
           label: "Subcontractors",
         },
+        {
+          imgURL: "/icons/payroll.svg",
+          route: "/payroll",
+          label: "Payroll",
+        },
+        {
+          imgURL: "/icons/appraisal.svg",
+          route: "/appraisal",
+          label: "Appraisal",
+        },
       ],
     },
     {

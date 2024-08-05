@@ -1,9 +1,8 @@
 "use client";
-import React from "react";
+
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import QuotesTable from "@/components/QuotesTable";
-import SalesTable from "@/components/SalesTable";
-import SuppliersTable from "@/components/SuppliersTable";
+import { FiSearch, FiPlus } from "react-icons/fi";
 
 interface Supplier {
   supplierId: string;
@@ -13,58 +12,124 @@ interface Supplier {
   email: string;
 }
 
-const Supplierpage: React.FC = () => {
+const SupplierPage: React.FC = () => {
   const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const suppliers: Supplier[] = [
     {
-  supplierId: "SUP0001",
-  supplierName: "Delwire",
-  address: "Jumbo Street",
-  phoneNumber: "1234566",
-  email: "delwire@gmail.com",
+      supplierId: "SUP0001",
+      supplierName: "Delwire",
+      address: "Jumbo Street",
+      phoneNumber: "1234566",
+      email: "delwire@gmail.com",
     },
     {
-  supplierId: "SUP0001",
-  supplierName: "Delwire",
-  address: "Jumbo Street",
-  phoneNumber: "1234566",
-  email: "delwire@gmail.com",
+      supplierId: "SUP0002",
+      supplierName: "TechSupply Co.",
+      address: "123 Tech Avenue",
+      phoneNumber: "9876543",
+      email: "techsupply@example.com",
     },
     {
-  supplierId: "SUP0001",
-  supplierName: "Delwire",
-  address: "Jumbo Street",
-  phoneNumber: "1234566",
-  email: "delwire@gmail.com",
+      supplierId: "SUP0003",
+      supplierName: "Global Parts Inc.",
+      address: "456 Industrial Park",
+      phoneNumber: "5551234",
+      email: "info@globalparts.com",
     },
-    // Add more materials as needed
+    // Add more suppliers as needed
   ];
 
+  const filteredSuppliers = suppliers.filter(
+    (supplier) =>
+      searchQuery === "" ||
+      supplier.supplierId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      supplier.supplierName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      supplier.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="text-3xl font-bold mb-4">Sales</div>
-      <div className="flex justify-end mb-4">
-        <input
-          type="text"
-          placeholder="Search"
-          className="px-4 py-2 border rounded-md"
-        />
-      </div>
-      <div className="flex justify-between mb-4">
+    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">Suppliers</h1>
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
           onClick={() => router.push("/suppliers/create")}
         >
-          Create
+          <FiPlus /> Create Supplier
         </button>
-        <div className="pagination">Pagination</div>
       </div>
-      <div>
-        <SuppliersTable suppliers={suppliers} />
+
+      <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center bg-gray-100 rounded-md px-3 py-2 w-1/2">
+            <FiSearch className="text-gray-400 mr-2" />
+            <input
+              type="text"
+              placeholder="Search suppliers..."
+              className="bg-transparent w-full focus:outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="py-3 px-4 text-left">Supplier ID</th>
+                <th className="py-3 px-4 text-left">Supplier Name</th>
+                <th className="py-3 px-4 text-left">Address</th>
+                <th className="py-3 px-4 text-left">Phone Number</th>
+                <th className="py-3 px-4 text-left">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredSuppliers.map((supplier) => (
+                <tr
+                  key={supplier.supplierId}
+                  className="hover:bg-gray-50 transition-colors cursor-pointer"
+                  onClick={() =>
+                    router.push(`/suppliers/${supplier.supplierId}`)
+                  }
+                >
+                  <td className="py-4 px-4 border-b">{supplier.supplierId}</td>
+                  <td className="py-4 px-4 border-b">
+                    {supplier.supplierName}
+                  </td>
+                  <td className="py-4 px-4 border-b">{supplier.address}</td>
+                  <td className="py-4 px-4 border-b">{supplier.phoneNumber}</td>
+                  <td className="py-4 px-4 border-b">{supplier.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center">
+        <p className="text-gray-600">
+          Showing {filteredSuppliers.length} of {suppliers.length} suppliers
+        </p>
+        <div className="flex gap-2">
+          {[1, 2, 3].map((page) => (
+            <button
+              key={page}
+              className={`px-3 py-1 rounded ${
+                page === 1
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-export default Supplierpage;
+export default SupplierPage;
