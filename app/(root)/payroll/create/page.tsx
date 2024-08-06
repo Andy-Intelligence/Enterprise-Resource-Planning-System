@@ -1,10 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
+import {
+  FiSave,
+  FiX,
+  FiDollarSign,
+  FiCalendar,
+  FiUser,
+  FiBriefcase,
+  FiPercent,
+} from "react-icons/fi";
 
 interface Employee {
   id: string;
@@ -18,6 +24,7 @@ const employees: Employee[] = [
 ];
 
 const CreatePayrollForm: React.FC = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     employeeName: "",
     employeeId: "",
@@ -48,240 +55,273 @@ const CreatePayrollForm: React.FC = () => {
     });
   };
 
-  const handleSave = (e: any) => {
+  const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Saved Data: ", formData);
     // Add save logic here
+    router.push("/payroll");
   };
 
   const handleDiscard = () => {
-    setFormData({
-      employeeName: "",
-      employeeId: "",
-      designation: "",
-      payStartDate: "",
-      payEndDate: "",
-      grossSalary: 0,
-      netSalary: 0,
-      annualGrossSalary: 0,
-      allowance: 0,
-      appraisalScore: 0,
-      deductions: 0,
-      annualDeductions: 0,
-      annualNetSalary: 0,
-      payDate: "",
-    });
+    router.push("/payroll");
   };
 
   return (
-    <div className="border rounded-lg p-4 relative">
-      <div className="text-3xl font-bold mb-4">New Payroll</div>
-      <div className="flex gap-2 items-center justify-between mb-4">
-        <Button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={handleSave}
-        >
-          Save
-        </Button>
-        <Button
-          className="px-4 py-2 bg-red-500 text-white rounded-md"
-          onClick={handleDiscard}
-        >
-          Discard
-        </Button>
-      </div>
-
-      <form>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="mb-4">
-            <Label htmlFor="employeeName" className="font-bold">
-              Employee Name
-            </Label>
-            <select
-              id="employeeName"
-              className="border rounded-md px-2 py-1"
-              value={formData.employeeName}
-              onChange={(e) => handleEmployeeChange(e.target.value)}
+    <div className="bg-gray-100 min-h-screen">
+      <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white shadow-2xl rounded-lg overflow-hidden">
+          <div className="bg-blue-600 text-white py-6 px-8 flex justify-between items-center">
+            <h1 className="text-3xl font-bold">New Payroll</h1>
+          </div>
+          <div className="p-8">
+            <form onSubmit={handleSave} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  label="Employee Name"
+                  name="employeeName"
+                  value={formData.employeeName}
+                  onChange={(e) => handleEmployeeChange(e.target.value)}
+                  options={[
+                    { value: "", label: "Select Employee" },
+                    ...employees.map((emp) => ({
+                      value: emp.name,
+                      label: emp.name,
+                    })),
+                  ]}
+                  icon={<FiUser className="text-gray-400" />}
+                />
+                <FormField
+                  label="Employee ID"
+                  name="employeeId"
+                  value={formData.employeeId}
+                  onChange={() => {}}
+                  readOnly
+                  icon={<FiUser className="text-gray-400" />}
+                />
+                <FormField
+                  label="Designation"
+                  name="designation"
+                  value={formData.designation}
+                  onChange={(e) =>
+                    handleInputChange("designation", e.target.value)
+                  }
+                  icon={<FiBriefcase className="text-gray-400" />}
+                />
+                <FormField
+                  label="Pay Start Date"
+                  name="payStartDate"
+                  type="date"
+                  value={formData.payStartDate}
+                  onChange={(e) =>
+                    handleInputChange("payStartDate", e.target.value)
+                  }
+                  icon={<FiCalendar className="text-gray-400" />}
+                />
+                <FormField
+                  label="Pay End Date"
+                  name="payEndDate"
+                  type="date"
+                  value={formData.payEndDate}
+                  onChange={(e) =>
+                    handleInputChange("payEndDate", e.target.value)
+                  }
+                  icon={<FiCalendar className="text-gray-400" />}
+                />
+                <FormField
+                  label="Gross Salary"
+                  name="grossSalary"
+                  type="number"
+                  value={formData.grossSalary}
+                  onChange={(e) =>
+                    handleInputChange("grossSalary", parseFloat(e.target.value))
+                  }
+                  icon={<FiDollarSign className="text-gray-400" />}
+                />
+                <FormField
+                  label="Net Salary"
+                  name="netSalary"
+                  type="number"
+                  value={formData.netSalary}
+                  onChange={(e) =>
+                    handleInputChange("netSalary", parseFloat(e.target.value))
+                  }
+                  icon={<FiDollarSign className="text-gray-400" />}
+                />
+                <FormField
+                  label="Annual Gross Salary"
+                  name="annualGrossSalary"
+                  type="number"
+                  value={formData.annualGrossSalary}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "annualGrossSalary",
+                      parseFloat(e.target.value)
+                    )
+                  }
+                  icon={<FiDollarSign className="text-gray-400" />}
+                />
+                <FormField
+                  label="Allowance"
+                  name="allowance"
+                  type="number"
+                  value={formData.allowance}
+                  onChange={(e) =>
+                    handleInputChange("allowance", parseFloat(e.target.value))
+                  }
+                  icon={<FiDollarSign className="text-gray-400" />}
+                />
+                <FormField
+                  label="Appraisal Score"
+                  name="appraisalScore"
+                  type="number"
+                  value={formData.appraisalScore}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "appraisalScore",
+                      parseFloat(e.target.value)
+                    )
+                  }
+                  icon={<FiPercent className="text-gray-400" />}
+                />
+                <FormField
+                  label="Deductions"
+                  name="deductions"
+                  type="number"
+                  value={formData.deductions}
+                  onChange={(e) =>
+                    handleInputChange("deductions", parseFloat(e.target.value))
+                  }
+                  icon={<FiDollarSign className="text-gray-400" />}
+                />
+                <FormField
+                  label="Annual Deductions"
+                  name="annualDeductions"
+                  type="number"
+                  value={formData.annualDeductions}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "annualDeductions",
+                      parseFloat(e.target.value)
+                    )
+                  }
+                  icon={<FiDollarSign className="text-gray-400" />}
+                />
+                <FormField
+                  label="Annual Net Salary"
+                  name="annualNetSalary"
+                  type="number"
+                  value={formData.annualNetSalary}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "annualNetSalary",
+                      parseFloat(e.target.value)
+                    )
+                  }
+                  icon={<FiDollarSign className="text-gray-400" />}
+                />
+                <FormField
+                  label="Pay Date"
+                  name="payDate"
+                  type="date"
+                  value={formData.payDate}
+                  onChange={(e) => handleInputChange("payDate", e.target.value)}
+                  icon={<FiCalendar className="text-gray-400" />}
+                />
+              </div>
+            </form>
+          </div>
+          <div className="bg-gray-50 px-8 py-6 flex justify-end space-x-4">
+            <button
+              className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors flex items-center"
+              onClick={handleDiscard}
             >
-              <option value="">Select Employee</option>
-              {employees.map((emp) => (
-                <option key={emp.id} value={emp.name}>
-                  {emp.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="employeeId" className="font-bold">
-              Employee ID
-            </Label>
-            <Input
-              id="employeeId"
-              type="text"
-              value={formData.employeeId}
-              readOnly
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="designation" className="font-bold">
-              Designation
-            </Label>
-            <textarea
-              id="designation"
-              className="border rounded-md px-2 py-1 w-full"
-              value={formData.designation}
-              onChange={(e) => handleInputChange("designation", e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="payStartDate" className="font-bold">
-              Pay Start Date
-            </Label>
-            <Input
-              id="payStartDate"
-              type="date"
-              value={formData.payStartDate}
-              onChange={(e) =>
-                handleInputChange("payStartDate", e.target.value)
-              }
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="payEndDate" className="font-bold">
-              Pay End Date
-            </Label>
-            <Input
-              id="payEndDate"
-              type="date"
-              value={formData.payEndDate}
-              onChange={(e) => handleInputChange("payEndDate", e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="grossSalary" className="font-bold">
-              Gross Salary
-            </Label>
-            <Input
-              id="grossSalary"
-              type="number"
-              value={formData.grossSalary}
-              onChange={(e) =>
-                handleInputChange("grossSalary", parseFloat(e.target.value))
-              }
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="netSalary" className="font-bold">
-              Net Salary
-            </Label>
-            <Input
-              id="netSalary"
-              type="number"
-              value={formData.netSalary}
-              onChange={(e) =>
-                handleInputChange("netSalary", parseFloat(e.target.value))
-              }
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="annualGrossSalary" className="font-bold">
-              Annual Gross Salary
-            </Label>
-            <Input
-              id="annualGrossSalary"
-              type="number"
-              value={formData.annualGrossSalary}
-              onChange={(e) =>
-                handleInputChange(
-                  "annualGrossSalary",
-                  parseFloat(e.target.value)
-                )
-              }
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="allowance" className="font-bold">
-              Allowance
-            </Label>
-            <Input
-              id="allowance"
-              type="number"
-              value={formData.allowance}
-              onChange={(e) =>
-                handleInputChange("allowance", parseFloat(e.target.value))
-              }
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="appraisalScore" className="font-bold">
-              Appraisal Score
-            </Label>
-            <Input
-              id="appraisalScore"
-              type="number"
-              value={formData.appraisalScore}
-              onChange={(e) =>
-                handleInputChange("appraisalScore", parseFloat(e.target.value))
-              }
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="deductions" className="font-bold">
-              Deductions
-            </Label>
-            <Input
-              id="deductions"
-              type="number"
-              value={formData.deductions}
-              onChange={(e) =>
-                handleInputChange("deductions", parseFloat(e.target.value))
-              }
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="annualDeductions" className="font-bold">
-              Annual Deductions
-            </Label>
-            <Input
-              id="annualDeductions"
-              type="number"
-              value={formData.annualDeductions}
-              onChange={(e) =>
-                handleInputChange(
-                  "annualDeductions",
-                  parseFloat(e.target.value)
-                )
-              }
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="annualNetSalary" className="font-bold">
-              Annual Net Salary
-            </Label>
-            <Input
-              id="annualNetSalary"
-              type="number"
-              value={formData.annualNetSalary}
-              onChange={(e) =>
-                handleInputChange("annualNetSalary", parseFloat(e.target.value))
-              }
-            />
-          </div>
-          <div className="mb-4">
-            <Label htmlFor="payDate" className="font-bold">
-              Pay Date
-            </Label>
-            <Input
-              id="payDate"
-              type="date"
-              value={formData.payDate}
-              onChange={(e) => handleInputChange("payDate", e.target.value)}
-            />
+              <FiX className="mr-2" /> Discard
+            </button>
+            <button
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
+              onClick={handleSave}
+            >
+              <FiSave className="mr-2" /> Save
+            </button>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
+
+interface FormFieldProps {
+  label: string;
+  name: string;
+  value: string | number;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  type?: string;
+  placeholder?: string;
+  options?: { value: string; label: string }[];
+  icon?: React.ReactNode;
+  readOnly?: boolean;
+}
+
+const FormField: React.FC<FormFieldProps> = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+  options,
+  icon,
+  readOnly = false,
+}) => (
+  <div>
+    <label
+      htmlFor={name}
+      className="block text-sm font-medium text-gray-700 mb-1"
+    >
+      {label}
+    </label>
+    <div className="relative">
+      {icon && (
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          {icon}
+        </div>
+      )}
+      {options ? (
+        <select
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className={`w-full ${
+            icon ? "pl-10" : "pl-3"
+          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          type={type}
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          readOnly={readOnly}
+          className={`w-full ${
+            icon ? "pl-10" : "pl-3"
+          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+            readOnly ? "bg-gray-100" : ""
+          }`}
+        />
+      )}
+    </div>
+  </div>
+);
 
 export default CreatePayrollForm;

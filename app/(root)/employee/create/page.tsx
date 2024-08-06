@@ -2,7 +2,7 @@
 
 import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
-import { FiSave, FiX, FiUpload } from "react-icons/fi";
+import { FiSave, FiX, FiUpload, FiUser } from "react-icons/fi";
 
 interface EmployeeProfileData {
   passport: File | null;
@@ -58,136 +58,149 @@ const EmployeeProfileForm: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          Employee Profile
-        </h1>
-
-        <div className="flex flex-wrap items-center justify-start gap-3 mb-8">
-          <button
-            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
-            onClick={handleSave}
-          >
-            <FiSave /> Save
-          </button>
-          <button
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2"
-            onClick={handleDiscard}
-          >
-            <FiX /> Discard
-          </button>
-        </div>
-
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="col-span-2">
-            <label className="block text-gray-700 font-medium mb-2">
-              Passport
-            </label>
-            <div className="flex items-center gap-2">
-              <input
-                type="file"
-                onChange={handlePassportUpload}
-                className="hidden"
-                id="passport-upload"
-                accept="image/*"
-              />
-              <label
-                htmlFor="passport-upload"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2 cursor-pointer"
-              >
-                <FiUpload /> Upload Passport
-              </label>
-              <span className="text-gray-600">
-                {profile.passport ? profile.passport.name : "No file selected"}
-              </span>
-            </div>
+    <div className="bg-gray-100 min-h-screen">
+      <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white shadow-xl rounded-lg overflow-hidden">
+          <div className="bg-blue-600 text-white py-6 px-8">
+            <h1 className="text-3xl font-bold">Employee Profile</h1>
           </div>
-          <FormField
-            label="Name"
-            name="name"
-            value={profile.name}
-            onChange={handleInputChange}
-            placeholder="Employee Full Name"
-          />
-          <FormField
-            label="Position"
-            name="position"
-            value={profile.position}
-            onChange={handleInputChange}
-            options={[
-              { value: "", label: "Select Position" },
-              // Add position options here
-            ]}
-          />
-          <FormField
-            label="Contact Address"
-            name="contactAddress"
-            value={profile.contactAddress}
-            onChange={handleInputChange}
-            placeholder="Contact Address"
-          />
-          <FormField
-            label="Department"
-            name="department"
-            value={profile.department}
-            onChange={handleInputChange}
-            options={[
-              { value: "", label: "Select Department" },
-              // Add department options here
-            ]}
-          />
-          <FormField
-            label="Email"
-            name="email"
-            value={profile.email}
-            onChange={handleInputChange}
-            type="email"
-            placeholder="Employee Email"
-          />
-          <FormField
-            label="Phone Number"
-            name="phoneNumber"
-            value={profile.phoneNumber}
-            onChange={handleInputChange}
-            type="tel"
-            placeholder="Employee Phone Number"
-          />
-          <FormField
-            label="Country"
-            name="country"
-            value={profile.country}
-            onChange={handleInputChange}
-            options={[
-              { value: "", label: "Select Country" },
-              // Add country options here
-            ]}
-          />
-          <FormField
-            label="State"
-            name="state"
-            value={profile.state}
-            onChange={handleInputChange}
-            options={[
-              { value: "", label: "Select State" },
-              // Add state options here
-            ]}
-          />
-          <FormField
-            label="City"
-            name="city"
-            value={profile.city}
-            onChange={handleInputChange}
-            placeholder="City"
-          />
-          <FormField
-            label="Hire Date"
-            name="hireDate"
-            value={profile.hireDate}
-            onChange={handleInputChange}
-            type="date"
-          />
-        </form>
+          <div className="p-8">
+            <form className="space-y-8">
+              <div className="flex flex-col sm:flex-row gap-8">
+                <div className="w-full sm:w-1/3">
+                  <div className="bg-gray-100 rounded-lg p-6 text-center">
+                    {profile.passport ? (
+                      <img
+                        src={URL.createObjectURL(profile.passport)}
+                        alt="Passport"
+                        className="w-48 h-48 object-cover mx-auto rounded-full"
+                      />
+                    ) : (
+                      <div className="w-48 h-48 bg-gray-300 mx-auto rounded-full flex items-center justify-center">
+                        <FiUser className="text-gray-500 text-6xl" />
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      onChange={handlePassportUpload}
+                      className="hidden"
+                      id="passport-upload"
+                      accept="image/*"
+                    />
+                    <label
+                      htmlFor="passport-upload"
+                      className="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
+                    >
+                      <FiUpload className="mr-2" /> Upload Passport
+                    </label>
+                  </div>
+                </div>
+                <div className="w-full sm:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormField
+                    label="Name"
+                    name="name"
+                    value={profile.name}
+                    onChange={handleInputChange}
+                    placeholder="Employee Full Name"
+                  />
+                  <FormField
+                    label="Position"
+                    name="position"
+                    value={profile.position}
+                    onChange={handleInputChange}
+                    options={[
+                      { value: "", label: "Select Position" },
+                      // Add position options here
+                    ]}
+                  />
+                  <FormField
+                    label="Department"
+                    name="department"
+                    value={profile.department}
+                    onChange={handleInputChange}
+                    options={[
+                      { value: "", label: "Select Department" },
+                      // Add department options here
+                    ]}
+                  />
+                  <FormField
+                    label="Email"
+                    name="email"
+                    value={profile.email}
+                    onChange={handleInputChange}
+                    type="email"
+                    placeholder="Employee Email"
+                  />
+                  <FormField
+                    label="Phone Number"
+                    name="phoneNumber"
+                    value={profile.phoneNumber}
+                    onChange={handleInputChange}
+                    type="tel"
+                    placeholder="Employee Phone Number"
+                  />
+                  <FormField
+                    label="Hire Date"
+                    name="hireDate"
+                    value={profile.hireDate}
+                    onChange={handleInputChange}
+                    type="date"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <FormField
+                  label="Contact Address"
+                  name="contactAddress"
+                  value={profile.contactAddress}
+                  onChange={handleInputChange}
+                  placeholder="Contact Address"
+                />
+                <FormField
+                  label="Country"
+                  name="country"
+                  value={profile.country}
+                  onChange={handleInputChange}
+                  options={[
+                    { value: "", label: "Select Country" },
+                    // Add country options here
+                  ]}
+                />
+                <FormField
+                  label="State"
+                  name="state"
+                  value={profile.state}
+                  onChange={handleInputChange}
+                  options={[
+                    { value: "", label: "Select State" },
+                    // Add state options here
+                  ]}
+                />
+                <FormField
+                  label="City"
+                  name="city"
+                  value={profile.city}
+                  onChange={handleInputChange}
+                  placeholder="City"
+                />
+              </div>
+            </form>
+          </div>
+          <div className="bg-gray-50 px-8 py-6 flex justify-end space-x-4">
+            <button
+              className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors flex items-center"
+              onClick={handleDiscard}
+            >
+              <FiX className="mr-2" /> Discard
+            </button>
+            <button
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
+              onClick={handleSave}
+            >
+              <FiSave className="mr-2" /> Save
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -213,7 +226,10 @@ const FormField: React.FC<FormFieldProps> = ({
   options,
 }) => (
   <div>
-    <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
+    <label
+      htmlFor={name}
+      className="block text-sm font-medium text-gray-700 mb-1"
+    >
       {label}
     </label>
     {options ? (
@@ -222,7 +238,7 @@ const FormField: React.FC<FormFieldProps> = ({
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -238,10 +254,30 @@ const FormField: React.FC<FormFieldProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
       />
     )}
   </div>
 );
 
 export default EmployeeProfileForm;
+
+
+
+
+
+
+            // <div className="flex space-x-4">
+            //   <button
+            //     className="px-4 py-2 bg-white text-indigo-600 rounded-md hover:bg-indigo-100 transition-colors flex items-center"
+            //     onClick={handleDiscard}
+            //   >
+            //     <FiX className="mr-2" /> Discard
+            //   </button>
+            //   <button
+            //     className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center"
+            //     onClick={handleSave}
+            //   >
+            //     <FiSave className="mr-2" /> Save
+            //   </button>
+            // </div>;
