@@ -2,7 +2,12 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FiSearch, FiPlus } from "react-icons/fi";
+import {
+  FiSearch,
+  FiPlus,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 
 interface RequestQuotation {
   id: number;
@@ -75,9 +80,9 @@ const RequestQuotationPage: React.FC = () => {
         </button>
       </div>
 
-      <div className="bg-white shadow-md rounded-lg p-6 mb-8">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center bg-gray-100 rounded-md px-3 py-2 w-1/2">
+      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        <div className="p-4 border-b border-gray-200">
+          <div className="flex items-center bg-gray-100 rounded-md px-3 py-2">
             <FiSearch className="text-gray-400 mr-2" />
             <input
               type="text"
@@ -90,56 +95,78 @@ const RequestQuotationPage: React.FC = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white">
-            <thead className="bg-gray-100">
+          <table className="w-full">
+            <thead className="bg-gray-50">
               <tr>
-                <th className="py-3 px-4 text-left border-b">
-                  <input type="checkbox" />
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <input type="checkbox" className="rounded text-blue-600" />
                 </th>
-                <th className="py-3 px-4 text-left border-b">S/N</th>
-                <th className="py-3 px-4 text-left border-b">Reference</th>
-                <th className="py-3 px-4 text-left border-b">Order Date</th>
-                <th className="py-3 px-4 text-left border-b">Vendor</th>
-                <th className="py-3 px-4 text-left border-b">Scheduled Date</th>
-                <th className="py-3 px-4 text-left border-b">
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  S/N
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Reference
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Order Date
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Vendor
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Scheduled Date
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Source Document
                 </th>
-                <th className="py-3 px-4 text-left border-b">Untaxed</th>
-                <th className="py-3 px-4 text-left border-b">Total</th>
-                <th className="py-3 px-4 text-left border-b">Status</th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Untaxed
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Total
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-gray-200">
               {filteredQuotations.map((quotation, index) => (
                 <tr
                   key={quotation.id}
-                  className="hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="hover:bg-gray-50 cursor-pointer"
                   onClick={() =>
                     router.push(`/request-quotation/${quotation.id}`)
                   }
                 >
-                  <td className="py-4 px-4 border-b">
-                    <input type="checkbox" />
+                  <td className="py-4 px-4 whitespace-nowrap">
+                    <input type="checkbox" className="rounded text-blue-600" />
                   </td>
-                  <td className="py-4 px-4 border-b">{index + 1}</td>
-                  <td className="py-4 px-4 border-b">{quotation.reference}</td>
-                  <td className="py-4 px-4 border-b">{quotation.orderDate}</td>
-                  <td className="py-4 px-4 border-b">{quotation.vendor}</td>
-                  <td className="py-4 px-4 border-b">
+                  <td className="py-4 px-4 whitespace-nowrap">{index + 1}</td>
+                  <td className="py-4 px-4 whitespace-nowrap">
+                    {quotation.reference}
+                  </td>
+                  <td className="py-4 px-4 whitespace-nowrap">
+                    {quotation.orderDate}
+                  </td>
+                  <td className="py-4 px-4 whitespace-nowrap">
+                    {quotation.vendor}
+                  </td>
+                  <td className="py-4 px-4 whitespace-nowrap">
                     {quotation.scheduledDate}
                   </td>
-                  <td className="py-4 px-4 border-b">
+                  <td className="py-4 px-4 whitespace-nowrap">
                     {quotation.sourceDocument}
                   </td>
-                  <td className="py-4 px-4 border-b">
+                  <td className="py-4 px-4 whitespace-nowrap">
                     {quotation.untaxed.toFixed(2)}
                   </td>
-                  <td className="py-4 px-4 border-b">
+                  <td className="py-4 px-4 whitespace-nowrap">
                     {quotation.total.toFixed(2)}
                   </td>
-                  <td className="py-4 px-4 border-b">
+                  <td className="py-4 px-4 whitespace-nowrap">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs ${
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         quotation.status === "RFQ"
                           ? "bg-blue-100 text-blue-800"
                           : "bg-gray-100 text-gray-800"
@@ -152,44 +179,50 @@ const RequestQuotationPage: React.FC = () => {
               ))}
             </tbody>
             <tfoot>
-              <tr>
-                <td
-                  colSpan={7}
-                  className="py-4 px-4 border-t text-right font-bold"
-                >
+              <tr className="bg-gray-50">
+                <td colSpan={7} className="py-4 px-4 text-right font-bold">
                   Total
                 </td>
-                <td className="py-4 px-4 border-t">
+                <td className="py-4 px-4 font-bold">
                   {totalUntaxed.toFixed(2)}
                 </td>
-                <td className="py-4 px-4 border-t">
+                <td className="py-4 px-4 font-bold">
                   {totalOverall.toFixed(2)}
                 </td>
-                <td className="py-4 px-4 border-t"></td>
+                <td className="py-4 px-4"></td>
               </tr>
             </tfoot>
           </table>
         </div>
       </div>
 
-      <div className="flex justify-between items-center">
-        <p className="text-gray-600">
-          Showing {filteredQuotations.length} of {quotationData.length}{" "}
-          quotations
-        </p>
-        <div className="flex gap-2">
-          {[1, 2, 3].map((page) => (
-            <button
-              key={page}
-              className={`px-3 py-1 rounded ${
-                page === 1
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-            >
-              {page}
+      <div className="mt-4 flex items-center justify-between">
+        <div className="text-sm text-gray-700">
+          Showing{" "}
+          <span className="font-medium">{filteredQuotations.length}</span> of{" "}
+          <span className="font-medium">{quotationData.length}</span> quotations
+        </div>
+        <div className="flex-1 flex justify-end">
+          <nav
+            className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+            aria-label="Pagination"
+          >
+            <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <FiChevronLeft className="h-5 w-5" />
             </button>
-          ))}
+            <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              1
+            </button>
+            <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              2
+            </button>
+            <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              3
+            </button>
+            <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              <FiChevronRight className="h-5 w-5" />
+            </button>
+          </nav>
         </div>
       </div>
     </div>
