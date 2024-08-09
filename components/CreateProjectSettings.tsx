@@ -146,21 +146,7 @@ const CreateProjectSettings = () => {
       </div>
       <div>
         <div className="grid grid-cols-2 gap-8">
-          {/* Configuration Section */}
-          {/* <div className="col-span-1">
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold mb-2 text-bankGradient">
-                Configuration
-              </h2>
-              <div className="flex items-center gap-2">
-                <label className="block text-sm font-semibold ">Sequence</label>
-                <input
-                  type="text"
-                  className="border rounded-md px-4 py-2 mt-1"
-                />
-              </div>
-            </div>
-          </div> */}
+  
 
           {/* Time Scheduling Section */}
           <div className="col-span-1">

@@ -10,11 +10,11 @@ interface Employee {
   employeeName: string;
   designation: string;
   department: string;
-  netSalary: number;
   appraisalScore: number;
+  appraisalDate: string;
 }
 
-const PayrollPage: React.FC = () => {
+const AppraisalPage: React.FC = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("");
@@ -26,8 +26,8 @@ const PayrollPage: React.FC = () => {
       employeeName: "Moge Dami",
       designation: "cleaning",
       department: "Mechanical",
-      netSalary: 100,
       appraisalScore: 30,
+      appraisalDate: "17/30/2023",
     },
     {
       employeeCode: "EMP001",
@@ -35,8 +35,8 @@ const PayrollPage: React.FC = () => {
       employeeName: "Moge Dami",
       designation: "cleaning",
       department: "Mechanical",
-      netSalary: 100,
-      appraisalScore: 50,
+      appraisalScore: 30,
+      appraisalDate: "17/30/2023",
     },
     {
       employeeCode: "EMP001",
@@ -44,9 +44,10 @@ const PayrollPage: React.FC = () => {
       employeeName: "Moge Dami",
       designation: "cleaning",
       department: "Mechanical",
-      netSalary: 100,
-      appraisalScore: 100,
+      appraisalScore: 30,
+      appraisalDate: "17/30/2023",
     },
+    
 
     // Add more employee entries as needed
   ];
@@ -113,7 +114,7 @@ const PayrollPage: React.FC = () => {
                 <th className="py-3 px-4 text-left">Designation</th>
                 <th className="py-3 px-4 text-left">Department</th>
                 <th className="py-3 px-4 text-left">Appraisal Score</th>
-                <th className="py-3 px-4 text-left">Net Salary</th>
+                <th className="py-3 px-4 text-left">Appraisal Date</th>
               </tr>
             </thead>
             <tbody>
@@ -151,7 +152,7 @@ const PayrollPage: React.FC = () => {
                       {employee.appraisalScore}
                     </span>
                   </td>
-                  <td className="py-4 px-4 border-b">{employee.netSalary}</td>
+                  <td className="py-4 px-4 border-b">{employee.appraisalDate}</td>
                 </tr>
               ))}
             </tbody>
@@ -182,4 +183,4 @@ const PayrollPage: React.FC = () => {
   );
 };
 
-export default PayrollPage;
+export default AppraisalPage;
