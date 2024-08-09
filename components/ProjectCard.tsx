@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import Image from "next/image";
 
-const ContractorCard: React.FC = () => {
+const ContractorCard: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   // Dummy data
   const imageUrl =
     "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_760/https://dutumgroup.com/wp-content/uploads/2024/03/image-4-760x507.png";
@@ -20,7 +20,10 @@ const ContractorCard: React.FC = () => {
   const amount = 50000;
 
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+    <div
+      onClick={onClick}
+      className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105"
+    >
       <div className="relative h-48 w-full">
         <Image
           src={imageUrl}
