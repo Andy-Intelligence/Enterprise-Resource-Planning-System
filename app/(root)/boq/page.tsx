@@ -1,212 +1,342 @@
 "use client";
+
 import React, { useState } from "react";
-import { IoDocumentsSharp } from "react-icons/io5";
-import { FaTasks } from "react-icons/fa";
-import { AiOutlineIssuesClose } from "react-icons/ai";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { IoIosRadioButtonOn } from "react-icons/io";
-import { FaPlus } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { FiSave, FiX, FiFileText, FiPlus, FiTrash2 } from "react-icons/fi";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+interface BOQItem {
+  id: string;
+  key: string;
+  employee: string;
+  type: string;
+  description: string;
+  unitOfMeasure: string;
+  quantity: number;
+  rate: number;
+  total: number;
+}
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+const statusOptions = [
+  { label: "Draft", value: "draft" },
+  { label: "Confirmed", value: "confirmed" },
+];
 
-import Link from "next/link";
-import CreateEditCustomer from "@/components/CreateEditCustomer";
-import CreateEditTimeSchedule from "@/components/CreateEditTimeSchedule";
-import CreateProjectSettings from "@/components/CreateProjectSettings";
-import CreateProjectRelatedSalesOrder from "@/components/CreateProjectRelatedSalesOrder";
-import CreateProjectRelatedPurchaseOrder from "@/components/CreateProjectRelatedPurchaseOrder";
-import CreateProjectInventoryUsage from "@/components/CreateProjectInventoryUsage";
-import CreateProjectDeliverables from "@/components/CreateProjectDeliverables";
-import CreateProjectWorkPackage from "@/components/CreateProjectWorkPackage";
-import CreateTaskDescription from "@/components/CreateTaskDescription";
-import CreateTaskTimeSheet from "@/components/CreateTaskTimeSheet";
-import CreateBOQmaterials from "@/components/CreateBOQmaterials";
+const BillOfQuantity: React.FC = () => {
+  const [formStatus, setFormStatus] = useState<string>("draft");
+  const [boqItems, setBoqItems] = useState<BOQItem[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newItem, setNewItem] = useState<BOQItem>({
+    id: "",
+    key: "",
+    employee: "",
+    type: "",
+    description: "",
+    unitOfMeasure: "",
+    quantity: 0,
+    rate: 0,
+    total: 0,
+  });
+  const [projectDetails, setProjectDetails] = useState({
+    project: "",
+    subcontractCost: 0,
+    equipmentCost: 0,
+    materialCost: 0,
+    labourCost: 0,
+  });
 
-const BillOfQuantity = () => {
-  const router = useRouter();
-  const [showModal, setShowModal] = useState(false);
-  const [showTimeScheduleModal, setShowTimeScheduleModal] = useState(false);
-
-  const handleManagerModal = (event: any) => {
-    setShowModal(!showModal);
+  const handleAddItem = () => {
+    const total = newItem.quantity * newItem.rate;
+    setBoqItems([
+      ...boqItems,
+      { ...newItem, id: (boqItems.length + 1).toString(), total },
+    ]);
+    setIsDialogOpen(false);
+    setNewItem({
+      id: "",
+      key: "",
+      employee: "",
+      type: "",
+      description: "",
+      unitOfMeasure: "",
+      quantity: 0,
+      rate: 0,
+      total: 0,
+    });
   };
-  return (
-    <div className="border rounded-lg p-4">
-      <div className="text-3xl font-bold mb-4">Bill of Quantity / New</div>
-      <div className="mb-4">
-        <button className="px-4 py-2 mr-2 bg-blue-500 text-white rounded-md">
-          Save
-        </button>
-        <button className="px-4 py-2 bg-gray-500 text-white rounded-md">
-          Discard
-        </button>
-      </div>
-      <form>
-        <div className="flex justify-between mb-4">
-          {/* Left Section */}
-          <div className="w-full md:w-1/2 p-4 border-r">
-            <div className="flex items-center mb-4 gap-1">
-              <label htmlFor="project" className="block text-sm font-semibold">
-                Project
-              </label>
-              <select id="project" className="border rounded-md px-2 py-1">
-                <option value="project1">Project 1</option>
-                <option value="project2">Project 2</option>
-                <option value="project3">Project 3</option>
-              </select>
-            </div>
-            <div className="mb-4 flex items-center">
-              <label
-                htmlFor="subcontractCost"
-                className="block text-sm font-semibold"
-              >
-                Subcontract Cost:
-              </label>
-              <div>
-                <span className="ml-1">0.00</span>
-              </div>
-            </div>
-            <div className="mb-4 flex items-center">
-              <label
-                htmlFor="equipmentCost"
-                className="block text-sm font-semibold"
-              >
-                Equipment Cost:
-              </label>
-              <div>
-                <span className="ml-1">0.00</span>
-              </div>
-            </div>
 
-            <div className="flex items-center mb-4 gap-1">
-              <label
-                htmlFor="estimatedCost"
-                className="block text-sm font-semibold"
-              >
-                Estimated Cost
-              </label>
-              <input
-                type="number"
-                id="estimatedCost"
-                className="border rounded-md px-2 py-1 "
-              />
-            </div>
-            <div className="mb-4 flex items-center">
-              <label htmlFor="revision" className="block text-sm font-semibold">
-                Revision:
-              </label>
-              <div>
-                <span className="ml-1">0</span>
-              </div>
-            </div>
+  const handleInputChange = (field: string, value: string | number) => {
+    setNewItem({ ...newItem, [field]: value });
+  };
+
+  const handleProjectDetailsChange = (field: string, value: string | number) => {
+    setProjectDetails({ ...projectDetails, [field]: value });
+  };
+
+  const calculateTotal = () => {
+    return boqItems.reduce((sum, item) => sum + item.total, 0);
+  };
+
+  const calculateEstimatedCost = () => {
+    const { subcontractCost, equipmentCost, materialCost, labourCost } = projectDetails;
+    return subcontractCost + equipmentCost + materialCost + labourCost;
+  };
+
+  return (
+    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Bill of Quantity</h1>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
+          <div className="flex flex-wrap items-center gap-3">
+            <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2">
+              <FiSave /> Save
+            </button>
+            <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2">
+              <FiX /> Discard
+            </button>
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2">
+              <FiFileText /> Draft
+            </button>
           </div>
 
-          {/* Right Section */}
-          <div className="w-full md:w-1/2 p-4">
-            <div className="mb-4 flex items-center">
-              <label
-                htmlFor="materialCost"
-                className="block text-sm font-semibold"
+          <div className="flex items-center space-x-2">
+            {statusOptions.map((status) => (
+              <button
+                key={status.value}
+                className={`px-4 py-2 rounded-md transition-colors ${
+                  formStatus === status.value
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+                onClick={() => setFormStatus(status.value)}
               >
-                Material Cost:
-              </label>
-              <div>
-                <span className="ml-1">0.00</span>
-              </div>
-            </div>
-            <div className="mb-4 flex items-center">
-              <label
-                htmlFor="labourCost"
-                className="block text-sm font-semibold"
-              >
-                Labour Cost:
-              </label>
-              <div>
-                <span className="ml-1">0.00</span>
-              </div>
-            </div>
-            <div className="mb-4 flex items-center">
-              <label
-                htmlFor="workPackageCost"
-                className="block text-sm font-semibold"
-              >
-                Work Package Cost:
-              </label>
-              <div>
-                <span className="ml-1">0.00</span>
-              </div>
-            </div>
-
-            <div className="flex items-center mb-4 gap-1">
-              <label
-                htmlFor="markupCost"
-                className="block text-sm font-semibold"
-              >
-                Mark Up Cost (in %)
-              </label>
-              <input
-                type="number"
-                id="estimatedCost"
-                className="border rounded-md px-2 py-1 "
-              />
-            </div>
+                {status.label}
+              </button>
+            ))}
           </div>
         </div>
 
-        <Tabs defaultValue="materials" className="w-full h-fit">
-          <TabsList className="flex items-center justify-start w-full">
-            <TabsTrigger
-              className="data-[state=active]:bg-bank-gradient data-[state=active]:text-white text-black"
-              value="materials"
-            >
-              Materials
-            </TabsTrigger>
-           
-          </TabsList>
-          <TabsContent value="materials">
-            <CreateBOQmaterials/>
-          </TabsContent>
-        
-        </Tabs>
-      </form>
+        <form className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <FormField
+            label="Project"
+            name="project"
+            value={projectDetails.project}
+            onChange={(e) => handleProjectDetailsChange("project", e.target.value)}
+          />
+          <FormField
+            label="Subcontract Cost"
+            name="subcontractCost"
+            type="number"
+            value={projectDetails.subcontractCost}
+            onChange={(e) => handleProjectDetailsChange("subcontractCost", parseFloat(e.target.value))}
+          />
+          <FormField
+            label="Equipment Cost"
+            name="equipmentCost"
+            type="number"
+            value={projectDetails.equipmentCost}
+            onChange={(e) => handleProjectDetailsChange("equipmentCost", parseFloat(e.target.value))}
+          />
+          <FormField
+            label="Material Cost"
+            name="materialCost"
+            type="number"
+            value={projectDetails.materialCost}
+            onChange={(e) => handleProjectDetailsChange("materialCost", parseFloat(e.target.value))}
+          />
+          <FormField
+            label="Labour Cost"
+            name="labourCost"
+            type="number"
+            value={projectDetails.labourCost}
+            onChange={(e) => handleProjectDetailsChange("labourCost", parseFloat(e.target.value))}
+          />
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">Estimated Cost</label>
+            <div className="text-2xl font-bold text-blue-600">
+              ${calculateEstimatedCost().toLocaleString()}
+            </div>
+          </div>
+        </form>
+
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Bill of Quantity Items</h2>
+        <div className="overflow-x-auto mb-4">
+          <table className="min-w-full bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Key
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Employee Type
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                   Type
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Description
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Unit of Measure
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Quantity
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Rate
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Total
+                </th>
+                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {boqItems.map((item, index) => (
+                <tr
+                  key={item.id}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
+                >
+                  <td className="py-4 px-4 text-sm text-gray-900">{item.key}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">{item.employee}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">{item.type}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">{item.description}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">{item.unitOfMeasure}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">{item.quantity}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">${item.rate.toFixed(2)}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">${item.total.toFixed(2)}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    <button
+                      onClick={() => setBoqItems(boqItems.filter((_, i) => i !== index))}
+                      className="text-red-600 hover:text-red-800 transition-colors"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="bg-gray-100">
+                <td colSpan={6} className="py-3 px-4 font-bold text-right">
+                  Total:
+                </td>
+                <td className="py-3 px-4 font-bold">
+                  ${calculateTotal().toFixed(2)}
+                </td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <button
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+          onClick={() => setIsDialogOpen(true)}
+        >
+          <FiPlus /> Add Item
+        </button>
+
+        {isDialogOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                Add New BOQ Item
+              </h2>
+              <FormField
+                label="Key"
+                name="key"
+                value={newItem.key}
+                onChange={(e) => handleInputChange("key", e.target.value)}
+              />
+              <FormField
+                label="Employee"
+                name="employee"
+                value={newItem.employee}
+                onChange={(e) => handleInputChange("employee", e.target.value)}
+              />
+              <FormField
+                label="Type"
+                name="type"
+                value={newItem.type}
+                onChange={(e) => handleInputChange("type", e.target.value)}
+              />
+              <FormField
+                label="Description"
+                name="description"
+                value={newItem.description}
+                onChange={(e) => handleInputChange("description", e.target.value)}
+              />
+              <FormField
+                label="Unit of Measure"
+                name="unitOfMeasure"
+                value={newItem.unitOfMeasure}
+                onChange={(e) => handleInputChange("unitOfMeasure", e.target.value)}
+              />
+              <FormField
+                label="Quantity"
+                name="quantity"
+                type="number"
+                value={newItem.quantity}
+                onChange={(e) => handleInputChange("quantity", parseFloat(e.target.value))}
+              />
+              <FormField
+                label="Rate"
+                name="rate"
+                type="number"
+                value={newItem.rate}
+                onChange={(e) => handleInputChange("rate", parseFloat(e.target.value))}
+              />
+              <div className="flex justify-end mt-6 gap-3">
+                <button
+                  className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+                  onClick={() => setIsDialogOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  onClick={handleAddItem}
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
+
+interface FormFieldProps {
+  label: string;
+  name: string;
+  value?: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+}
+
+const FormField: React.FC<FormFieldProps> = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+}) => (
+  <div>
+    <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
+      {label}
+    </label>
+    <input
+      type={type}
+      id={name}
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+);
 
 export default BillOfQuantity;
