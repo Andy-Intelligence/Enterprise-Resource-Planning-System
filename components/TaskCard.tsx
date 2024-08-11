@@ -2,10 +2,24 @@
 import React from "react";
 import { FaStar, FaRegClock, FaRegFolder } from "react-icons/fa";
 import { HiOutlineStatusOnline } from "react-icons/hi";
+import { useRouter } from "next/navigation";
 
-const TaskCard = () => {
+interface TaskCardProps {
+  taskId: number;
+  title: string;
+}
+
+const TaskCard: React.FC<TaskCardProps> = ({ taskId, title }) => {
+    const router = useRouter();
+
+    const handleCardClick = () => {
+      router.push(`/tasks/${taskId}`);
+    };
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col">
+    <div
+      onClick={handleCardClick}
+      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col"
+    >
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-xl font-semibold text-gray-800 leading-tight">
           Task Title
