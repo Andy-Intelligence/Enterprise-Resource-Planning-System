@@ -95,10 +95,10 @@ const SitesComponent = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          {sites.map((site, index) => (
-            // <SiteCard key={index} />
+          {sites.map((site) => (
             <SiteCard
-            key={site.id}
+              key={site.id}
+              id={site.id} // Pass the id to the SiteCard component
               title={site.title}
               imageUrl={site.imageUrl}
               address={site.address}

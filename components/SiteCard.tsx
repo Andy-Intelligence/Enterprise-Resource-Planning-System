@@ -45,10 +45,33 @@
 import React from "react";
 import Image from "next/image";
 import { FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
-const SiteCard = ({ title, imageUrl, address, deadline }:any) => {
+interface SiteCardProps {
+  id: number;
+  title: string;
+  imageUrl: string;
+  address: string;
+  deadline: string;
+}
+
+const SiteCard: React.FC<SiteCardProps> = ({
+  id,
+  title,
+  imageUrl,
+  address,
+  deadline,
+}) => {
+   const router = useRouter();
+
+   const handleClick = () => {
+     router.push(`/sites/${id}`); // Route to the specific site's page
+   };
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
+    <div
+      onClick={handleClick}
+       className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg"
+    >
       <div className="relative w-full h-48">
         <Image
           src={imageUrl}

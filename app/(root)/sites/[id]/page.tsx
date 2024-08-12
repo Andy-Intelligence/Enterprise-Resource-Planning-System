@@ -40,7 +40,7 @@ const DisplaySiteDetails: React.FC = () => {
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white shadow-2xl rounded-3xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-800 px-8 py-12 text-white">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-800 px-8 py-12 text-white">
             <h1 className="text-4xl font-bold mb-2">{site.project} Site</h1>
             <p className="text-blue-100 mb-6">{site.address}</p>
             <div className="flex items-center space-x-4">
