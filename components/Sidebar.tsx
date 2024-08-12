@@ -193,7 +193,7 @@ const Sidebar = ({ user }: SidebarProps) => {
                           className={cn(
                             "flex items-center gap-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ease-in-out",
                             isActive
-                              ? "bg-blue-600 text-white shadow-md"
+                              ? "bg-white text-black-1 shadow-md pl-1"
                               : "text-blue-200 hover:bg-blue-700 hover:text-white"
                           )}
                         >
