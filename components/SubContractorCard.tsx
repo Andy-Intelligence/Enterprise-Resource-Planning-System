@@ -8,19 +8,39 @@ import {
   FaMoneyBillWave,
 } from "react-icons/fa";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-const SubContractorCard: React.FC = () => {
+interface SubContractorCardProps {
+  id: number;
+  name: string;
+  specialty: string;
+}
+
+const SubContractorCard: React.FC<SubContractorCardProps> = ({
+  id,
+  name,
+  specialty,
+}) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/subcontractors/${id}`); // Route to the specific subcontractor's page
+  };
+
   // Dummy data
   const imageUrl =
     "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_760/https://dutumgroup.com/wp-content/uploads/2024/03/image-4-760x507.png";
-  const name = "Subcontractor Company";
+
   const location = "123 Main St, City, Country";
   const email = "contact@subcontractor.com";
   const numberOfProjects = 2;
   const amount = 50000;
 
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+    <div
+      onClick={handleClick}
+       className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105"
+    >
       <div className="relative h-48 w-full">
         <Image
           src={imageUrl}

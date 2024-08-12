@@ -1,13 +1,20 @@
 "use client";
 
-import SubContractorCard from "@/components/SubContractorCard";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import SubContractorCard from "@/components/SubContractorCard";
 import { FiSearch, FiPlus } from "react-icons/fi";
 
 const SubContractorsComponent = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+
+  const subContractors = [
+    { id: 1, name: "John Doe", specialty: "Electrical" },
+    { id: 2, name: "Jane Smith", specialty: "Plumbing" },
+    { id: 3, name: "Michael Johnson", specialty: "Carpentry" },
+    // Add more subcontractors as needed
+  ];
 
   // Dummy data for pagination
   const totalSubContractors = 50;
@@ -39,8 +46,13 @@ const SubContractorsComponent = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(9)].map((_, index) => (
-            <SubContractorCard key={index} />
+          {subContractors.map((subContractor) => (
+            <SubContractorCard
+              key={subContractor.id}
+              id={subContractor.id} // Pass the id to the SubContractorCard component
+              name={subContractor.name}
+              specialty={subContractor.specialty}
+            />
           ))}
         </div>
       </div>

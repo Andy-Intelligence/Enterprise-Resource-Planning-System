@@ -21,7 +21,7 @@ const EmployeePage: React.FC = () => {
   const employees: Employee[] = [
     {
       employeeCode: "EMP001",
-      image: "https://example.com/avatar1.jpg",
+      image: "https://i.pravatar.cc/300",
       employeeName: "Moge Dami",
       workEmail: "abc@gmail.com",
       department: "Mechanical",
@@ -29,7 +29,7 @@ const EmployeePage: React.FC = () => {
     },
     {
       employeeCode: "EMP002",
-      image: "https://example.com/avatar2.jpg",
+      image: "https://i.pravatar.cc/300",
       employeeName: "Jane Doe",
       workEmail: "jane@gmail.com",
       department: "Electrical",
@@ -37,7 +37,7 @@ const EmployeePage: React.FC = () => {
     },
     {
       employeeCode: "EMP003",
-      image: "https://example.com/avatar3.jpg",
+      image: "https://i.pravatar.cc/300",
       employeeName: "John Smith",
       workEmail: "john@gmail.com",
       department: "Civil",

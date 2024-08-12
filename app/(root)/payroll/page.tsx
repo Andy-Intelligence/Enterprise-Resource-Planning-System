@@ -22,32 +22,31 @@ const PayrollPage: React.FC = () => {
   const employees: Employee[] = [
     {
       employeeCode: "EMP001",
-      image: "https://example.com/avatar1.jpg",
+      image: "https://i.pravatar.cc/300",
       employeeName: "Moge Dami",
-      designation: "cleaning",
+      designation: "Cleaning",
       department: "Mechanical",
-      netSalary: 100,
+      netSalary: 1000,
       appraisalScore: 30,
     },
     {
-      employeeCode: "EMP001",
-      image: "https://example.com/avatar1.jpg",
-      employeeName: "Moge Dami",
-      designation: "cleaning",
-      department: "Mechanical",
-      netSalary: 100,
+      employeeCode: "EMP002",
+      image: "https://i.pravatar.cc/300",
+      employeeName: "Jane Doe",
+      designation: "Engineering",
+      department: "Electrical",
+      netSalary: 2000,
       appraisalScore: 50,
     },
     {
-      employeeCode: "EMP001",
-      image: "https://example.com/avatar1.jpg",
-      employeeName: "Moge Dami",
-      designation: "cleaning",
-      department: "Mechanical",
-      netSalary: 100,
+      employeeCode: "EMP003",
+      image: "https://i.pravatar.cc/300",
+      employeeName: "John Smith",
+      designation: "Project Manager",
+      department: "Civil",
+      netSalary: 3000,
       appraisalScore: 100,
     },
-
     // Add more employee entries as needed
   ];
 
@@ -122,7 +121,7 @@ const PayrollPage: React.FC = () => {
                   key={employee.employeeCode}
                   className="cursor-pointer hover:bg-gray-50 transition-colors"
                   onClick={() =>
-                    router.push(`/employee/${employee.employeeCode}`)
+                    router.push(`/payroll/${employee.employeeCode}`)
                   }
                 >
                   <td className="py-4 px-4 border-b">
@@ -151,7 +150,9 @@ const PayrollPage: React.FC = () => {
                       {employee.appraisalScore}
                     </span>
                   </td>
-                  <td className="py-4 px-4 border-b">{employee.netSalary}</td>
+                  <td className="py-4 px-4 border-b">
+                    ₦{employee.netSalary.toLocaleString()}
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -22,33 +22,31 @@ const AppraisalPage: React.FC = () => {
   const employees: Employee[] = [
     {
       employeeCode: "EMP001",
-      image: "https://example.com/avatar1.jpg",
+      image: "https://i.pravatar.cc/300",
       employeeName: "Moge Dami",
-      designation: "cleaning",
+      designation: "Cleaning",
       department: "Mechanical",
       appraisalScore: 30,
-      appraisalDate: "17/30/2023",
+      appraisalDate: "07/30/2023",
     },
     {
-      employeeCode: "EMP001",
-      image: "https://example.com/avatar1.jpg",
-      employeeName: "Moge Dami",
-      designation: "cleaning",
-      department: "Mechanical",
-      appraisalScore: 30,
-      appraisalDate: "17/30/2023",
+      employeeCode: "EMP002",
+      image: "https://i.pravatar.cc/300",
+      employeeName: "Jane Doe",
+      designation: "Engineering",
+      department: "Electrical",
+      appraisalScore: 75,
+      appraisalDate: "08/15/2023",
     },
     {
-      employeeCode: "EMP001",
-      image: "https://example.com/avatar1.jpg",
-      employeeName: "Moge Dami",
-      designation: "cleaning",
-      department: "Mechanical",
-      appraisalScore: 30,
-      appraisalDate: "17/30/2023",
+      employeeCode: "EMP003",
+      image: "https://i.pravatar.cc/300",
+      employeeName: "John Smith",
+      designation: "Project Manager",
+      department: "Civil",
+      appraisalScore: 60,
+      appraisalDate: "09/20/2023",
     },
-    
-
     // Add more employee entries as needed
   ];
 
@@ -67,7 +65,7 @@ const AppraisalPage: React.FC = () => {
   return (
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Payroll</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Appraisal</h1>
         <button
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
           onClick={() => router.push("/payroll/create")}
@@ -123,7 +121,7 @@ const AppraisalPage: React.FC = () => {
                   key={employee.employeeCode}
                   className="cursor-pointer hover:bg-gray-50 transition-colors"
                   onClick={() =>
-                    router.push(`/employee/${employee.employeeCode}`)
+                    router.push(`/appraisal/${employee.employeeCode}`)
                   }
                 >
                   <td className="py-4 px-4 border-b">
@@ -152,7 +150,9 @@ const AppraisalPage: React.FC = () => {
                       {employee.appraisalScore}
                     </span>
                   </td>
-                  <td className="py-4 px-4 border-b">{employee.appraisalDate}</td>
+                  <td className="py-4 px-4 border-b">
+                    {employee.appraisalDate}
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -1,22 +1,20 @@
 "use client";
 
-import React, { useState, ChangeEvent } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import {
-  FiSave,
-  FiX,
-  FiUpload,
-  
-  FiMapPin,
-  FiGlobe,
+  FiEdit,
   FiMail,
   FiPhone,
+  FiMapPin,
+  FiGlobe,
+  FiBriefcase,
+  FiUsers,
 } from "react-icons/fi";
-import { FaBuilding } from "react-icons/fa";
-import { PiBuildingOfficeDuotone } from "react-icons/pi";
+import { useRouter } from "next/navigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface CompanyProfileData {
-  logo: File | null;
+  logo: string;
   companyName: string;
   specialization: string;
   contactAddress: string;
@@ -27,202 +25,210 @@ interface CompanyProfileData {
   state: string;
   city: string;
   zipCode: string;
+  employeeCount: number;
+  yearFounded: number;
+  projects: { completed: number; ongoing: number };
 }
 
-const CompanyProfileForm: React.FC = () => {
+const dummyCompanyProfile: CompanyProfileData = {
+  logo: "https://placehold.co/200x200?text=Logo",
+  companyName: "TechBuild Innovations",
+  specialization: "Sustainable Construction Solutions",
+  contactAddress: "123 Green Building Avenue, Eco District",
+  website: "https://www.techbuildinnovations.com",
+  email: "info@techbuildinnovations.com",
+  phoneNumber: "+234 123 456 7890",
+  country: "Nigeria",
+  state: "Lagos",
+  city: "Lagos",
+  zipCode: "100001",
+  employeeCount: 250,
+  yearFounded: 2005,
+  projects: { completed: 150, ongoing: 12 },
+};
+
+const CompanyProfileDisplay: React.FC = () => {
   const router = useRouter();
-  const [profile, setProfile] = useState<CompanyProfileData>({
-    logo: null,
-    companyName: "",
-    specialization: "",
-    contactAddress: "",
-    website: "",
-    email: "",
-    phoneNumber: "",
-    country: "",
-    state: "",
-    city: "",
-    zipCode: "",
-  });
+  const company = dummyCompanyProfile;
 
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
+  const handleEdit = () => {
+    router.push("/profile/create");
   };
 
-  const handleLogoUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setProfile({ ...profile, logo: e.target.files[0] });
-    }
-  };
-
-  const handleSave = () => {
-    console.log("Company Profile saved:", profile);
-    // Add save logic here
-    router.push("/companies");
-  };
-
-  const handleDiscard = () => {
-    router.push("/companies");
-  };
+  const InfoCard: React.FC<{
+    title: string;
+    value: string | number;
+    icon: React.ReactNode;
+  }> = ({ title, value, icon }) => (
+    <div className="bg-white rounded-xl shadow-md p-6 flex items-center space-x-4">
+      <div className="bg-blue-100 p-3 rounded-full">{icon}</div>
+      <div>
+        <p className="text-sm font-medium text-gray-600">{title}</p>
+        <p className="text-lg font-bold text-gray-800">{value}</p>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white shadow-2xl rounded-lg overflow-hidden">
-          <div className="bg-blue-600  text-white py-6 px-8 flex justify-between items-center">
-            <h1 className="text-3xl font-bold">Company Profile</h1>
+    <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white shadow-2xl rounded-3xl overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-600 px-8 py-12 text-white relative">
+            <button
+              onClick={handleEdit}
+              className="absolute top-4 right-4 bg-white text-blue-600 px-4 py-2 rounded-full font-semibold flex items-center transition-colors hover:bg-blue-100"
+            >
+              <FiEdit className="mr-2" /> Edit Profile
+            </button>
+            <div className="flex items-center space-x-6">
+              <img
+                src={company.logo}
+                alt={company.companyName}
+                className="w-32 h-32 rounded-2xl border-4 border-white shadow-lg object-cover"
+              />
+              <div>
+                <h1 className="text-4xl font-bold mb-2">
+                  {company.companyName}
+                </h1>
+                <p className="text-xl text-blue-100 mb-4">
+                  {company.specialization}
+                </p>
+                <div className="flex items-center space-x-4">
+                  <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    Est. {company.yearFounded}
+                  </span>
+                  <span className="flex items-center text-blue-200">
+                    <FiUsers className="mr-2" />
+                    {company.employeeCount} Employees
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
+
           <div className="p-8">
-            <form className="space-y-8">
-              <div className="flex flex-col sm:flex-row gap-8">
-                <div className="w-full sm:w-1/3">
-                  <div className="bg-gray-100 rounded-lg p-6 text-center">
-                    {profile.logo ? (
-                      <img
-                        src={URL.createObjectURL(profile.logo)}
-                        alt="Company Logo"
-                        className="w-48 h-48 object-contain mx-auto"
-                      />
-                    ) : (
-                      <div className="w-48 h-48 bg-gray-300 mx-auto rounded-lg flex items-center justify-center">
-                        <PiBuildingOfficeDuotone className="text-gray-500 text-6xl" />
-                      </div>
-                    )}
-                    <input
-                      type="file"
-                      onChange={handleLogoUpload}
-                      className="hidden"
-                      id="logo-upload"
-                      accept="image/*"
-                    />
-                    <label
-                      htmlFor="logo-upload"
-                      className="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
-                    >
-                      <FiUpload className="mr-2" /> Upload Logo
-                    </label>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              <InfoCard
+                title="Email"
+                value={company.email}
+                icon={<FiMail className="text-blue-600 text-2xl" />}
+              />
+              <InfoCard
+                title="Phone"
+                value={company.phoneNumber}
+                icon={<FiPhone className="text-blue-600 text-2xl" />}
+              />
+              <InfoCard
+                title="Website"
+                value={company.website}
+                icon={<FiGlobe className="text-blue-600 text-2xl" />}
+              />
+            </div>
+
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-8">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                Project Overview
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <p className="text-3xl font-bold text-blue-600">
+                    {company.projects.completed}
+                  </p>
+                  <p className="text-gray-600">Completed Projects</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-3xl font-bold text-blue-600">
+                    {company.projects.ongoing}
+                  </p>
+                  <p className="text-gray-600">Ongoing Projects</p>
+                </div>
+              </div>
+            </div>
+
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="flex items-center justify-start w-full mb-4 bg-gray-100 p-1 rounded-lg">
+                <TabsTrigger
+                  className="flex-1 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md py-2 px-4 text-sm font-medium transition-all"
+                  value="details"
+                >
+                  Company Details
+                </TabsTrigger>
+                <TabsTrigger
+                  className="flex-1 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md py-2 px-4 text-sm font-medium transition-all"
+                  value="location"
+                >
+                  Location
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="details">
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    Company Information
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">
+                        Specialization
+                      </p>
+                      <p className="text-gray-800">{company.specialization}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">
+                        Year Founded
+                      </p>
+                      <p className="text-gray-800">{company.yearFounded}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">
+                        Employee Count
+                      </p>
+                      <p className="text-gray-800">{company.employeeCount}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">
+                        Website
+                      </p>
+                      <p className="text-gray-800">{company.website}</p>
+                    </div>
                   </div>
                 </div>
-                <div className="w-full sm:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <FormField
-                    label="Company Name"
-                    name="companyName"
-                    value={profile.companyName}
-                    onChange={handleInputChange}
-                    placeholder="Enter company name"
-                    icon={<PiBuildingOfficeDuotone className="text-gray-400" />}
-                  />
-                  <FormField
-                    label="Specialization"
-                    name="specialization"
-                    value={profile.specialization}
-                    onChange={handleInputChange}
-                    placeholder="Enter company specialization"
-                  />
-                  <FormField
-                    label="Website"
-                    name="website"
-                    value={profile.website}
-                    onChange={handleInputChange}
-                    type="url"
-                    placeholder="https://www.example.com"
-                    icon={<FiGlobe className="text-gray-400" />}
-                  />
-                  <FormField
-                    label="Email"
-                    name="email"
-                    value={profile.email}
-                    onChange={handleInputChange}
-                    type="email"
-                    placeholder="company@example.com"
-                    icon={<FiMail className="text-gray-400" />}
-                  />
-                  <FormField
-                    label="Phone Number"
-                    name="phoneNumber"
-                    value={profile.phoneNumber}
-                    onChange={handleInputChange}
-                    type="tel"
-                    placeholder="+1 (123) 456-7890"
-                    icon={<FiPhone className="text-gray-400" />}
-                  />
+              </TabsContent>
+              <TabsContent value="location">
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    Location Details
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">
+                        Full Address
+                      </p>
+                      <p className="text-gray-800">{company.contactAddress}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">
+                        Country
+                      </p>
+                      <p className="text-gray-800">{company.country}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">State</p>
+                      <p className="text-gray-800">{company.state}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">City</p>
+                      <p className="text-gray-800">{company.city}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">
+                        Zip Code
+                      </p>
+                      <p className="text-gray-800">{company.zipCode}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="border-t border-gray-200 pt-8">
-                <h2 className="text-xl font-semibold mb-4">Location Details</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                  <FormField
-                    label="Country"
-                    name="country"
-                    value={profile.country}
-                    onChange={handleInputChange}
-                    options={[
-                      { value: "", label: "Select Country" },
-                      // Add country options here
-                    ]}
-                    icon={<FiMapPin className="text-gray-400" />}
-                  />
-                  <FormField
-                    label="State"
-                    name="state"
-                    value={profile.state}
-                    onChange={handleInputChange}
-                    options={[
-                      { value: "", label: "Select State" },
-                      // Add state options here
-                    ]}
-                  />
-                  <FormField
-                    label="City"
-                    name="city"
-                    value={profile.city}
-                    onChange={handleInputChange}
-                    placeholder="Enter city"
-                  />
-                  <FormField
-                    label="Zip Code"
-                    name="zipCode"
-                    value={profile.zipCode}
-                    onChange={handleInputChange}
-                    placeholder="Enter zip code"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="contactAddress"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Contact Address
-                </label>
-                <textarea
-                  id="contactAddress"
-                  name="contactAddress"
-                  value={profile.contactAddress}
-                  onChange={handleInputChange}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  placeholder="Enter full address"
-                ></textarea>
-              </div>
-            </form>
-          </div>
-          <div className="bg-gray-50 px-8 py-6 flex justify-end space-x-4">
-            <button
-              className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors flex items-center"
-              onClick={handleDiscard}
-            >
-              <FiX className="mr-2" /> Discard
-            </button>
-            <button
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
-              onClick={handleSave}
-            >
-              <FiSave className="mr-2" /> Save
-            </button>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>
@@ -230,71 +236,4 @@ const CompanyProfileForm: React.FC = () => {
   );
 };
 
-interface FormFieldProps {
-  label: string;
-  name: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  type?: string;
-  placeholder?: string;
-  options?: { value: string; label: string }[];
-  icon?: React.ReactNode;
-}
-
-const FormField: React.FC<FormFieldProps> = ({
-  label,
-  name,
-  value,
-  onChange,
-  type = "text",
-  placeholder,
-  options,
-  icon,
-}) => (
-  <div>
-    <label
-      htmlFor={name}
-      className="block text-sm font-medium text-gray-700 mb-1"
-    >
-      {label}
-    </label>
-    <div className="relative">
-      {icon && (
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          {icon}
-        </div>
-      )}
-      {options ? (
-        <select
-          id={name}
-          name={name}
-          value={value}
-          onChange={onChange}
-          className={`w-full ${
-            icon ? "pl-10" : "pl-3"
-          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
-        >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <input
-          type={type}
-          id={name}
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className={`w-full ${
-            icon ? "pl-10" : "pl-3"
-          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
-        />
-      )}
-    </div>
-  </div>
-);
-
-export default CompanyProfileForm;
+export default CompanyProfileDisplay;
