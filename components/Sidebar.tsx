@@ -1,294 +1,4 @@
-// "use client";
-
-// import { useState } from "react";
-// import { cn } from "@/lib/utils";
-// import Image from "next/image";
-// import Link from "next/link";
-// import { usePathname } from "next/navigation";
-// import {
-//   Accordion,
-//   AccordionContent,
-//   AccordionItem,
-//   AccordionTrigger,
-// } from "@/components/ui/accordion";
-
-// interface SidebarProps {
-//   user?: any; // Adjust the type of user as needed
-// }
-
-// const Sidebar = ({ user }: SidebarProps) => {
-//   const pathname = usePathname();
-
-//   const procurementLinks = [
-//     {
-//       imgURL: "/icons/purchaseorder.svg",
-//       route: "/purchase-order",
-//       label: "Purchase Order",
-//     },
-//     { imgURL: "/icons/sales.svg", route: "/sales", label: "Sales" },
-//     { imgURL: "/icons/material.svg", route: "/inventory", label: "Inventory" },
-//     { imgURL: "/icons/supplier.svg", route: "/suppliers", label: "Suppliers" },
-//     { imgURL: "/icons/invoice.svg", route: "/invoices", label: "Invoices" },
-//     { imgURL: "/icons/boq.svg", route: "/quotes", label: "Quotes" },
-//     {
-//       imgURL: "/icons/materialrequisition.svg",
-//       route: "/material-requisition",
-//       label: "Requisition",
-//     },
-//     {
-//       imgURL: "/icons/requestquotation.svg",
-//       route: "/request-quotation",
-//       label: "Quotation",
-//     },
-//   ];
-
-//   const operationsLinks = [
-//     { imgURL: "/icons/task.svg", route: "/tasks", label: "Tasks" },
-//     { imgURL: "/icons/issue.svg", route: "/issues", label: "Issues" },
-//     { imgURL: "/icons/boq.svg", route: "/boq", label: "BOQ" },
-//     { imgURL: "/icons/budget.svg", route: "/budget", label: "Budget" },
-//     { imgURL: "/icons/site.svg", route: "/sites", label: "Site" },
-//   ];
-
-//   const humanResourceLinks = [
-//     {
-//       imgURL: "/icons/contractor.svg",
-//       route: "/subcontractors",
-//       label: "Subcontractors",
-//     },
-//   ];
-//   const settingLinks = [
-//     {
-//       imgURL: "/icons/profile.svg",
-//       route: "/profile",
-//       label: "Profile",
-//     },
-//     {
-//       imgURL: "/icons/employee.svg",
-//       route: "/employee",
-//       label: "Employee",
-//     },
-//   ];
-
-//   const independentLinks = [
-//     {
-//       imgURL: "/icons/report.svg",
-//       route: "/report/create",
-//       label: "Reports",
-//     },
-//     {
-//       imgURL: "/icons/project.png",
-//       route: "/projects",
-//       label: "Projects",
-//     },
-//   ];
-
-//   return (
-//     <section className="sidebar min-w-fit">
-//       <nav className="flex flex-col gap-4">
-//         <Link href="/" className="mb-12 cursor-pointer flex items-center gap-2">
-//           <Image
-//             src="/icons/erp.jpeg"
-//             width={60}
-//             height={60}
-//             alt="Horizon logo"
-//             className="size-[48px] max-xl:size-14"
-//           />
-//           <h1 className="sidebar-logo">ERP</h1>
-//         </Link>
-
-//         <Accordion type="single" collapsible>
-//           <AccordionItem value="procurement">
-//             <AccordionTrigger className="text-bankGradient">
-//               Procurement
-//             </AccordionTrigger>
-//             <AccordionContent>
-//               {procurementLinks.map((item) => {
-//                 const isActive =
-//                   pathname === item.route ||
-//                   pathname.startsWith(`${item.route}/`);
-//                 return (
-//                   <Link
-//                     href={item.route}
-//                     key={item.label}
-//                     className={cn("sidebar-link pl-8", {
-//                       "bg-bank-gradient": isActive,
-//                     })}
-//                   >
-//                     <div className="relative size-6">
-//                       <Image
-//                         src={item.imgURL}
-//                         alt={item.label}
-//                         fill
-//                         className={cn({ "brightness-[3] invert-0": isActive })}
-//                       />
-//                     </div>
-//                     <p
-//                       className={cn("sidebar-label", {
-//                         "!text-white": isActive,
-//                       })}
-//                     >
-//                       {item.label}
-//                     </p>
-//                   </Link>
-//                 );
-//               })}
-//             </AccordionContent>
-//           </AccordionItem>
-
-//           <AccordionItem value="operations">
-//             <AccordionTrigger className="text-bankGradient">
-//               Operations
-//             </AccordionTrigger>
-//             <AccordionContent>
-//               {operationsLinks.map((item) => {
-//                 const isActive =
-//                   pathname === item.route ||
-//                   pathname.startsWith(`${item.route}/`);
-//                 return (
-//                   <Link
-//                     href={item.route}
-//                     key={item.label}
-//                     className={cn("sidebar-link pl-8", {
-//                       "bg-bank-gradient": isActive,
-//                     })}
-//                   >
-//                     <div className="relative size-6">
-//                       <Image
-//                         src={item.imgURL}
-//                         alt={item.label}
-//                         fill
-//                         className={cn({ "brightness-[3] invert-0": isActive })}
-//                       />
-//                     </div>
-//                     <p
-//                       className={cn("sidebar-label", {
-//                         "!text-white": isActive,
-//                       })}
-//                     >
-//                       {item.label}
-//                     </p>
-//                   </Link>
-//                 );
-//               })}
-//             </AccordionContent>
-//           </AccordionItem>
-
-//           <AccordionItem value="humanResource">
-//             <AccordionTrigger className="text-bankGradient">
-//               Human Resource
-//             </AccordionTrigger>
-//             <AccordionContent>
-//               {humanResourceLinks.map((item) => {
-//                 const isActive =
-//                   pathname === item.route ||
-//                   pathname.startsWith(`${item.route}/`);
-//                 return (
-//                   <Link
-//                     href={item.route}
-//                     key={item.label}
-//                     className={cn("sidebar-link pl-8", {
-//                       "bg-bank-gradient": isActive,
-//                     })}
-//                   >
-//                     <div className="relative size-6">
-//                       <Image
-//                         src={item.imgURL}
-//                         alt={item.label}
-//                         fill
-//                         className={cn({ "brightness-[3] invert-0": isActive })}
-//                       />
-//                     </div>
-//                     <p
-//                       className={cn("sidebar-label", {
-//                         "!text-white": isActive,
-//                       })}
-//                     >
-//                       {item.label}
-//                     </p>
-//                   </Link>
-//                 );
-//               })}
-//             </AccordionContent>
-//           </AccordionItem>
-//           <AccordionItem value="settingLink">
-//             <AccordionTrigger className="text-bankGradient">
-//               Setting {" "}
-//             </AccordionTrigger>
-//             <AccordionContent>
-//               {settingLinks.map((item) => {
-//                 const isActive =
-//                   pathname === item.route ||
-//                   pathname.startsWith(`${item.route}/`);
-//                 return (
-//                   <Link
-//                     href={item.route}
-//                     key={item.label}
-//                     className={cn("sidebar-link pl-8", {
-//                       "bg-bank-gradient": isActive,
-//                     })}
-//                   >
-//                     <div className="relative size-6">
-//                       <Image
-//                         src={item.imgURL}
-//                         alt={item.label}
-//                         fill
-//                         className={cn({ "brightness-[3] invert-0": isActive })}
-//                       />
-//                     </div>
-//                     <p
-//                       className={cn("sidebar-label", {
-//                         "!text-white": isActive,
-//                       })}
-//                     >
-//                       {item.label}
-//                     </p>
-//                   </Link>
-//                 );
-//               })}
-//             </AccordionContent>
-//           </AccordionItem>
-//         </Accordion>
-
-//         {independentLinks.map((item) => {
-//           const isActive =
-//             pathname === item.route || pathname.startsWith(`${item.route}/`);
-//           return (
-//             <Link
-//               href={item.route}
-//               key={item.label}
-//               className={cn("sidebar-link", {
-//                 "bg-bank-gradient": isActive,
-//               })}
-//             >
-//               <div className="relative size-6">
-//                 <Image
-//                   src={item.imgURL}
-//                   alt={item.label}
-//                   fill
-//                   className={cn({ "brightness-[3] invert-0": isActive })}
-//                 />
-//               </div>
-//               <p
-//                 className={cn("sidebar-label", {
-//                   "!text-white": isActive,
-//                 })}
-//               >
-//                 {item.label}
-//               </p>
-//             </Link>
-//           );
-//         })}
-//       </nav>
-//     </section>
-//   );
-// };
-
-// export default Sidebar;
-
-
-"use client";
-
+"use client"
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -300,13 +10,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { motion } from "framer-motion";
 
 interface SidebarProps {
-  user?: any; // Adjust the type of user as needed
+  user?: any;
 }
 
 const Sidebar = ({ user }: SidebarProps) => {
   const pathname = usePathname();
+  const [isExpanded, setIsExpanded] = useState(true);
 
   const sections = [
     {
@@ -353,7 +65,7 @@ const Sidebar = ({ user }: SidebarProps) => {
       ],
     },
     {
-      title: "Human Resource",
+      title: "Resource(HR)",
       links: [
         {
           imgURL: "/icons/contractor.svg",
@@ -390,19 +102,68 @@ const Sidebar = ({ user }: SidebarProps) => {
     { imgURL: "/icons/project.png", route: "/projects", label: "Projects" },
   ];
 
+  const sidebarVariants = {
+    expanded: { width: "240px" },
+    collapsed: { width: "80px" },
+  };
+
   return (
-    <aside className="shadow-lg w-64 h-fit min-h-screen bg-white ">
+    <motion.aside
+      className="min-h-screen h-fit bg-gradient-to-b from-blue-600 to-blue-700 text-white overflow-hidden transition-all duration-300 ease-in-out"
+      variants={sidebarVariants}
+      animate={isExpanded ? "expanded" : "collapsed"}
+    >
       <div className="p-4">
-        <Link href="/" className="flex items-center gap-2 mb-8">
-          <Image
-            src="/icons/erp.jpeg"
-            width={48}
-            height={48}
-            alt="ERP logo"
-            className="rounded-full"
-          />
-          <h1 className="text-2xl font-bold text-gray-800">ERP</h1>
-        </Link>
+        <div className="flex items-center justify-between mb-8">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/icons/erp.jpeg"
+              width={40}
+              height={40}
+              alt="ERP logo"
+              className="rounded-full border-2 border-white"
+            />
+            {isExpanded && (
+              <h1 className="text-2xl font-bold text-white">ERP</h1>
+            )}
+          </Link>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-white hover:bg-blue-800 rounded-full p-2 transition-colors"
+          >
+            {isExpanded ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 5l7 7-7 7M5 5l7 7-7 7"
+                />
+              </svg>
+            )}
+          </button>
+        </div>
 
         <nav className="space-y-2">
           <Accordion type="single" collapsible className="space-y-2">
@@ -410,10 +171,14 @@ const Sidebar = ({ user }: SidebarProps) => {
               <AccordionItem
                 key={section.title}
                 value={section.title.toLowerCase()}
-                
+                className="border-b border-blue-700"
               >
-                <AccordionTrigger className="text-lg font-semibold text-gray-700 hover:text-blue-600 hover:no-underline transition-colors">
-                  {section.title}
+                <AccordionTrigger className="text-lg font-semibold text-blue-100 hover:text-white hover:bg-blue-700 rounded-md px-3 py-2 transition-colors">
+                  {isExpanded ? (
+                    section.title
+                  ) : (
+                    <span className="text-2xl">{section.title[0]}</span>
+                  )}
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="ml-4 space-y-1">
@@ -426,10 +191,10 @@ const Sidebar = ({ user }: SidebarProps) => {
                           href={item.route}
                           key={item.label}
                           className={cn(
-                            "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                            "flex items-center gap-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ease-in-out",
                             isActive
-                              ? "bg-blue-100 text-blue-600"
-                              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                              ? "bg-blue-600 text-white shadow-md"
+                              : "text-blue-200 hover:bg-blue-700 hover:text-white"
                           )}
                         >
                           <Image
@@ -437,9 +202,9 @@ const Sidebar = ({ user }: SidebarProps) => {
                             alt={item.label}
                             width={20}
                             height={20}
-                            className={cn({ "filter invert": isActive })}
+                            className="shrink-0"
                           />
-                          {item.label}
+                          {isExpanded && <span>{item.label}</span>}
                         </Link>
                       );
                     })}
@@ -449,7 +214,7 @@ const Sidebar = ({ user }: SidebarProps) => {
             ))}
           </Accordion>
 
-          <div className="pt-4 border-t border-gray-200">
+          <div className="pt-4 border-t border-blue-700">
             {independentLinks.map((item) => {
               const isActive =
                 pathname === item.route ||
@@ -459,10 +224,10 @@ const Sidebar = ({ user }: SidebarProps) => {
                   href={item.route}
                   key={item.label}
                   className={cn(
-                    "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                    "flex items-center gap-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ease-in-out",
                     isActive
-                      ? "bg-blue-100 text-blue-600"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "text-blue-200 hover:bg-blue-700 hover:text-white"
                   )}
                 >
                   <Image
@@ -470,16 +235,16 @@ const Sidebar = ({ user }: SidebarProps) => {
                     alt={item.label}
                     width={20}
                     height={20}
-                    className={cn({ "filter invert": isActive })}
+                    className="shrink-0"
                   />
-                  {item.label}
+                  {isExpanded && <span>{item.label}</span>}
                 </Link>
               );
             })}
           </div>
         </nav>
       </div>
-    </aside>
+    </motion.aside>
   );
 };
 
