@@ -29,32 +29,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import axios from "axios";
+import { getAccessToken, refreshAccessToken } from "@/lib/utils";
 
 interface ProjectData {
   name: string;
-  manager: string;
-  subContractor: string;
+  contractor: string;
   client: string;
-  startDate: string;
-  endDate: string;
-  budget: string;
-  timeScheduling: string;
+  working_time: string;
+  document: File | null;
   description: string;
+  project_manager: string; // Make sure this is a string
+  budget?: number;
+  deadline: string; // Make sure this is a string
+  status: string; // Make sure this is a string
+  team_lead: string; // Make sure this is a string
+  team_members: string; // Make sure this is a string
 }
 
 const NewProjectForm: React.FC = () => {
   const router = useRouter();
-  const [projectData, setProjectData] = useState<ProjectData>({
-    name: "",
-    manager: "",
-    subContractor: "",
-    client: "",
-    startDate: "",
-    endDate: "",
-    budget: "",
-    timeScheduling: "",
-    description: "",
-  });
+const [projectData, setProjectData] = useState<ProjectData>({
+  name: "",
+  contractor: "",
+  client: "",
+  working_time: "",
+  document: null,
+  description: "", // Initialize as an empty string
+  project_manager: "", // Initialize as an empty string
+  deadline: "", // Initialize as an empty string
+  status: "active", // Provide a default value like "active"
+  team_lead: "", // Initialize as an empty string
+  team_members: "", // Initialize as an empty string
+  budget: 0, // Optional, so can be undefined
+});
+
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -67,9 +76,51 @@ const NewProjectForm: React.FC = () => {
     setProjectData({ ...projectData, [name]: value });
   };
 
-  const handleSave = () => {
-    console.log("Project saved:", projectData);
-    router.push("/projects");
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setProjectData({ ...projectData, document: e.target.files[0] });
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      const accessToken = await getAccessToken();
+      const formData = new FormData();
+      formData.append("name", projectData.name);
+      formData.append("contractor", projectData.contractor);
+      formData.append("client", projectData.client);
+      formData.append("working_time", projectData.working_time);
+      if (projectData.document) {
+        formData.append("document", projectData.document);
+      }
+
+      await axios.post(
+        "https://erp-backend-nv09.onrender.com/api/projects/create/",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      router.push("/projects");
+    } catch (error) {
+      console.error("Error creating project:", error);
+      handleTokenRefresh(error);
+    }
+  };
+
+  const handleTokenRefresh = async (error: any) => {
+    if (error.response && error.response.status === 401) {
+      try {
+        await refreshAccessToken();
+        handleSave();
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+      }
+    }
   };
 
   const handleDiscard = () => {
@@ -128,29 +179,17 @@ const NewProjectForm: React.FC = () => {
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <FormSelect
-                    label="Project Manager"
-                    name="manager"
-                    value={projectData.manager}
-                    onChange={(value) => handleSelectChange("manager", value)}
+                    label="Contractor"
+                    name="contractor"
+                    value={projectData.contractor}
+                    onChange={(value) =>
+                      handleSelectChange("contractor", value)
+                    }
                     icon={<FaBuilding className="text-gray-400" />}
                     options={[
-                      { value: "manager1", label: "Manager 1" },
-                      { value: "manager2", label: "Manager 2" },
-                      { value: "manager3", label: "Manager 3" },
-                    ]}
-                  />
-                  <FormSelect
-                    label="Sub Contractor"
-                    name="subContractor"
-                    value={projectData.subContractor}
-                    onChange={(value) =>
-                      handleSelectChange("subContractor", value)
-                    }
-                    icon={<FaUserTie className="text-gray-400" />}
-                    options={[
-                      { value: "sub1", label: "Sub Contractor 1" },
-                      { value: "sub2", label: "Sub Contractor 2" },
-                      { value: "sub3", label: "Sub Contractor 3" },
+                      { value: "1", label: "Contractor 1" },
+                      { value: "2", label: "Contractor 2" },
+                      { value: "3", label: "Contractor 3" },
                     ]}
                   />
                   <FormSelect
@@ -160,53 +199,34 @@ const NewProjectForm: React.FC = () => {
                     onChange={(value) => handleSelectChange("client", value)}
                     icon={<FiGlobe className="text-gray-400" />}
                     options={[
-                      { value: "client1", label: "Client 1" },
-                      { value: "client2", label: "Client 2" },
-                      { value: "client3", label: "Client 3" },
+                      { value: "1", label: "Client 1" },
+                      { value: "2", label: "Client 2" },
+                      { value: "3", label: "Client 3" },
                     ]}
                   />
                   <FormField
-                    label="Start Date"
-                    name="startDate"
-                    type="date"
-                    value={projectData.startDate}
+                    label="Working Time"
+                    name="working_time"
+                    type="datetime-local"
+                    value={projectData.working_time}
                     onChange={handleInputChange}
                     icon={<FiCalendar className="text-gray-400" />}
                   />
-                  <FormField
-                    label="End Date"
-                    name="endDate"
-                    type="date"
-                    value={projectData.endDate}
-                    onChange={handleInputChange}
-                    icon={<FiCalendar className="text-gray-400" />}
-                  />
-                  <FormSelect
-                    label="Budget"
-                    name="budget"
-                    value={projectData.budget}
-                    onChange={(value) => handleSelectChange("budget", value)}
-                    icon={<FiDollarSign className="text-gray-400" />}
-                    options={[
-                      { value: "budget1", label: "Budget 1" },
-                      { value: "budget2", label: "Budget 2" },
-                      { value: "budget3", label: "Budget 3" },
-                    ]}
-                  />
-                  <FormSelect
-                    label="Time Scheduling"
-                    name="timeScheduling"
-                    value={projectData.timeScheduling}
-                    onChange={(value) =>
-                      handleSelectChange("timeScheduling", value)
-                    }
-                    icon={<FiClock className="text-gray-400" />}
-                    options={[
-                      { value: "schedule1", label: "Schedule 1" },
-                      { value: "schedule2", label: "Schedule 2" },
-                      { value: "schedule3", label: "Schedule 3" },
-                    ]}
-                  />
+                  <div>
+                    <label
+                      htmlFor="document"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Document
+                    </label>
+                    <input
+                      type="file"
+                      id="document"
+                      name="document"
+                      onChange={handleFileChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    />
+                  </div>
                 </div>
               </div>
               <div>
@@ -265,35 +285,88 @@ const NewProjectForm: React.FC = () => {
                   Project Settings
                 </TabsTrigger>
                 <TabsTrigger
-                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-700 px-4 py-2 rounded-md mr-2"
+                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-700 px-4 py-2 rounded-md"
                   value="team"
                 >
-                  Team
-                </TabsTrigger>
-                <TabsTrigger
-                  className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-700 px-4 py-2 rounded-md"
-                  value="documents"
-                >
-                  Documents
+                  Project Team
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="settings">
-                <h2 className="text-xl font-semibold text-gray-700 mb-4">
-                  Project Settings
-                </h2>
-                {/* Add your project settings content here */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormSelect
+                    label="Project Manager"
+                    name="project_manager"
+                    value={projectData.project_manager}
+                    onChange={(value) =>
+                      handleSelectChange("project_manager", value)
+                    }
+                    icon={<FaUserTie className="text-gray-400" />}
+                    options={[
+                      { value: "1", label: "Manager 1" },
+                      { value: "2", label: "Manager 2" },
+                      { value: "3", label: "Manager 3" },
+                    ]}
+                  />
+                  <FormField
+                    label="Budget"
+                    name="budget"
+                    type="number"
+                    value={projectData.budget ?? 0} // Default to 0 if undefined
+                    onChange={handleInputChange}
+                    icon={<FiDollarSign className="text-gray-400" />}
+                  />
+
+                  <FormField
+                    label="Deadline"
+                    name="deadline"
+                    type="datetime-local"
+                    value={projectData.deadline}
+                    onChange={handleInputChange}
+                    icon={<FiClock className="text-gray-400" />}
+                  />
+                  <FormSelect
+                    label="Status"
+                    name="status"
+                    value={projectData?.status}
+                    onChange={(value) => handleSelectChange("status", value)}
+                    icon={<IoRadioButtonOn className="text-gray-400" />}
+                    options={[
+                      { value: "active", label: "Active" },
+                      { value: "on_hold", label: "On Hold" },
+                      { value: "completed", label: "Completed" },
+                    ]}
+                  />
+                </div>
               </TabsContent>
               <TabsContent value="team">
-                <h2 className="text-xl font-semibold text-gray-700 mb-4">
-                  Team Members
-                </h2>
-                {/* Add your team management content here */}
-              </TabsContent>
-              <TabsContent value="documents">
-                <h2 className="text-xl font-semibold text-gray-700 mb-4">
-                  Project Documents
-                </h2>
-                {/* Add your document management content here */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormSelect
+                    label="Team Lead"
+                    name="team_lead"
+                    value={projectData.team_lead}
+                    onChange={(value) => handleSelectChange("team_lead", value)}
+                    icon={<FaUserTie className="text-gray-400" />}
+                    options={[
+                      { value: "1", label: "Team Lead 1" },
+                      { value: "2", label: "Team Lead 2" },
+                      { value: "3", label: "Team Lead 3" },
+                    ]}
+                  />
+                  <FormSelect
+                    label="Team Members"
+                    name="team_members"
+                    value={projectData.team_members}
+                    onChange={(value) =>
+                      handleSelectChange("team_members", value)
+                    }
+                    icon={<FaUserTie className="text-gray-400" />}
+                    options={[
+                      { value: "1", label: "Member 1" },
+                      { value: "2", label: "Member 2" },
+                      { value: "3", label: "Member 3" },
+                    ]}
+                  />
+                </div>
               </TabsContent>
             </Tabs>
           </div>
@@ -306,18 +379,18 @@ const NewProjectForm: React.FC = () => {
 interface FormFieldProps {
   label: string;
   name: string;
-  value: string;
+  type: string;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: string;
-  icon?: React.ReactNode;
+  icon: React.ReactNode;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
   label,
   name,
+  type,
   value,
   onChange,
-  type = "text",
   icon,
 }) => (
   <div>
@@ -328,21 +401,17 @@ const FormField: React.FC<FormFieldProps> = ({
       {label}
     </label>
     <div className="relative">
-      {icon && (
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          {icon}
-        </div>
-      )}
       <input
         type={type}
         id={name}
         name={name}
         value={value}
         onChange={onChange}
-        className={`w-full ${
-          icon ? "pl-10" : "pl-3"
-        } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
+        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
       />
+      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        {icon}
+      </div>
     </div>
   </div>
 );
@@ -352,7 +421,7 @@ interface FormSelectProps {
   name: string;
   value: string;
   onChange: (value: string) => void;
-  icon?: React.ReactNode;
+  icon: React.ReactNode;
   options: { value: string; label: string }[];
 }
 
@@ -372,17 +441,8 @@ const FormSelect: React.FC<FormSelectProps> = ({
       {label}
     </label>
     <div className="relative">
-      {icon && (
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          {icon}
-        </div>
-      )}
-      <Select onValueChange={onChange} value={value}>
-        <SelectTrigger
-          className={`w-full ${
-            icon ? "pl-10" : "pl-3"
-          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
-        >
+      <Select onValueChange={onChange} value={value} name={name}>
+        <SelectTrigger className="w-full pl-10">
           <SelectValue placeholder={`Select ${label}`} />
         </SelectTrigger>
         <SelectContent>
@@ -393,6 +453,9 @@ const FormSelect: React.FC<FormSelectProps> = ({
           ))}
         </SelectContent>
       </Select>
+      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        {icon}
+      </div>
     </div>
   </div>
 );

@@ -47,11 +47,6 @@ const Sidebar = ({ user }: SidebarProps) => {
           route: "/material-requisition",
           label: "Requisition",
         },
-        {
-          imgURL: "/icons/requestquotation.svg",
-          route: "/request-quotation",
-          label: "Quotation",
-        },
       ],
     },
     {
@@ -100,6 +95,7 @@ const Sidebar = ({ user }: SidebarProps) => {
   const independentLinks = [
     { imgURL: "/icons/report.svg", route: "/report/create", label: "Reports" },
     { imgURL: "/icons/project.png", route: "/projects", label: "Projects" },
+    { imgURL: "/icons/project.png", route: "/clients", label: "Clients" },
   ];
 
   const sidebarVariants = {

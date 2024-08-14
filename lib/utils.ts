@@ -195,24 +195,73 @@ export const getTransactionStatus = (date: Date) => {
   return date > twoDaysAgo ? "Processing" : "Success";
 };
 
+
 export const authFormSchema = (type: string) =>
   z.object({
-    // sign up
+    // Sign-up fields for individual users
     firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
     lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
     address1: type === "sign-in" ? z.string().optional() : z.string().max(50),
     city: type === "sign-in" ? z.string().optional() : z.string().max(50),
     state:
-      type === "sign-in" ? z.string().optional() : z.string().min(2).max(2),
+      type === "sign-in" ? z.string().optional() : z.string().min(2).max(50),
     postalCode:
       type === "sign-in" ? z.string().optional() : z.string().min(3).max(6),
     dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3),
     ssn: type === "sign-in" ? z.string().optional() : z.string().min(3),
-    // both
+
+    // Fields common to both sign-in and sign-up
     username: z.string(),
     email: z.string().email(),
     password: z.string().min(8),
+
+    // Company-specific fields (included only for sign-up)
+    company_name:
+      type === "sign-up" ? z.string().min(3) : z.string().optional(),
+    company_address:
+      type === "sign-up" ? z.string().min(5) : z.string().optional(),
+    company_phone:
+      type === "sign-up" ? z.string().min(10) : z.string().optional(),
+    country: type === "sign-up" ? z.string().min(2) : z.string().optional(),
+    zip_code:
+      type === "sign-up" ? z.string().min(3).max(6) : z.string().optional(),
+    logo: z.string().optional(), // Optional field for the company logo
   });
 
 
   
+
+
+
+  export const getAccessToken = () => {
+    return localStorage.getItem("accessToken");
+  };
+
+
+
+  export const refreshAccessToken = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (!refreshToken) {
+      throw new Error("No refresh token available");
+    }
+
+    const response = await fetch(
+      "https://your-backend.com/api/auths/refresh/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refresh: refreshToken }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to refresh token");
+    }
+
+    const data = await response.json();
+    localStorage.setItem("accessToken", data.access);
+    return data.access;
+  };

@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import {
   FiUser,
   FiMapPin,
@@ -10,35 +11,92 @@ import {
   FiDollarSign,
   FiCalendar,
   FiStar,
+  FiEdit,
+  FiTrash2,
 } from "react-icons/fi";
+import axios from "axios";
+import { getAccessToken, refreshAccessToken } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-interface SupplierData {
-  id: string;
+interface SupplierDetails {
+  id: number;
   name: string;
   address: string;
   phone: string;
   email: string;
+  total_orders: number;
+  total_spent: number;
+  last_order_date: string;
   rating: number;
-  totalOrders: number;
-  lastOrderDate: string;
-  totalSpent: number;
 }
 
-const dummySupplier: SupplierData = {
-  id: "SUP-2024-001",
-  name: "Global Innovations Inc.",
-  address: "123 Tech Park, Silicon Valley, CA 94024",
-  phone: "+1 (555) 123-4567",
-  email: "contact@globalinnovations.com",
-  rating: 4.8,
-  totalOrders: 127,
-  lastOrderDate: "2024-07-15",
-  totalSpent: 1250000,
-};
-
 const SupplierDetailsDisplay: React.FC = () => {
-  const supplier = dummySupplier;
+  const router = useRouter();
+  const { supplierId } = useParams();
+  const [supplier, setSupplier] = useState<SupplierDetails | null>(null);
+
+  useEffect(() => {
+    if (supplierId) {
+      fetchSupplierDetails();
+    }
+  }, [supplierId]);
+
+  const fetchSupplierDetails = async () => {
+    try {
+      const accessToken = await getAccessToken();
+      const response = await axios.get(
+        `https://erp-backend-nv09.onrender.com/api/suppliers/detailed/${supplierId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setSupplier(response.data);
+    } catch (error) {
+      console.error("Error fetching supplier details:", error);
+      handleTokenRefresh(error);
+    }
+  };
+
+  const handleTokenRefresh = async (error: any) => {
+    if (error.response && error.response.status === 401) {
+      try {
+        await refreshAccessToken();
+        fetchSupplierDetails();
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+      }
+    }
+  };
+
+  const handleEdit = () => {
+    router.push(`/supplier/edit/${supplierId}`);
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this supplier?")) {
+      try {
+        const accessToken = await getAccessToken();
+        await axios.delete(
+          `https://erp-backend-nv09.onrender.com/api/suppliers/delete/${supplierId}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        router.push("/suppliers");
+      } catch (error) {
+        console.error("Error deleting supplier:", error);
+        handleTokenRefresh(error);
+      }
+    }
+  };
+
+  if (!supplier) {
+    return <div>Loading...</div>;
+  }
 
   const StatCard: React.FC<{
     title: string;
@@ -70,23 +128,37 @@ const SupplierDetailsDisplay: React.FC = () => {
                 <span className="font-semibold">{supplier.rating} / 5</span>
               </div>
             </div>
+            <div className="mt-6 flex items-center space-x-4">
+              <button
+                onClick={handleEdit}
+                className="px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-100 transition-colors flex items-center"
+              >
+                <FiEdit className="mr-2" /> Edit
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center"
+              >
+                <FiTrash2 className="mr-2" /> Delete
+              </button>
+            </div>
           </div>
 
           <div className="p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <StatCard
                 title="Total Orders"
-                value={supplier.totalOrders}
+                value={supplier.total_orders}
                 icon={<FiPackage className="text-blue-600 text-2xl" />}
               />
               <StatCard
                 title="Total Spent"
-                value={`$${supplier.totalSpent.toLocaleString()}`}
+                value={`$${supplier?.total_spent?.toLocaleString()}`}
                 icon={<FiDollarSign className="text-blue-600 text-2xl" />}
               />
               <StatCard
                 title="Last Order"
-                value={supplier.lastOrderDate}
+                value={supplier.last_order_date}
                 icon={<FiCalendar className="text-blue-600 text-2xl" />}
               />
               <StatCard
@@ -169,7 +241,7 @@ const SupplierDetailsDisplay: React.FC = () => {
                           Total Orders:
                         </dt>
                         <dd className="text-sm font-semibold text-gray-800">
-                          {supplier.totalOrders}
+                          {supplier.total_orders}
                         </dd>
                       </div>
                       <div className="flex items-center justify-between">
@@ -177,7 +249,7 @@ const SupplierDetailsDisplay: React.FC = () => {
                           Total Spent:
                         </dt>
                         <dd className="text-sm font-semibold text-gray-800">
-                          ${supplier.totalSpent.toLocaleString()}
+                          ${supplier?.total_spent?.toLocaleString()}
                         </dd>
                       </div>
                       <div className="flex items-center justify-between">
@@ -185,7 +257,7 @@ const SupplierDetailsDisplay: React.FC = () => {
                           Last Order Date:
                         </dt>
                         <dd className="text-sm font-semibold text-gray-800">
-                          {supplier.lastOrderDate}
+                          {supplier.last_order_date}
                         </dd>
                       </div>
                       <div className="flex items-center justify-between">

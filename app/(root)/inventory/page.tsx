@@ -1,81 +1,104 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FiSearch, FiPlus, FiFilter } from "react-icons/fi";
+import axios from "axios";
 
 interface Inventory {
-  inventoryCode: string;
-  itemName: string;
-  itemType: string;
+  id: string;
+  name: string;
+  category_id: string;
   image: string;
   quantity: number;
-  purchasePrice: number;
-  VAT: number;
+  unit_price: number;
+  vat: number;
+}
+
+interface Category {
+  id: string;
+  name: string;
 }
 
 const InventoryPage: React.FC = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("");
+  const [inventory, setInventory] = useState<Inventory[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  const inventorys: Inventory[] = [
-    {
-      inventoryCode: "INV001",
-      itemName: "Cement",
-      itemType: "Raw Materials",
-      image: "string",
-      quantity: 4,
-      purchasePrice: 4000,
-      VAT: 5,
-    },
-    {
-      inventoryCode: "INV002",
-      itemName: "Cement",
-      itemType: "Raw Materials",
-      image: "string",
-      quantity: 4,
-      purchasePrice: 4000,
-      VAT: 5,
-    },
-    {
-      inventoryCode: "INV003",
-      itemName: "Cement",
-      itemType: "Raw Materials",
-      image: "string",
-      quantity: 4,
-      purchasePrice: 4000,
-      VAT: 5,
-    },
-    // Add more inventory entries as needed
-  ];
+  useEffect(() => {
+    fetchItems();
+    fetchCategories();
+  }, []);
 
-  const itemTypes = [
-    "Raw Materials",
-    "Finished Goods",
-    "Semi-Finished Goods",
-    "Consumables",
-    "Structural Materials",
-    "Finishing Materials",
-    "Mechanical, Electrical, and Plumbing (MEP)",
-    "Support Materials",
-    "Protective Materials",
-    "Foundation Materials",
-    "Superstructure Materials",
-    "Interior Materials",
-    "Exterior Materials",
-    "Miscellaneous",
-  ];
+  const fetchItems = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axios.get<Inventory[]>(
+        "https://erp-backend-nv09.onrender.com/api/items/",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setInventory(response.data);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+      handleTokenRefresh(error);
+    }
+  };
 
-  const filteredInventory = inventorys.filter(
-    (inventory) =>
-      (filterType === "" || inventory.itemType === filterType) &&
+  const fetchCategories = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axios.get<Category[]>(
+        "https://erp-backend-nv09.onrender.com/api/categories/",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      handleTokenRefresh(error);
+    }
+  };
+
+  const handleTokenRefresh = async (error: any) => {
+    if (error.response && error.response.status === 401) {
+      try {
+        const refreshToken = localStorage.getItem("refreshToken");
+        const response = await axios.post(
+          "https://erp-backend-nv09.onrender.com/api/auth/token/refresh/",
+          {
+            refresh: refreshToken,
+          }
+        );
+        localStorage.setItem("accessToken", response.data.access);
+        fetchItems();
+        fetchCategories();
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+        router.push("/sign-in");
+      }
+    }
+  };
+
+  const filteredInventory = inventory.filter(
+    (item) =>
+      (filterType === "" || item.category_id === filterType) &&
       (searchQuery === "" ||
-        inventory.inventoryCode
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        inventory.itemName.toLowerCase().includes(searchQuery.toLowerCase()))
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
+  const getCategoryName = (categoryId: string) => {
+    const category = categories.find((cat) => cat.id === categoryId);
+    return category ? category.name : "Unknown";
+  };
 
   return (
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
@@ -109,9 +132,9 @@ const InventoryPage: React.FC = () => {
               className="bg-gray-100 rounded-md px-3 py-2 focus:outline-none"
             >
               <option value="">All Types</option>
-              {itemTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
                 </option>
               ))}
             </select>
@@ -131,24 +154,22 @@ const InventoryPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredInventory.map((inventory) => (
+              {filteredInventory.map((item) => (
                 <tr
-                  key={inventory.inventoryCode}
+                  key={item.id}
                   className="cursor-pointer hover:bg-gray-50 transition-colors"
-                  onClick={() =>
-                    router.push(`/inventory/${inventory.inventoryCode}`)
-                  }
+                  onClick={() => router.push(`/inventory/${item.id}`)}
                 >
+                  <td className="py-4 px-4 border-b">{item.id}</td>
+                  <td className="py-4 px-4 border-b">{item.name}</td>
                   <td className="py-4 px-4 border-b">
-                    {inventory.inventoryCode}
+                    {getCategoryName(item.category_id)}
                   </td>
-                  <td className="py-4 px-4 border-b">{inventory.itemName}</td>
-                  <td className="py-4 px-4 border-b">{inventory.itemType}</td>
-                  <td className="py-4 px-4 border-b">{inventory.quantity}</td>
+                  <td className="py-4 px-4 border-b">{item.quantity}</td>
                   <td className="py-4 px-4 border-b">
-                    ${inventory.purchasePrice.toFixed(2)}
+                    ${item.unit_price.toFixed(2)}
                   </td>
-                  <td className="py-4 px-4 border-b">{inventory.VAT}%</td>
+                  <td className="py-4 px-4 border-b">{item.vat}%</td>
                 </tr>
               ))}
             </tbody>
@@ -158,7 +179,7 @@ const InventoryPage: React.FC = () => {
 
       <div className="flex justify-between items-center">
         <p className="text-gray-600">
-          Showing {filteredInventory.length} of {inventorys.length} items
+          Showing {filteredInventory.length} of {inventory.length} items
         </p>
         <div className="flex gap-2">
           {[1, 2, 3].map((page) => (

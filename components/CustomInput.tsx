@@ -2,7 +2,6 @@
 import React from "react";
 import { FormControl, FormField, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
-
 import { Control, FieldPath } from "react-hook-form";
 import { z } from "zod";
 import { authFormSchema } from "@/lib/utils";
@@ -21,7 +20,7 @@ const CustomInput = ({ control, name, label, placeholder }: CustomInput) => {
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <div className="form-item">
           <FormLabel className="form-label">{label}</FormLabel>
           <div className="flex w-full flex-col">
@@ -33,7 +32,11 @@ const CustomInput = ({ control, name, label, placeholder }: CustomInput) => {
                 {...field}
               />
             </FormControl>
-            <FormMessage className="form-message mt-2" />
+            {fieldState.error && (
+              <FormMessage className="form-message mt-2">
+                {fieldState.error.message}
+              </FormMessage>
+            )}
           </div>
         </div>
       )}
