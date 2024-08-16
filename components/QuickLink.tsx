@@ -15,7 +15,7 @@ interface QuickLinkArr {
 
 const QuickLink = ({ arr }: QuickLinkArr) => {
   return (
-    <div className="flex items-center justify-between w-full bg-black-2">
+    <div className=" flex items-center justify-between w-full bg-black-2">
       <div className="  text-white  text-sm flex items-center justify-start gap-3 p-1">
         {arr.map((item, index) => {
           return (
