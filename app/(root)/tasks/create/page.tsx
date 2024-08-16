@@ -1,192 +1,290 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import CreateTaskDescription from "@/components/CreateTaskDescription";
-import { FiSave, FiX } from "react-icons/fi";
+import {
+  FiSave,
+  FiX,
+  FiFileText,
+  FiPackage,
+  FiClock,
+  FiCalendar,
+  FiFolder,
+  FiUser,
+} from "react-icons/fi";
+import axios from "axios";
+import { getAccessToken, refreshAccessToken } from "@/lib/utils";
 
-const stageOptions = [
-  "Planning and Design",
-  "Site Preparation",
-  "Foundation Construction",
-  "Superstructure Construction",
-  "Roofing",
-  "Exterior Walls and Cladding",
-  "Interior Walls and Partitions",
-  "Installation of Doors and Windows",
-  "Electrical and Plumbing Rough-in",
-  "HVAC Installation",
-  "Insulation and Drywall",
-  "Interior Finishes (flooring, painting, etc.)",
-  "Exterior Finishes (siding, landscaping, etc.)",
-  "Fixture and Appliance Installation",
-  "Final Inspections and Punch List",
-  "Project Handover and Occupancy",
-];
-
-const NewTaskForm: React.FC = () => {
+const TaskFormComponent = () => {
   const router = useRouter();
   const [task, setTask] = useState({
-    title: "",
-    project: "",
-    hoursPlanned: "",
-    assignedTo: "",
-    stage: "",
+    name: "",
     description: "",
+    material_requisition: "",
+    material_consumed: "",
+    material_planning: "",
+    hours_planned: "",
+    stage: "",
     deadline: "",
+    project: "",
+    assigned_to: "",
   });
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setTask({ ...task, [name]: value });
+  const handleInputChange = (field: string, value: string) => {
+    setTask({ ...task, [field]: value });
   };
 
-  const handleSave = () => {
-    console.log("Task saved:", task);
-    // Handle save logic here
-    router.push("/tasks"); // Adjust this route as needed
+  const handleSaveAfterTokenRefresh = async () => {
+    try {
+      const accessToken = await getAccessToken();
+      const response = await axios.post(
+        "https://erp-backend-nv09.onrender.com/api/projects/tasks/create/",
+        task,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Task created:", response.data);
+      router.push("/tasks");
+    } catch (error) {
+      console.error("Error creating task after token refresh:", error);
+    }
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const accessToken = await getAccessToken();
+      const response = await axios.post(
+        "https://erp-backend-nv09.onrender.com/api/projects/tasks/create/",
+        task,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Task created:", response.data);
+      router.push("/tasks");
+    } catch (error) {
+      console.error("Error creating task:", error);
+      handleTokenRefresh(error);
+    }
+  };
+
+  const handleTokenRefresh = async (error: any) => {
+    if (error.response && error.response.status === 401) {
+      try {
+        await refreshAccessToken();
+        // Call handleSave again without passing an event
+        handleSaveAfterTokenRefresh();
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+      }
+    }
   };
 
   const handleDiscard = () => {
-    setTask({
-      title: "",
-      project: "",
-      hoursPlanned: "",
-      assignedTo: "",
-      stage: "",
-      description: "",
-      deadline: "",
-    });
-    router.push("/tasks"); // Adjust this route as needed
+    router.push("/tasks");
   };
 
   return (
-    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          Create New Task
-        </h1>
-
-        <div className="flex flex-wrap items-center justify-start gap-3 mb-8">
-          <button
-            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
-            onClick={handleSave}
-          >
-            <FiSave /> Save Task
-          </button>
-          <button
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2"
-            onClick={handleDiscard}
-          >
-            <FiX /> Discard
-          </button>
+    <div className="bg-gray-100 min-h-screen">
+      <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white shadow-2xl rounded-lg overflow-hidden">
+          <div className="bg-blue-600 text-white py-6 px-8 flex justify-between items-center">
+            <h1 className="text-3xl font-bold">Create New Task</h1>
+          </div>
+          <div className="p-8">
+            <form onSubmit={handleSave} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  label="Task Name"
+                  name="name"
+                  value={task.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  icon={<FiFileText className="text-gray-400" />}
+                />
+                <FormField
+                  label="Description"
+                  name="description"
+                  value={task.description}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
+                  icon={<FiFileText className="text-gray-400" />}
+                />
+                <FormField
+                  label="Material Requisition"
+                  name="material_requisition"
+                  value={task.material_requisition}
+                  onChange={(e) =>
+                    handleInputChange("material_requisition", e.target.value)
+                  }
+                  icon={<FiPackage className="text-gray-400" />}
+                />
+                <FormField
+                  label="Material Consumed"
+                  name="material_consumed"
+                  value={task.material_consumed}
+                  onChange={(e) =>
+                    handleInputChange("material_consumed", e.target.value)
+                  }
+                  icon={<FiPackage className="text-gray-400" />}
+                />
+                <FormField
+                  label="Material Planning"
+                  name="material_planning"
+                  value={task.material_planning}
+                  onChange={(e) =>
+                    handleInputChange("material_planning", e.target.value)
+                  }
+                  icon={<FiPackage className="text-gray-400" />}
+                />
+                <FormField
+                  label="Hours Planned"
+                  name="hours_planned"
+                  type="datetime-local"
+                  value={task.hours_planned}
+                  onChange={(e) =>
+                    handleInputChange("hours_planned", e.target.value)
+                  }
+                  icon={<FiClock className="text-gray-400" />}
+                />
+                <FormField
+                  label="Stage"
+                  name="stage"
+                  value={task.stage}
+                  onChange={(e) => handleInputChange("stage", e.target.value)}
+                  options={[
+                    { value: "", label: "Select Stage" },
+                    { value: "Planning", label: "Planning" },
+                    { value: "In Progress", label: "In Progress" },
+                    { value: "Completed", label: "Completed" },
+                  ]}
+                  icon={<FiFileText className="text-gray-400" />}
+                />
+                <FormField
+                  label="Deadline"
+                  name="deadline"
+                  type="datetime-local"
+                  value={task.deadline}
+                  onChange={(e) =>
+                    handleInputChange("deadline", e.target.value)
+                  }
+                  icon={<FiCalendar className="text-gray-400" />}
+                />
+                <FormField
+                  label="Project ID"
+                  name="project"
+                  type="number"
+                  value={task.project}
+                  onChange={(e) => handleInputChange("project", e.target.value)}
+                  icon={<FiFolder className="text-gray-400" />}
+                />
+                <FormField
+                  label="Assigned To (User ID)"
+                  name="assigned_to"
+                  type="number"
+                  value={task.assigned_to}
+                  onChange={(e) =>
+                    handleInputChange("assigned_to", e.target.value)
+                  }
+                  icon={<FiUser className="text-gray-400" />}
+                />
+              </div>
+            </form>
+          </div>
+          <div className="bg-gray-50 px-8 py-6 flex justify-end space-x-4">
+            <button
+              className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors flex items-center"
+              onClick={handleDiscard}
+            >
+              <FiX className="mr-2" /> Discard
+            </button>
+            <button
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
+              type="submit"
+            >
+              <FiSave className="mr-2" /> Save
+            </button>
+          </div>
         </div>
-
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="md:col-span-2">
-            <label className="block text-gray-700 font-medium mb-2">
-              Task Title
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={task.title}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter task title"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Project
-            </label>
-            <select
-              name="project"
-              value={task.project}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select Project</option>
-              <option value="project1">Project 1</option>
-              <option value="project2">Project 2</option>
-              <option value="project3">Project 3</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Hours Planned
-            </label>
-            <input
-              type="number"
-              name="hoursPlanned"
-              value={task.hoursPlanned}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter planned hours"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Assigned To
-            </label>
-            <select
-              name="assignedTo"
-              value={task.assignedTo}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select User</option>
-              <option value="user1">User 1</option>
-              <option value="user2">User 2</option>
-              <option value="user3">User 3</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Stage
-            </label>
-            <select
-              name="stage"
-              value={task.stage}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select Stage</option>
-              {stageOptions.map((stage, index) => (
-                <option key={index} value={stage}>
-                  {stage}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Deadline
-            </label>
-            <input
-              type="date"
-              name="deadline"
-              value={task.deadline}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="md:col-span-2">
-            <label className="block text-gray-700 font-medium mb-2">
-              Description
-            </label>
-            <CreateTaskDescription
-              value={task.description}
-              onChange={(value: string) =>
-                setTask({ ...task, description: value })
-              }
-            />
-          </div>
-        </form>
       </div>
     </div>
   );
 };
 
-export default NewTaskForm;
+interface FormFieldProps {
+  label: string;
+  name: string;
+  value: string | number;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  type?: string;
+  placeholder?: string;
+  options?: { value: string; label: string }[];
+  icon?: React.ReactNode;
+}
+
+const FormField: React.FC<FormFieldProps> = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+  options,
+  icon,
+}) => (
+  <div>
+    <label
+      htmlFor={name}
+      className="block text-sm font-medium text-gray-700 mb-1"
+    >
+      {label}
+    </label>
+    <div className="relative">
+      {icon && (
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          {icon}
+        </div>
+      )}
+      {options ? (
+        <select
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className={`w-full ${
+            icon ? "pl-10" : "pl-3"
+          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          type={type}
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`w-full ${
+            icon ? "pl-10" : "pl-3"
+          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
+        />
+      )}
+    </div>
+  </div>
+);
+
+export default TaskFormComponent;

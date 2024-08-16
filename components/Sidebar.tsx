@@ -105,7 +105,7 @@ const Sidebar = ({ user }: SidebarProps) => {
 
   return (
     <motion.aside
-      className="min-h-screen h-fit bg-gradient-to-b from-blue-600 to-blue-700 text-white overflow-hidden transition-all duration-300 ease-in-out"
+      className="relative overflow-y-scroll min-h-screen h-fit bg-gradient-to-b from-blue-600 to-blue-700 text-white overflow-hidden transition-all duration-300 ease-in-out"
       variants={sidebarVariants}
       animate={isExpanded ? "expanded" : "collapsed"}
     >
