@@ -167,7 +167,7 @@ const BillOfQuantity: React.FC = () => {
                   Key
                 </th>
                 <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Employee Type
+                  Employee 
                 </th>
                 <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                    Type
