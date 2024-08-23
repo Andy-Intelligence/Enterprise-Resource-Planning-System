@@ -347,6 +347,7 @@ const Sidebar = ({ isExpanded, onToggle }: SidebarProps) => {
     ];
 
     const independentLinks = [
+      { imgURL: "/icons/dashboard.svg", route: "/report/dashboard", label: "Dashboard" },
       { imgURL: "/icons/report.svg", route: "/report/create", label: "Reports" },
       { imgURL: "/icons/project.png", route: "/projects", label: "Projects" },
       { imgURL: "/icons/project.png", route: "/clients", label: "Clients" },

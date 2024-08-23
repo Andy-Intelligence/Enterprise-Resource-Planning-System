@@ -3,7 +3,7 @@ import HeaderBox from "@/components/HeaderBox";
 ;
 
 export default function Home() {
-  const loggedIn = {firstName:"Andy"}
+  const loggedIn = {firstName:"Rubix"}
   return (
     <section className="home">
       <div className="home-content">
