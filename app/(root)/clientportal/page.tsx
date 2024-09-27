@@ -1,6 +1,17 @@
+
+
+
+
+
 "use client";
-import React, { useState } from "react";
-import classNames from "classnames";
+import { motion } from "framer-motion";
+import { FiHome, FiRefreshCw, FiMessageSquare, FiFileText, FiCalendar, FiFolder, FiBell, FiLayers } from "react-icons/fi";
+import Image from "next/image";
+import React,{ useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { FiUpload, FiX } from "react-icons/fi";
+
+
 
 // Define the type for project data
 interface ProjectData {
@@ -28,6 +39,38 @@ interface ClientData {
 const AdminClientPortal: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [selectedClientId, setSelectedClientId] = useState<string>("");
+   const [projectImages, setProjectImages] = useState<string[]>([]);
+   const [selectedImage, setSelectedImage] = useState(0);
+
+   const onDrop = useCallback((acceptedFiles: File[]) => {
+     acceptedFiles.forEach((file) => {
+       const reader = new FileReader();
+       reader.onload = () => {
+         setProjectImages((prev) => [...prev, reader.result as string]);
+       };
+       reader.readAsDataURL(file);
+     });
+   }, []);
+
+   const { getRootProps, getInputProps, isDragActive } = useDropzone({
+     onDrop,
+     accept: "image/*",
+   });
+
+   const removeImage = (index: number) => {
+     setProjectImages((prev) => prev.filter((_, i) => i !== index));
+     if (selectedImage >= index) {
+       setSelectedImage((prev) => Math.max(0, prev - 1));
+     }
+   };
+
+    //  const projectImages = [
+    //    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/New_building_construction_site._%2811741874173%29.jpg/1280px-New_building_construction_site._%2811741874173%29.jpg",
+    //    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/New_building_construction_site._%2811741874173%29.jpg/1280px-New_building_construction_site._%2811741874173%29.jpg",
+    //    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/New_building_construction_site._%2811741874173%29.jpg/1280px-New_building_construction_site._%2811741874173%29.jpg",
+    //    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/New_building_construction_site._%2811741874173%29.jpg/1280px-New_building_construction_site._%2811741874173%29.jpg",
+    //  ];
+
 
   // Mock data for clients and their projects
   const clients: ClientData[] = [
@@ -86,47 +129,52 @@ const AdminClientPortal: React.FC = () => {
     setSelectedClientId(e.target.value);
   };
 
+  const tabIcons = {
+    dashboard: FiHome,
+    "project-updates": FiRefreshCw,
+    feedback: FiMessageSquare,
+    documents: FiFolder,
+    notices: FiBell,
+    projects: FiLayers,
+  };
+
   return (
-    <div className="bg-blue-50 min-h-screen">
-      <nav className="bg-blue-700 py-4 shadow-lg">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="text-white text-2xl font-bold">
-            Admin Client Portal
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+      <nav className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg py-4 shadow-lg sticky top-0 z-10">
+        <div className="container mx-auto px-4 flex justify-between items-center">
+          <div className="text-indigo-700 text-3xl font-extrabold">
+            AdminClient<span className="text-blue-500">Portal</span>
           </div>
-          <div className="flex space-x-4">
-            {[
-              "dashboard",
-              "project-updates",
-              "feedback",
-              "reports",
-              "meetings",
-              "documents",
-              "notices",
-              "projects",
-            ].map((tab) => (
-              <button
+          <div className="flex space-x-2">
+            {Object.entries(tabIcons).map(([tab, Icon]) => (
+              <motion.button
                 key={tab}
-                className={classNames(
-                  "text-white hover:text-blue-200 transition",
-                  { "font-bold": activeTab === tab }
-                )}
+                className={`text-gray-600 hover:text-indigo-600 transition p-2 rounded-full ${
+                  activeTab === tab ? "bg-indigo-100 text-indigo-600" : ""
+                }`}
                 onClick={() => handleTabChange(tab)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {tab
-                  .split("-")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ")}
-              </button>
+                <Icon className="w-6 h-6" />
+              </motion.button>
             ))}
           </div>
         </div>
       </nav>
 
-      <div className="container mx-auto py-8">
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h2 className="text-2xl font-bold mb-4">Select Client</h2>
+      <div className="container mx-auto py-8 px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white rounded-2xl shadow-xl p-6 mb-6"
+        >
+          <h2 className="text-2xl font-bold mb-4 text-gray-800">
+            Select Client
+          </h2>
           <select
-            className="block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            className="block w-full border border-gray-300 rounded-lg shadow-sm p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             value={selectedClientId}
             onChange={handleClientChange}
           >
@@ -137,231 +185,192 @@ const AdminClientPortal: React.FC = () => {
               </option>
             ))}
           </select>
-        </div>
+        </motion.div>
 
         {selectedClient && (
-          <>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             {activeTab === "dashboard" && (
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="col-span-2">
-                    <img
-                      src="/path/to/main-project-image.jpg"
-                      alt="Main Project"
-                      className="w-full h-64 object-cover rounded-lg"
-                    />
+              <div className="bg-white rounded-2xl shadow-xl p-6">
+                <h2 className="text-3xl font-bold mb-6 text-gray-800">
+                  Dashboard
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="md:col-span-2 space-y-4">
+                    {projectImages.length > 0 ? (
+                      <>
+                        <div className="relative w-full h-80 rounded-xl overflow-hidden">
+                          <Image
+                            src={projectImages[selectedImage]}
+                            alt={`Project image ${selectedImage + 1}`}
+                            layout="fill"
+                            objectFit="cover"
+                          />
+                        </div>
+                        <div className="flex space-x-2 overflow-x-auto pb-2">
+                          {projectImages.map((img, index) => (
+                            <div key={index} className="relative">
+                              <button
+                                onClick={() => setSelectedImage(index)}
+                                className={`relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
+                                  selectedImage === index
+                                    ? "ring-2 ring-indigo-500"
+                                    : "opacity-70 hover:opacity-100"
+                                }`}
+                              >
+                                <Image
+                                  src={img}
+                                  alt={`Thumbnail ${index + 1}`}
+                                  layout="fill"
+                                  objectFit="cover"
+                                />
+                              </button>
+                              <button
+                                onClick={() => removeImage(index)}
+                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+                              >
+                                <FiX />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      <div
+                        {...getRootProps()}
+                        className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl h-80 flex items-center justify-center cursor-pointer hover:bg-gray-200 transition"
+                      >
+                        <input {...getInputProps()} />
+                        <div className="text-center">
+                          <FiUpload className="mx-auto text-4xl text-gray-400 mb-2" />
+                          <p className="text-gray-500">
+                            {isDragActive
+                              ? "Drop the files here"
+                              : "Drag 'n' drop project images, or click to select"}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold">Project Details</h3>
-                    <p>
-                      <strong>Name:</strong> {selectedClient.projects[0].name}
-                    </p>
-                    <p>
-                      <strong>Contractor:</strong>{" "}
-                      {selectedClient.projects[0].contractor}
-                    </p>
-                    <p>
-                      <strong>Client:</strong> {selectedClient.name}
-                    </p>
-                    <p>
-                      <strong>Working Time:</strong>{" "}
-                      {selectedClient.projects[0].working_time}
-                    </p>
-                    <p>
-                      <strong>Project Manager:</strong>{" "}
-                      {selectedClient.projects[0].project_manager}
-                    </p>
-                    <p>
-                      <strong>Deadline:</strong>{" "}
-                      {selectedClient.projects[0].deadline}
-                    </p>
-                    <p>
-                      <strong>Status:</strong>{" "}
-                      {selectedClient.projects[0].status}
-                    </p>
-                    <p>
-                      <strong>Team Lead:</strong>{" "}
-                      {selectedClient.projects[0].team_lead}
-                    </p>
-                    <p>
-                      <strong>Team Members:</strong>{" "}
-                      {selectedClient.projects[0].team_members}
-                    </p>
-                    <p>
-                      <strong>Budget:</strong> $
-                      {selectedClient.projects[0].budget.toLocaleString()}
-                    </p>
-                    <p>
-                      <strong>Description:</strong>{" "}
-                      {selectedClient.projects[0].description}
-                    </p>
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <h3 className="text-xl font-bold mb-4 text-gray-700">
+                      Project Details
+                    </h3>
+                    {Object.entries(selectedClient.projects[0]).map(
+                      ([key, value]) => (
+                        <p key={key} className="mb-2">
+                          <span className="font-semibold text-gray-600 capitalize">
+                            {key.replace("_", " ")}:
+                          </span>{" "}
+                          <span className="text-gray-800">
+                            {value?.toString()}
+                          </span>
+                        </p>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
             )}
 
             {activeTab === "project-updates" && (
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4">Update Project</h2>
-                <form className="space-y-4">
+              <div className="bg-white rounded-2xl shadow-xl p-6">
+                <h2 className="text-3xl font-bold mb-6 text-gray-800">
+                  Update Project
+                </h2>
+                <form className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Update Description
                     </label>
                     <textarea
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                      className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      rows={4}
                       required
                     ></textarea>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Status
                     </label>
-                    <select className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                    <select className="w-full border border-gray-300 rounded-lg shadow-sm p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                       <option value="on-schedule">On Schedule</option>
                       <option value="behind-schedule">Behind Schedule</option>
                       <option value="completed">Completed</option>
                     </select>
                   </div>
-                  <button
+                  <motion.button
                     type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md shadow"
+                    className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg font-semibold"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     Submit Update
-                  </button>
+                  </motion.button>
                 </form>
               </div>
             )}
 
             {activeTab === "feedback" && (
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4">Client Feedback</h2>
+              <div className="bg-white rounded-2xl shadow-xl p-6">
+                <h2 className="text-3xl font-bold mb-6 text-gray-800">
+                  Client Feedback
+                </h2>
                 <div className="space-y-4">
-                  {/* Replace with dynamic feedback */}
-                  <div className="p-4 bg-gray-100 rounded-lg shadow">
-                    <p>
-                      <strong>Client:</strong> {selectedClient.name}
+                  <div className="p-4 bg-gray-50 rounded-xl shadow">
+                    <p className="font-semibold text-gray-700">
+                      Client: {selectedClient.name}
                     </p>
-                    <p>
-                      <strong>Comments:</strong> Great work on the project! Keep
-                      up the good progress.
+                    <p className="text-gray-600">
+                      Comments: Great work on the project! Keep up the good
+                      progress.
                     </p>
-                    <p>
-                      <strong>Satisfaction:</strong> 5/5
-                    </p>
+                    <p className="text-gray-600">Satisfaction: 5/5</p>
                   </div>
                 </div>
               </div>
             )}
 
-            {activeTab === "reports" && (
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4">Submit Report</h2>
-                <form className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Report Title
-                    </label>
-                    <input
-                      type="text"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Attach Report
-                    </label>
-                    <input
-                      type="file"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                      required
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md shadow"
-                  >
-                    Submit Report
-                  </button>
-                </form>
-              </div>
-            )}
+     
 
-            {activeTab === "meetings" && (
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4">Schedule Meeting</h2>
-                <form className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Meeting Date
-                    </label>
-                    <input
-                      type="date"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Meeting Time
-                    </label>
-                    <input
-                      type="time"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Purpose
-                    </label>
-                    <textarea
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                      required
-                    ></textarea>
-                  </div>
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md shadow"
-                  >
-                    Request Meeting
-                  </button>
-                </form>
-              </div>
-            )}
 
             {activeTab === "documents" && (
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4">Upload Document</h2>
-                <form className="space-y-4">
+              <div className="bg-white rounded-2xl shadow-xl p-6">
+                <h2 className="text-3xl font-bold mb-6 text-gray-800">
+                  Upload Document
+                </h2>
+                <form className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Document Title
                     </label>
                     <input
                       type="text"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                      className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Attach Document
                     </label>
                     <input
                       type="file"
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                      className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       required
                     />
                   </div>
-                  <button
+                  <motion.button
                     type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md shadow"
+                    className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg font-semibold"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     Submit Document
-                  </button>
+                  </motion.button>
                 </form>
               </div>
             )}
@@ -386,12 +395,13 @@ const AdminClientPortal: React.FC = () => {
                     </label>
                     <textarea
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                      rows={4}
                       required
                     ></textarea>
                   </div>
                   <button
                     type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md shadow"
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
                   >
                     Post Notice
                   </button>
@@ -401,35 +411,32 @@ const AdminClientPortal: React.FC = () => {
 
             {activeTab === "projects" && (
               <div className="bg-white rounded-lg shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4">
-                  {selectedClient.name} Projects
-                </h2>
+                <h2 className="text-2xl font-bold mb-4">Manage Projects</h2>
                 <div className="space-y-4">
-                  {selectedClient.projects.map((project, index) => (
-                    <div key={index} className="p-4 bg-gray-100 rounded-lg">
-                      <h3 className="text-xl font-bold">{project.name}</h3>
-                      <p>
-                        <strong>Contractor:</strong> {project.contractor}
+                  {selectedClient.projects.map((project) => (
+                    <div
+                      key={project.name}
+                      className="p-4 bg-gray-100 rounded-lg shadow"
+                    >
+                      <h3 className="text-xl font-bold text-gray-800">
+                        {project.name}
+                      </h3>
+                      <p className="text-gray-600">
+                        Contractor: {project.contractor}
                       </p>
-                      <p>
-                        <strong>Deadline:</strong> {project.deadline}
+                      <p className="text-gray-600">Status: {project.status}</p>
+                      <p className="text-gray-600">
+                        Deadline: {project.deadline}
                       </p>
-                      <p>
-                        <strong>Status:</strong> {project.status}
-                      </p>
-                      <p>
-                        <strong>Budget:</strong> $
-                        {project.budget.toLocaleString()}
-                      </p>
-                      <p>
-                        <strong>Description:</strong> {project.description}
+                      <p className="text-gray-600">
+                        Budget: ${project.budget.toLocaleString()}
                       </p>
                     </div>
                   ))}
                 </div>
               </div>
             )}
-          </>
+          </motion.div>
         )}
       </div>
     </div>

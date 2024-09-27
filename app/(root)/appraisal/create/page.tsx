@@ -1,6 +1,8 @@
+
+
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   FiSave,
@@ -10,23 +12,13 @@ import {
   FiPercent,
   FiMessageSquare,
 } from "react-icons/fi";
+import axios from "axios";
+import { getAccessToken, refreshAccessToken } from "@/lib/utils";
 
 interface Employee {
   id: string;
   name: string;
 }
-
-const employees: Employee[] = [
-  { id: "E001", name: "John Doe" },
-  { id: "E002", name: "Jane Smith" },
-  { id: "E003", name: "Alice Johnson" },
-];
-
-const appraisers: Employee[] = [
-  { id: "A001", name: "Manager A" },
-  { id: "A002", name: "Manager B" },
-  { id: "A003", name: "Manager C" },
-];
 
 const CreateAppraisalForm: React.FC = () => {
   const router = useRouter();
@@ -38,6 +30,64 @@ const CreateAppraisalForm: React.FC = () => {
     appraisalDate: "",
     comments: "",
   });
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [appraisers, setAppraisers] = useState<Employee[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchEmployees();
+    fetchAppraisers();
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const accessToken = await getAccessToken();
+      const response = await axios.get(
+        "https://erp-backend-nv09.onrender.com/api/employees/",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setEmployees(response.data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+      handleTokenRefresh(error);
+    }
+  };
+
+  const fetchAppraisers = async () => {
+    try {
+      const accessToken = await getAccessToken();
+      const response = await axios.get(
+        "https://erp-backend-nv09.onrender.com/api/appraisers/",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setAppraisers(response.data);
+    } catch (error) {
+      console.error("Error fetching appraisers:", error);
+      handleTokenRefresh(error);
+    }
+  };
+
+  const handleTokenRefresh = async (error: any) => {
+    if (error.response && error.response.status === 401) {
+      try {
+        await refreshAccessToken();
+        fetchEmployees();
+        fetchAppraisers();
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+        setError("Session expired. Please log in again.");
+      }
+    }
+  };
 
   const handleInputChange = (field: string, value: string | number) => {
     setFormData({ ...formData, [field]: value });
@@ -52,11 +102,38 @@ const CreateAppraisalForm: React.FC = () => {
     });
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Saved Data: ", formData);
-    // Add save logic here
-    router.push("/appraisals");
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const accessToken = await getAccessToken();
+      const response = await axios.post(
+        "https://erp-backend-nv09.onrender.com/api/payrolls/appraisals/",
+        {
+          employee: formData.employeeId,
+          appraisedBy: formData.appraisalBy,
+          appraisalDate: formData.appraisalDate,
+          score: formData.appraisalScore,
+          comments: formData.comments,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      console.log("Appraisal created successfully:", response.data);
+      router.push("/appraisals");
+    } catch (error) {
+      console.error("Error creating appraisal:", error);
+      handleTokenRefresh(error);
+      setError("Failed to create appraisal. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDiscard = () => {
@@ -71,6 +148,14 @@ const CreateAppraisalForm: React.FC = () => {
             <h1 className="text-3xl font-bold">New Appraisal</h1>
           </div>
           <div className="p-8">
+            {error && (
+              <div
+                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                role="alert"
+              >
+                <span className="block sm:inline">{error}</span>
+              </div>
+            )}
             <form onSubmit={handleSave} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
@@ -105,7 +190,7 @@ const CreateAppraisalForm: React.FC = () => {
                   options={[
                     { value: "", label: "Select Appraiser" },
                     ...appraisers.map((app) => ({
-                      value: app.name,
+                      value: app.id,
                       label: app.name,
                     })),
                   ]}
@@ -159,8 +244,9 @@ const CreateAppraisalForm: React.FC = () => {
             <button
               className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
               onClick={handleSave}
+              disabled={isLoading}
             >
-              <FiSave className="mr-2" /> Save
+              <FiSave className="mr-2" /> {isLoading ? "Saving..." : "Save"}
             </button>
           </div>
         </div>

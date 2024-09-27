@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiSave, FiX, FiFileText, FiPlus, FiTrash2 } from "react-icons/fi";
+import axios from "axios";
 
 interface BOQItem {
   id: string;
@@ -15,10 +16,26 @@ interface BOQItem {
   total: number;
 }
 
+interface Project {
+  id: string;
+  name: string;
+  subcontract_cost: number;
+  equipment_cost: number;
+  material_cost: number;
+  labour_cost: number;
+}
+
 const statusOptions = [
   { label: "Draft", value: "draft" },
   { label: "Confirmed", value: "confirmed" },
 ];
+
+const api = axios.create({
+  baseURL: "https://erp-backend-nv09.onrender.com/api/",
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  },
+});
 
 const BillOfQuantity: React.FC = () => {
   const [formStatus, setFormStatus] = useState<string>("draft");
@@ -35,40 +52,94 @@ const BillOfQuantity: React.FC = () => {
     rate: 0,
     total: 0,
   });
-  const [projectDetails, setProjectDetails] = useState({
-    project: "",
-    subcontractCost: 0,
-    equipmentCost: 0,
-    materialCost: 0,
-    labourCost: 0,
+  const [project, setProject] = useState<Project>({
+    id: "",
+    name: "",
+    subcontract_cost: 0,
+    equipment_cost: 0,
+    material_cost: 0,
+    labour_cost: 0,
   });
 
-  const handleAddItem = () => {
-    const total = newItem.quantity * newItem.rate;
-    setBoqItems([
-      ...boqItems,
-      { ...newItem, id: (boqItems.length + 1).toString(), total },
-    ]);
-    setIsDialogOpen(false);
-    setNewItem({
-      id: "",
-      key: "",
-      employee: "",
-      type: "",
-      description: "",
-      unitOfMeasure: "",
-      quantity: 0,
-      rate: 0,
-      total: 0,
-    });
+  useEffect(() => {
+    fetchProject();
+  }, []);
+
+  const fetchProject = async () => {
+    try {
+      const response = await api.get<Project>("projects/1/"); // Assuming we're working with project ID 1
+      setProject(response.data);
+      fetchBOQItems(response.data.id);
+    } catch (error) {
+      console.error("Error fetching project:", error);
+    }
+  };
+
+  const fetchBOQItems = async (projectId: string) => {
+    try {
+      const response = await api.get<BOQItem[]>(
+        `projects/${projectId}/boq_items/`
+      );
+      setBoqItems(response.data);
+    } catch (error) {
+      console.error("Error fetching BOQ items:", error);
+    }
+  };
+
+  const handleAddItem = async () => {
+    try {
+      const response = await api.post<BOQItem>(
+        `projects/${project.id}/add_boq_item/`,
+        {
+          ...newItem,
+          total: newItem.quantity * newItem.rate,
+        }
+      );
+      setBoqItems([...boqItems, response.data]);
+      setIsDialogOpen(false);
+      setNewItem({
+        id: "",
+        key: "",
+        employee: "",
+        type: "",
+        description: "",
+        unitOfMeasure: "",
+        quantity: 0,
+        rate: 0,
+        total: 0,
+      });
+    } catch (error) {
+      console.error("Error adding BOQ item:", error);
+    }
+  };
+
+  const handleDeleteItem = async (itemId: string) => {
+    try {
+      await api.delete(`boq-items/${itemId}/`);
+      setBoqItems(boqItems.filter((item) => item.id !== itemId));
+    } catch (error) {
+      console.error("Error deleting BOQ item:", error);
+    }
   };
 
   const handleInputChange = (field: string, value: string | number) => {
     setNewItem({ ...newItem, [field]: value });
   };
 
-  const handleProjectDetailsChange = (field: string, value: string | number) => {
-    setProjectDetails({ ...projectDetails, [field]: value });
+  const handleProjectDetailsChange = async (
+    field: string,
+    value: string | number
+  ) => {
+    try {
+      const updatedProject = { ...project, [field]: value };
+      const response = await api.put<Project>(
+        `projects/${project.id}/`,
+        updatedProject
+      );
+      setProject(response.data);
+    } catch (error) {
+      console.error("Error updating project:", error);
+    }
   };
 
   const calculateTotal = () => {
@@ -76,18 +147,36 @@ const BillOfQuantity: React.FC = () => {
   };
 
   const calculateEstimatedCost = () => {
-    const { subcontractCost, equipmentCost, materialCost, labourCost } = projectDetails;
-    return subcontractCost + equipmentCost + materialCost + labourCost;
+    const { subcontract_cost, equipment_cost, material_cost, labour_cost } =
+      project;
+    return subcontract_cost + equipment_cost + material_cost + labour_cost;
+  };
+
+  const handleSave = async () => {
+    try {
+      await api.put(`projects/${project.id}/`, {
+        ...project,
+        status: formStatus,
+      });
+      // You might want to show a success message here
+    } catch (error) {
+      console.error("Error saving project:", error);
+    }
   };
 
   return (
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Bill of Quantity</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          Bill of Quantity
+        </h1>
 
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
           <div className="flex flex-wrap items-center gap-3">
-            <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2">
+            <button
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
+              onClick={handleSave}
+            >
               <FiSave /> Save
             </button>
             <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2">
@@ -118,47 +207,71 @@ const BillOfQuantity: React.FC = () => {
         <form className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <FormField
             label="Project"
-            name="project"
-            value={projectDetails.project}
-            onChange={(e) => handleProjectDetailsChange("project", e.target.value)}
+            name="name"
+            value={project.name}
+            onChange={(e) => handleProjectDetailsChange("name", e.target.value)}
           />
           <FormField
             label="Subcontract Cost"
-            name="subcontractCost"
+            name="subcontract_cost"
             type="number"
-            value={projectDetails.subcontractCost}
-            onChange={(e) => handleProjectDetailsChange("subcontractCost", parseFloat(e.target.value))}
+            value={project.subcontract_cost}
+            onChange={(e) =>
+              handleProjectDetailsChange(
+                "subcontract_cost",
+                parseFloat(e.target.value)
+              )
+            }
           />
           <FormField
             label="Equipment Cost"
-            name="equipmentCost"
+            name="equipment_cost"
             type="number"
-            value={projectDetails.equipmentCost}
-            onChange={(e) => handleProjectDetailsChange("equipmentCost", parseFloat(e.target.value))}
+            value={project.equipment_cost}
+            onChange={(e) =>
+              handleProjectDetailsChange(
+                "equipment_cost",
+                parseFloat(e.target.value)
+              )
+            }
           />
           <FormField
             label="Material Cost"
-            name="materialCost"
+            name="material_cost"
             type="number"
-            value={projectDetails.materialCost}
-            onChange={(e) => handleProjectDetailsChange("materialCost", parseFloat(e.target.value))}
+            value={project.material_cost}
+            onChange={(e) =>
+              handleProjectDetailsChange(
+                "material_cost",
+                parseFloat(e.target.value)
+              )
+            }
           />
           <FormField
             label="Labour Cost"
-            name="labourCost"
+            name="labour_cost"
             type="number"
-            value={projectDetails.labourCost}
-            onChange={(e) => handleProjectDetailsChange("labourCost", parseFloat(e.target.value))}
+            value={project.labour_cost}
+            onChange={(e) =>
+              handleProjectDetailsChange(
+                "labour_cost",
+                parseFloat(e.target.value)
+              )
+            }
           />
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Estimated Cost</label>
+            <label className="block text-gray-700 font-medium mb-2">
+              Estimated Cost
+            </label>
             <div className="text-2xl font-bold text-blue-600">
               ${calculateEstimatedCost().toLocaleString()}
             </div>
           </div>
         </form>
 
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Bill of Quantity Items</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          Bill of Quantity Items
+        </h2>
         <div className="overflow-x-auto mb-4">
           <table className="min-w-full bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden">
             <thead className="bg-gray-50">
@@ -167,10 +280,10 @@ const BillOfQuantity: React.FC = () => {
                   Key
                 </th>
                 <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Employee 
+                  Employee
                 </th>
                 <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                   Type
+                  Type
                 </th>
                 <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Description
@@ -198,17 +311,33 @@ const BillOfQuantity: React.FC = () => {
                   key={item.id}
                   className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
                 >
-                  <td className="py-4 px-4 text-sm text-gray-900">{item.key}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">{item.employee}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">{item.type}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">{item.description}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">{item.unitOfMeasure}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">{item.quantity}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">${item.rate.toFixed(2)}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">${item.total.toFixed(2)}</td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.key}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.employee}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.type}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.description}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.unitOfMeasure}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    {item.quantity}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    ${item.rate.toFixed(2)}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-900">
+                    ${item.total.toFixed(2)}
+                  </td>
                   <td className="py-4 px-4 text-sm text-gray-900">
                     <button
-                      onClick={() => setBoqItems(boqItems.filter((_, i) => i !== index))}
+                      onClick={() => handleDeleteItem(item.id)}
                       className="text-red-600 hover:text-red-800 transition-colors"
                     >
                       <FiTrash2 />
@@ -223,7 +352,7 @@ const BillOfQuantity: React.FC = () => {
                   Total:
                 </td>
                 <td className="py-3 px-4 font-bold">
-                  ${calculateTotal().toFixed(2)}
+                  ${calculateTotal()?.toFixed(2)}
                 </td>
                 <td></td>
               </tr>
@@ -265,27 +394,35 @@ const BillOfQuantity: React.FC = () => {
                 label="Description"
                 name="description"
                 value={newItem.description}
-                onChange={(e) => handleInputChange("description", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
               />
               <FormField
                 label="Unit of Measure"
                 name="unitOfMeasure"
                 value={newItem.unitOfMeasure}
-                onChange={(e) => handleInputChange("unitOfMeasure", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("unitOfMeasure", e.target.value)
+                }
               />
               <FormField
                 label="Quantity"
                 name="quantity"
                 type="number"
                 value={newItem.quantity}
-                onChange={(e) => handleInputChange("quantity", parseFloat(e.target.value))}
+                onChange={(e) =>
+                  handleInputChange("quantity", parseFloat(e.target.value))
+                }
               />
               <FormField
                 label="Rate"
                 name="rate"
                 type="number"
                 value={newItem.rate}
-                onChange={(e) => handleInputChange("rate", parseFloat(e.target.value))}
+                onChange={(e) =>
+                  handleInputChange("rate", parseFloat(e.target.value))
+                }
               />
               <div className="flex justify-end mt-6 gap-3">
                 <button

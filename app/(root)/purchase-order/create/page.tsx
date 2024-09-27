@@ -1,15 +1,27 @@
+
+
+
+
+
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FiSave, FiX, FiPlus } from "react-icons/fi";
+import axios from "axios";
+import { getAccessToken, refreshAccessToken } from "@/lib/utils";
 
 interface ItemDetail {
   id: string;
   item: string;
   quantity: number;
-  unit: string;
+  price: number;
   status: string;
+}
+
+interface Project {
+  id: number;
+  name: string;
 }
 
 const statusOptions = [
@@ -26,9 +38,55 @@ const CreatePurchaseOrder: React.FC = () => {
     id: "",
     item: "",
     quantity: 0,
-    unit: "",
+    price: 0,
     status: "pending",
   });
+  const [purchaseDetails, setPurchaseDetails] = useState({
+    name: "",
+    project: "",
+    description: "",
+    schedule_date: "",
+    payment_terms: "",
+    shipping_method: "",
+    delivery_address: "",
+  });
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const accessToken = await getAccessToken();
+      const response = await axios.get(
+        "https://erp-backend-nv09.onrender.com/api/projects/",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setProjects(response.data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      handleTokenRefresh(error);
+    }
+  };
+
+  const handleTokenRefresh = async (error: any) => {
+    if (error.response && error.response.status === 401) {
+      try {
+        await refreshAccessToken();
+        fetchProjects();
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+        setError("Session expired. Please log in again.");
+      }
+    }
+  };
 
   const handleAddItem = () => {
     setPurchaseItems([
@@ -40,15 +98,79 @@ const CreatePurchaseOrder: React.FC = () => {
       id: "",
       item: "",
       quantity: 0,
-      unit: "",
+      price: 0,
       status: "pending",
     });
   };
 
-  const handleSave = () => {
-    console.log("Purchase Order saved:", purchaseItems);
-    // Add save logic here
-    router.push("/purchase-orders");
+  const handleInputChange = (field: string, value: string | number) => {
+    setNewItemDetail({ ...newItemDetail, [field]: value });
+  };
+
+  const handlePurchaseDetailsChange = (field: string, value: string) => {
+    setPurchaseDetails({ ...purchaseDetails, [field]: value });
+  };
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const accessToken = await getAccessToken();
+
+      // First, create a purchase requisition
+      const requisitionResponse = await axios.post(
+        "https://erp-backend-nv09.onrender.com/api/purchase/requisitions/",
+        {
+          name: purchaseDetails.name,
+          project: parseInt(purchaseDetails.project),
+          description: purchaseDetails.description,
+          schedule_date: purchaseDetails.schedule_date,
+          items: purchaseItems.map((item) => ({
+            item: item.item,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const requisitionId = requisitionResponse.data.id;
+
+      // Then, create a purchase order based on the requisition
+      const purchaseOrderResponse = await axios.post(
+        "https://erp-backend-nv09.onrender.com/api/purchase/purchase-orders/",
+        {
+          requisition: requisitionId,
+          order_date: new Date().toISOString(),
+          delivery_date: purchaseDetails.schedule_date,
+          payment_terms: purchaseDetails.payment_terms,
+          shipping_method: purchaseDetails.shipping_method,
+          delivery_address: purchaseDetails.delivery_address,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      console.log(
+        "Purchase Order created successfully:",
+        purchaseOrderResponse.data
+      );
+      router.push("/purchase-orders");
+    } catch (error) {
+      console.error("Error creating purchase order:", error);
+      handleTokenRefresh(error);
+      setError("Failed to create purchase order. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDiscard = () => {
@@ -59,15 +181,25 @@ const CreatePurchaseOrder: React.FC = () => {
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          Purchase Order
+          Create Purchase Order
         </h1>
+
+        {error && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+            role="alert"
+          >
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
 
         <div className="flex flex-wrap items-center justify-start gap-3 mb-8">
           <button
             className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
             onClick={handleSave}
+            disabled={isLoading}
           >
-            <FiSave /> Save
+            <FiSave /> {isLoading ? "Saving..." : "Save"}
           </button>
           <button
             className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2"
@@ -78,13 +210,75 @@ const CreatePurchaseOrder: React.FC = () => {
         </div>
 
         <form className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <FormField label="Supplier Name" name="supplierName" />
-          <FormField label="Payment Terms" name="paymentTerms" />
-          <FormField label="Requisition ID" name="requisitionId" />
-          <FormField label="Delivery Address" name="deliveryAddress" />
-          <FormField label="Shipping Method" name="shippingMethod" />
-          <FormField label="Date" name="date" type="date" />
-          <FormField label="Approved By" name="approvedBy" />
+          <FormField
+            label="Purchase Order Name"
+            name="name"
+            value={purchaseDetails.name}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("name", e.target.value)
+            }
+          />
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              Project
+            </label>
+            <select
+              name="project"
+              value={purchaseDetails.project}
+              onChange={(e) =>
+                handlePurchaseDetailsChange("project", e.target.value)
+              }
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select Project</option>
+              {projects.map((project) => (
+                <option key={project.id} value={project.id}>
+                  {project.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <FormField
+            label="Description"
+            name="description"
+            value={purchaseDetails.description}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("description", e.target.value)
+            }
+          />
+          <FormField
+            label="Schedule Date"
+            name="schedule_date"
+            type="date"
+            value={purchaseDetails.schedule_date}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("schedule_date", e.target.value)
+            }
+          />
+          <FormField
+            label="Payment Terms"
+            name="payment_terms"
+            value={purchaseDetails.payment_terms}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("payment_terms", e.target.value)
+            }
+          />
+          <FormField
+            label="Shipping Method"
+            name="shipping_method"
+            value={purchaseDetails.shipping_method}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("shipping_method", e.target.value)
+            }
+          />
+          <FormField
+            label="Delivery Address"
+            name="delivery_address"
+            value={purchaseDetails.delivery_address}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("delivery_address", e.target.value)
+            }
+          />
         </form>
 
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Item Details</h2>
@@ -94,7 +288,7 @@ const CreatePurchaseOrder: React.FC = () => {
               <tr className="bg-gray-100">
                 <th className="py-2 px-4 border-b">Item</th>
                 <th className="py-2 px-4 border-b">Quantity</th>
-                <th className="py-2 px-4 border-b">Unit</th>
+                <th className="py-2 px-4 border-b">Price</th>
                 <th className="py-2 px-4 border-b">Status</th>
                 <th className="py-2 px-4 border-b">Action</th>
               </tr>
@@ -107,7 +301,7 @@ const CreatePurchaseOrder: React.FC = () => {
                 >
                   <td className="py-2 px-4 border-b">{item.item}</td>
                   <td className="py-2 px-4 border-b">{item.quantity}</td>
-                  <td className="py-2 px-4 border-b">{item.unit}</td>
+                  <td className="py-2 px-4 border-b">{item.price}</td>
                   <td className="py-2 px-4 border-b">{item.status}</td>
                   <td className="py-2 px-4 border-b text-center">
                     <button
@@ -143,9 +337,7 @@ const CreatePurchaseOrder: React.FC = () => {
                 label="Item"
                 name="item"
                 value={newItemDetail.item}
-                onChange={(e) =>
-                  setNewItemDetail({ ...newItemDetail, item: e.target.value })
-                }
+                onChange={(e) => handleInputChange("item", e.target.value)}
               />
               <FormField
                 label="Quantity"
@@ -153,27 +345,23 @@ const CreatePurchaseOrder: React.FC = () => {
                 type="number"
                 value={newItemDetail.quantity}
                 onChange={(e) =>
-                  setNewItemDetail({
-                    ...newItemDetail,
-                    quantity: parseInt(e.target.value),
-                  })
+                  handleInputChange("quantity", parseInt(e.target.value))
                 }
               />
               <FormField
-                label="Unit"
-                name="unit"
-                value={newItemDetail.unit}
+                label="Price"
+                name="price"
+                type="number"
+                value={newItemDetail.price}
                 onChange={(e) =>
-                  setNewItemDetail({ ...newItemDetail, unit: e.target.value })
+                  handleInputChange("price", parseFloat(e.target.value))
                 }
               />
               <FormField
                 label="Status"
                 name="status"
                 value={newItemDetail.status}
-                onChange={(e) =>
-                  setNewItemDetail({ ...newItemDetail, status: e.target.value })
-                }
+                onChange={(e) => handleInputChange("status", e.target.value)}
                 options={statusOptions}
               />
               <div className="flex justify-end mt-6 gap-3">
