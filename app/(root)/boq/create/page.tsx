@@ -33,9 +33,13 @@ const statusOptions = [
 const api = axios.create({
   baseURL: "https://erp-backend-nv09.onrender.com/api/",
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    Authorization:
+      typeof window !== "undefined"
+        ? `Bearer ${localStorage.getItem("accessToken")}`
+        : "",
   },
 });
+
 
 const BillOfQuantity: React.FC = () => {
   const [formStatus, setFormStatus] = useState<string>("draft");
