@@ -52,10 +52,12 @@ const AdminClientPortal: React.FC = () => {
      });
    }, []);
 
-   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-     onDrop,
-     accept: "image/*",
-   });
+ const { getRootProps, getInputProps, isDragActive } = useDropzone({
+   onDrop,
+   accept: {
+     "image/*": [],
+   },
+ });
 
    const removeImage = (index: number) => {
      setProjectImages((prev) => prev.filter((_, i) => i !== index));
