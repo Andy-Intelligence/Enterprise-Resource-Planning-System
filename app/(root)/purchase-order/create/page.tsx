@@ -509,7 +509,7 @@ const CreatePurchaseOrder: React.FC = () => {
     try {
       const accessToken = await getAccessToken();
       const response = await axios.get(
-        "https://erp-backend-nv09.onrender.com/api/projects/tasks/",
+        "https://erp-backend-nv09.onrender.com/api/projects/",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -527,7 +527,7 @@ const CreatePurchaseOrder: React.FC = () => {
     try {
       const accessToken = await getAccessToken();
       const response = await axios.get(
-        "https://erp-backend-nv09.onrender.com/api/tasks/",
+        "https://erp-backend-nv09.onrender.com/api/projects/tasks/",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
