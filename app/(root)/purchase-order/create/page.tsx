@@ -1247,7 +1247,7 @@ const CreatePurchaseOrder: React.FC = () => {
         </form>
 
         {/* Render Items in a Table */}
-        {/* <div>
+        <div>
           <h2 className="text-xl font-bold mb-4">Items</h2>
           <table className="min-w-full bg-white border border-gray-300">
             <thead>
@@ -1269,48 +1269,7 @@ const CreatePurchaseOrder: React.FC = () => {
               ))}
             </tbody>
           </table>
-        </div> */}
-
-
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Item Details</h2>
-         <div className="overflow-x-auto mb-4">
-           <table className="min-w-full bg-white border border-gray-200">
-             <thead>
-               <tr className="bg-gray-100">
-                 <th className="py-2 px-4 border-b">Item</th>
-                 <th className="py-2 px-4 border-b">Quantity</th>
-                 <th className="py-2 px-4 border-b">Price</th>
-                 <th className="py-2 px-4 border-b">Status</th>
-                 <th className="py-2 px-4 border-b">Action</th>
-               </tr>
-             </thead>
-             <tbody>
-               {purchaseItems.map((item, index) => (
-                <tr
-                  key={item.id}
-                  className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
-                >
-                  <td className="py-2 px-4 border-b">{item.item}</td>
-                  <td className="py-2 px-4 border-b">{item.quantity}</td>
-                  <td className="py-2 px-4 border-b">{item.price}</td>
-                  <td className="py-2 px-4 border-b">{item.status}</td>
-                  <td className="py-2 px-4 border-b text-center">
-                    <button
-                      onClick={() =>
-                        setPurchaseItems(
-                          purchaseItems.filter((_, i) => i !== index)
-                        )
-                      }
-                      className="text-red-500 hover:text-red-700 transition-colors"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div> 
+        </div>
 
         {/* Add New Item Dialog */}
         <div>
