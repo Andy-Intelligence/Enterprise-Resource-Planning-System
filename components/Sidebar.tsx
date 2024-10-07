@@ -352,6 +352,7 @@ const Sidebar = ({ isExpanded, onToggle }: SidebarProps) => {
       { imgURL: "/icons/project.png", route: "/projects", label: "Projects" },
       { imgURL: "/icons/client.svg", route: "/clients", label: "Clients" },
       { imgURL: "/icons/clientportal.svg", route: "/clientportal", label: "ClientPortal" },
+      { imgURL: "/icons/cashbook.svg", route: "/cashbook", label: "Cashbook" },
     ];
 
   const sidebarVariants = {
