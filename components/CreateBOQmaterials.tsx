@@ -104,7 +104,7 @@ const CreateBOQmaterials: React.FC = () => {
     <div className="container mx-auto p-4">
       <div className="flex justify-between mb-4">
         <Button
-          className="px-4 py-2 bg-blue-500 text-white"
+          className="px-4 py-2 bg-green-500 text-white"
           onClick={handleDialogOpen}
         >
           Add Item
@@ -176,7 +176,7 @@ const CreateBOQmaterials: React.FC = () => {
                 name="key"
                 value={newItem.key}
                 onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
             </div>
             <div>
@@ -188,7 +188,7 @@ const CreateBOQmaterials: React.FC = () => {
                 name="employee"
                 value={newItem.employee}
                 onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
             </div>
             <div>
@@ -200,7 +200,7 @@ const CreateBOQmaterials: React.FC = () => {
                 name="type"
                 value={newItem.type}
                 onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
             </div>
             <div>
@@ -212,7 +212,7 @@ const CreateBOQmaterials: React.FC = () => {
                 name="description"
                 value={newItem.description}
                 onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
             </div>
             <div>
@@ -224,7 +224,7 @@ const CreateBOQmaterials: React.FC = () => {
                 name="unitOfMeasure"
                 value={newItem.unitOfMeasure}
                 onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
             </div>
             <div>
@@ -236,7 +236,7 @@ const CreateBOQmaterials: React.FC = () => {
                 name="quantity"
                 value={newItem.quantity}
                 onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
             </div>
             <div>
@@ -248,7 +248,7 @@ const CreateBOQmaterials: React.FC = () => {
                 name="rate"
                 value={newItem.rate}
                 onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
             </div>
             <div>
@@ -260,7 +260,7 @@ const CreateBOQmaterials: React.FC = () => {
                 name="total"
                 value={newItem.total}
                 onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
               />
             </div>
           </form>
@@ -272,7 +272,7 @@ const CreateBOQmaterials: React.FC = () => {
               Save and Close
             </Button>
             <Button
-              className="bg-blue-500 text-white mr-2"
+              className="bg-green-500 text-white mr-2"
               onClick={handleSaveAndNew}
             >
               Save and New

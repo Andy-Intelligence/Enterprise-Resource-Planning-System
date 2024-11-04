@@ -66,7 +66,7 @@ const CreateEditCustomer = () => {
     <div className="border rounded-lg p-4">
       <div className="text-3xl font-bold mb-4">Create : Customer</div>
       <div className="mb-4">
-        <button className="px-4 py-2 mr-2 bg-blue-500 text-white rounded-md">
+        <button className="px-4 py-2 mr-2 bg-green-500 text-white rounded-md">
           Save
         </button>
         <button className="px-4 py-2 bg-gray-500 text-white rounded-md">
@@ -112,10 +112,10 @@ const CreateEditCustomer = () => {
               <div className="w-1/2 px-2 mb-4">
                 <div className="flex gap-2 items-center">
                   <div>
-                    <FaFileInvoice className="text-bankGradient" size={32} />
+                    <FaFileInvoice className="text-green-500 " size={32} />
                   </div>
                   <div className="flex flex-col">
-                    <div className=" flex items-center justify-start text-bankGradient ">
+                    <div className=" flex items-center justify-start text-green-500 ">
                       1
                     </div>
                     <div>Invoice</div>
@@ -125,10 +125,10 @@ const CreateEditCustomer = () => {
               <div className="w-1/2 px-2 mb-4">
                 <div className="flex gap-2 items-center">
                   <div>
-                    <FaBook className="text-bankGradient" size={32} />
+                    <FaBook className="text-green-500 " size={32} />
                   </div>
                   <div className="flex flex-col">
-                    <div className=" flex items-center justify-start text-bankGradient ">
+                    <div className=" flex items-center justify-start text-green-500 ">
                       1
                     </div>
                     <div>Analytic Account</div>
@@ -138,10 +138,10 @@ const CreateEditCustomer = () => {
               <div className="w-1/2 px-2 mb-4">
                 <div className="flex gap-2 items-center">
                   <div>
-                    <FaTasks className="text-bankGradient" size={32} />
+                    <FaTasks className="text-green-500 " size={32} />
                   </div>
                   <div className="flex flex-col">
-                    <div className=" flex items-center justify-start text-bankGradient ">
+                    <div className=" flex items-center justify-start text-green-500 ">
                       1
                     </div>
                     <div>Tasks</div>
@@ -152,12 +152,12 @@ const CreateEditCustomer = () => {
                 <div className="flex gap-2 items-center">
                   <div>
                     <AiOutlineIssuesClose
-                      className="text-bankGradient"
+                      className="text-green-500 "
                       size={32}
                     />
                   </div>
                   <div className="flex flex-col">
-                    <div className=" flex items-center justify-start text-bankGradient ">
+                    <div className=" flex items-center justify-start text-green-500  ">
                       1
                     </div>
                     <div>Issues</div>
@@ -167,10 +167,10 @@ const CreateEditCustomer = () => {
               <div className="w-1/2 px-2 mb-4">
                 <div className="flex gap-2 items-center">
                   <div>
-                    <TbCurrencyNaira className="text-bankGradient" size={32} />
+                    <TbCurrencyNaira className="text-green-500 " size={32} />
                   </div>
                   <div className="flex flex-col">
-                    <div className=" flex items-center justify-start text-bankGradient ">
+                    <div className=" flex items-center justify-start text-green-500 ">
                       1
                     </div>
                     <div>Sales</div>
@@ -180,10 +180,7 @@ const CreateEditCustomer = () => {
               <div className="w-1/2 px-2 mb-4">
                 <div className="flex gap-2 items-center">
                   <div>
-                    <IoIosRadioButtonOn
-                      className="text-bankGradient"
-                      size={32}
-                    />
+                    <IoIosRadioButtonOn className="text-green-500 " size={32} />
                   </div>
                   <div className="flex flex-col">
                     <div>Active</div>

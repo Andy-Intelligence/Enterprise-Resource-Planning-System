@@ -202,7 +202,7 @@ const Report: React.FC = () => {
                   Notes
                 </label>
                 <textarea
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                   rows={4}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
@@ -212,7 +212,7 @@ const Report: React.FC = () => {
           </div>
           <div className="bg-gray-50 px-8 py-6 flex justify-end space-x-4">
             <button
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
+              className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center"
               onClick={handleViewReport}
             >
               <FiEye className="mr-2" /> View

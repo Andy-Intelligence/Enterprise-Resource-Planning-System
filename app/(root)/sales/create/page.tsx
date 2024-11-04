@@ -68,7 +68,7 @@ const CreateSale: React.FC = () => {
             <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2">
               <FiX /> Discard
             </button>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2">
+            <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2">
               <FiFileText /> Draft
             </button>
             <button className="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors flex items-center gap-2">
@@ -82,7 +82,7 @@ const CreateSale: React.FC = () => {
                 key={status.value}
                 className={`px-4 py-2 rounded-md transition-colors ${
                   formStatus === status.value
-                    ? "bg-blue-600 text-white"
+                    ? "bg-green-600 text-white"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
                 onClick={() => setFormStatus(status.value)}
@@ -162,7 +162,7 @@ const CreateSale: React.FC = () => {
           </table>
         </div>
         <button
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
           onClick={() => setIsDialogOpen(true)}
         >
           <FiPlus /> Add Item
@@ -234,7 +234,7 @@ const CreateSale: React.FC = () => {
                   Cancel
                 </button>
                 <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
                   onClick={handleAddItem}
                 >
                   Add

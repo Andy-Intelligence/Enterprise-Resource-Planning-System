@@ -151,7 +151,7 @@ const CreateInvoice: React.FC = () => {
         </table>
       </div>
       <button
-        className="px-4 py-2 bg-blue-500 text-white rounded-md mb-4"
+        className="px-4 py-2 bg-green-500 text-white rounded-md mb-4"
         onClick={() => setIsDialogOpen(true)}
       >
         Add Item
@@ -175,7 +175,7 @@ const CreateInvoice: React.FC = () => {
         <button className="px-4 py-2 bg-gray-500 text-white rounded-md">
           Save as Draft
         </button>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
+        <button className="px-4 py-2 bg-green-500 text-white rounded-md">
           Save and Send
         </button>
         <button className="px-4 py-2 bg-red-500 text-white rounded-md">
@@ -264,7 +264,7 @@ const CreateInvoice: React.FC = () => {
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
                 onClick={handleAddItem}
               >
                 Add

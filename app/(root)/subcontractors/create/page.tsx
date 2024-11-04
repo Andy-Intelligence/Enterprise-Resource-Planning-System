@@ -211,7 +211,7 @@ const SubContractorForm: React.FC = () => {
               <FiX className="mr-2" /> Discard
             </button>
             <button
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
+              className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center"
               onClick={handleSave}
             >
               <FiSave className="mr-2" /> Save
@@ -267,7 +267,7 @@ const FormField: React.FC<FormFieldProps> = ({
           onChange={onChange}
           className={`w-full ${
             icon ? "pl-10" : "pl-3"
-          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
+          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors`}
         >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -285,7 +285,7 @@ const FormField: React.FC<FormFieldProps> = ({
           placeholder={placeholder}
           className={`w-full ${
             icon ? "pl-10" : "pl-3"
-          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
+          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors`}
         />
       )}
     </div>

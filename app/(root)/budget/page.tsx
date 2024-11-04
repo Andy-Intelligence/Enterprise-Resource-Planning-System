@@ -259,7 +259,7 @@ const BudgetPage: React.FC = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Budgets</h1>
         <button
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
           onClick={() => router.push("/budget/create")}
         >
           <FiPlus /> Create Budget
@@ -330,7 +330,7 @@ const BudgetPage: React.FC = () => {
                   </td>
                   <td className="py-4 px-4 whitespace-nowrap text-sm font-medium">
                     <button
-                      className="text-indigo-600 hover:text-indigo-900 mr-2"
+                      className="text-green-600 hover:text-green-900 mr-2"
                       onClick={() => router.push(`/budget/${budget.id}`)}
                     >
                       <FiEdit2 />

@@ -147,12 +147,12 @@ const [projectData, setProjectData] = useState<ProjectData>({
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow-2xl rounded-lg overflow-hidden">
-          <div className="bg-blue-600 text-white py-6 px-8 flex justify-between items-center">
+          <div className="bg-green-600 text-white py-6 px-8 flex justify-between items-center">
             <h1 className="text-3xl font-bold">Create New Project</h1>
             <div className="flex space-x-4">
               <Button
                 variant="outline"
-                className="bg-white text-blue-600 hover:bg-blue-50"
+                className="bg-white text-green-600 hover:bg-blue-50"
                 onClick={handleDiscard}
               >
                 <FiX className="mr-2" /> Discard
@@ -224,7 +224,7 @@ const [projectData, setProjectData] = useState<ProjectData>({
                       id="document"
                       name="document"
                       onChange={handleFileChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                     />
                   </div>
                 </div>
@@ -271,7 +271,7 @@ const [projectData, setProjectData] = useState<ProjectData>({
                 value={projectData.description}
                 onChange={handleInputChange}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                 placeholder="Enter project description"
               ></textarea>
             </div>
@@ -407,7 +407,7 @@ const FormField: React.FC<FormFieldProps> = ({
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
       />
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         {icon}

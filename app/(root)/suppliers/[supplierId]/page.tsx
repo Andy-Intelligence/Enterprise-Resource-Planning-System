@@ -120,7 +120,7 @@ const SupplierDetailsDisplay: React.FC = () => {
             <h1 className="text-4xl font-bold mb-2">{supplier.name}</h1>
             <p className="text-purple-100 mb-6">Supplier ID: {supplier.id}</p>
             <div className="flex items-center space-x-4">
-              <span className="px-3 py-1 bg-blue-200 text-blue-800 rounded-full text-sm font-semibold">
+              <span className="px-3 py-1 bg-blue-200 text-green-800 rounded-full text-sm font-semibold">
                 Active Supplier
               </span>
               <div className="flex items-center space-x-2">
@@ -131,7 +131,7 @@ const SupplierDetailsDisplay: React.FC = () => {
             <div className="mt-6 flex items-center space-x-4">
               <button
                 onClick={handleEdit}
-                className="px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-100 transition-colors flex items-center"
+                className="px-4 py-2 bg-white text-green-600 rounded-md hover:bg-blue-100 transition-colors flex items-center"
               >
                 <FiEdit className="mr-2" /> Edit
               </button>
@@ -149,22 +149,22 @@ const SupplierDetailsDisplay: React.FC = () => {
               <StatCard
                 title="Total Orders"
                 value={supplier.total_orders}
-                icon={<FiPackage className="text-blue-600 text-2xl" />}
+                icon={<FiPackage className="text-green-600 text-2xl" />}
               />
               <StatCard
                 title="Total Spent"
                 value={`$${supplier?.total_spent?.toLocaleString()}`}
-                icon={<FiDollarSign className="text-blue-600 text-2xl" />}
+                icon={<FiDollarSign className="text-green-600 text-2xl" />}
               />
               <StatCard
                 title="Last Order"
                 value={supplier.last_order_date}
-                icon={<FiCalendar className="text-blue-600 text-2xl" />}
+                icon={<FiCalendar className="text-green-600 text-2xl" />}
               />
               <StatCard
                 title="Rating"
                 value={`${supplier.rating} / 5`}
-                icon={<FiStar className="text-blue-600 text-2xl" />}
+                icon={<FiStar className="text-green-600 text-2xl" />}
               />
             </div>
 

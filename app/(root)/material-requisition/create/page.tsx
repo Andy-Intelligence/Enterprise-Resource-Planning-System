@@ -1068,14 +1068,14 @@ const NewMaterialRequisitionForm: React.FC = () => {
       <div className="flex gap-2 items-center justify-between mb-4">
         <div className="flex gap-2 items-center">
           <Button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            className="px-4 py-2 bg-green-500 text-white rounded-md"
             onClick={handleSave}
             disabled={isLoading}
           >
             {isLoading ? "Saving..." : "Save"}
           </Button>
           <Button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            className="px-4 py-2 bg-green-500 text-white rounded-md"
             variant="outline"
             onClick={handleDiscard}
           >
@@ -1088,7 +1088,7 @@ const NewMaterialRequisitionForm: React.FC = () => {
               key={status.value}
               className={`px-2 py-1 text-xs rounded-full ${
                 formStatus === status.value
-                  ? "bg-blue-500 text-white"
+                  ? "bg-green-500 text-white"
                   : "bg-gray-200 text-black"
               }`}
               style={{ minWidth: "80px", textAlign: "center" }}

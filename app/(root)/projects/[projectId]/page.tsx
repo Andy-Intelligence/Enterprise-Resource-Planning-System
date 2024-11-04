@@ -426,7 +426,7 @@ const ProjectDetailsDisplay: React.FC = () => {
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-400 to-blue-500 px-8 py-12 text-white">
+          <div className="bg-gradient-to-r from-green-400 to-green-500 px-8 py-12 text-white">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-4xl font-bold mb-2">{project.name}</h1>
@@ -437,7 +437,7 @@ const ProjectDetailsDisplay: React.FC = () => {
               <div className="flex items-center space-x-4">
                 <button
                   onClick={handleEdit}
-                  className="px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-100 transition-colors flex items-center"
+                  className="px-4 py-2 bg-white text-green-600 rounded-md hover:bg-blue-100 transition-colors flex items-center"
                 >
                   <FiEdit className="mr-2" /> Edit
                 </button>
@@ -456,22 +456,22 @@ const ProjectDetailsDisplay: React.FC = () => {
               <InfoCard
                 title="Client ID"
                 value={project.client}
-                icon={<FiUser className="text-blue-600 text-2xl" />}
+                icon={<FiUser className="text-green-600 text-2xl" />}
               />
               <InfoCard
                 title="Contractor ID"
                 value={project.contractor}
-                icon={<FaBuilding className="text-blue-600 text-2xl" />}
+                icon={<FaBuilding className="text-green-600 text-2xl" />}
               />
               <InfoCard
                 title="Working Time"
                 value={new Date(project.working_time).toLocaleString()}
-                icon={<FiClock className="text-blue-600 text-2xl" />}
+                icon={<FiClock className="text-green-600 text-2xl" />}
               />
               <InfoCard
                 title="Created"
                 value={new Date(project.created).toLocaleString()}
-                icon={<FiCalendar className="text-blue-600 text-2xl" />}
+                icon={<FiCalendar className="text-green-600 text-2xl" />}
               />
             </div>
 
@@ -544,7 +544,7 @@ const ProjectDetailsDisplay: React.FC = () => {
                     <ul className="space-y-2">
                       {project?.work_schedules?.map((schedule, index) => (
                         <li key={index} className="flex items-center">
-                          <FiClipboard className="mr-2 text-blue-500" />
+                          <FiClipboard className="mr-2 text-green-500" />
                           <span>{JSON.stringify(schedule)}</span>
                         </li>
                       ))}
@@ -565,7 +565,7 @@ const ProjectDetailsDisplay: React.FC = () => {
                     <ul className="space-y-2">
                       {project?.timesheets.map((timesheet, index) => (
                         <li key={index} className="flex items-center">
-                          <FiFileText className="mr-2 text-blue-500" />
+                          <FiFileText className="mr-2 text-green-500" />
                           <span>{JSON.stringify(timesheet)}</span>
                         </li>
                       ))}

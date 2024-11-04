@@ -87,15 +87,15 @@ const ClientPortal: React.FC = () => {
     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
       <nav className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg py-4 shadow-lg sticky top-0 z-10">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="text-indigo-700 text-2xl font-extrabold">
-            {client.name} <span className="text-blue-500">Portal</span>
+          <div className="text-green-700 text-2xl font-extrabold">
+            {client.name} <span className="text-green-500">Portal</span>
           </div>
           <div className="flex space-x-2">
             {Object.entries(tabIcons).map(([tab, Icon]) => (
               <motion.button
                 key={tab}
-                className={`text-gray-600 hover:text-indigo-600 transition p-2 rounded-full ${
-                  activeTab === tab ? "bg-indigo-100 text-indigo-600" : ""
+                className={`text-gray-600 hover:text-green-600 transition p-2 rounded-full ${
+                  activeTab === tab ? "bg-indigo-100 text-green-600" : ""
                 }`}
                 onClick={() => handleTabChange(tab)}
                 whileHover={{ scale: 1.1 }}
@@ -136,7 +136,7 @@ const ClientPortal: React.FC = () => {
                         onClick={() => setSelectedImage(index)}
                         className={`relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
                           selectedImage === index
-                            ? "ring-2 ring-indigo-500"
+                            ? "ring-2 ring-green-500"
                             : "opacity-70 hover:opacity-100"
                         }`}
                       >
@@ -176,7 +176,7 @@ const ClientPortal: React.FC = () => {
               <div className="space-y-6">
                 {client.projects.map((project, index) => (
                   <div key={index} className="bg-gray-50 rounded-xl p-6 shadow">
-                    <h3 className="text-2xl font-bold mb-4 text-indigo-600">
+                    <h3 className="text-2xl font-bold mb-4 text-green-600">
                       {project.name}
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -213,7 +213,7 @@ const ClientPortal: React.FC = () => {
                   >
                     <p className="text-gray-800 font-medium">{doc}</p>
                     <motion.button
-                      className="text-indigo-600 hover:text-indigo-800 font-semibold"
+                      className="text-green-600 hover:text-green-800 font-semibold"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -242,7 +242,7 @@ const ClientPortal: React.FC = () => {
                   },
                 ].map((notice, index) => (
                   <div key={index} className="bg-gray-50 rounded-xl p-6 shadow">
-                    <h3 className="text-xl font-bold mb-2 text-indigo-600">
+                    <h3 className="text-xl font-bold mb-2 text-green-600">
                       {notice.title}
                     </h3>
                     <p className="text-gray-700">{notice.description}</p>
@@ -263,14 +263,14 @@ const ClientPortal: React.FC = () => {
                     Your Feedback
                   </label>
                   <textarea
-                    className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     rows={6}
                     required
                   ></textarea>
                 </div>
                 <motion.button
                   type="submit"
-                  className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg font-semibold"
+                  className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg shadow-lg font-semibold"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

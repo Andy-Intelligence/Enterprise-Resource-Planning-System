@@ -144,15 +144,15 @@ const AdminClientPortal: React.FC = () => {
     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
       <nav className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg py-4 shadow-lg sticky top-0 z-10">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="text-indigo-700 text-3xl font-extrabold">
-            AdminClient<span className="text-blue-500">Portal</span>
+          <div className="text-green-700 text-3xl font-extrabold">
+            AdminClient<span className="text-green-500">Portal</span>
           </div>
           <div className="flex space-x-2">
             {Object.entries(tabIcons).map(([tab, Icon]) => (
               <motion.button
                 key={tab}
-                className={`text-gray-600 hover:text-indigo-600 transition p-2 rounded-full ${
-                  activeTab === tab ? "bg-indigo-100 text-indigo-600" : ""
+                className={`text-gray-600 hover:text-green-600 transition p-2 rounded-full ${
+                  activeTab === tab ? "bg-indigo-100 text-green-600" : ""
                 }`}
                 onClick={() => handleTabChange(tab)}
                 whileHover={{ scale: 1.1 }}
@@ -219,7 +219,7 @@ const AdminClientPortal: React.FC = () => {
                                 onClick={() => setSelectedImage(index)}
                                 className={`relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
                                   selectedImage === index
-                                    ? "ring-2 ring-indigo-500"
+                                    ? "ring-2 ring-green-500"
                                     : "opacity-70 hover:opacity-100"
                                 }`}
                               >
@@ -298,7 +298,7 @@ const AdminClientPortal: React.FC = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Status
                     </label>
-                    <select className="w-full border border-gray-300 rounded-lg shadow-sm p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <select className="w-full border border-gray-300 rounded-lg shadow-sm p-3 bg-gray-50 focus:ring-2 focus:ring-green-500 focus:border-green-500">
                       <option value="on-schedule">On Schedule</option>
                       <option value="behind-schedule">Behind Schedule</option>
                       <option value="completed">Completed</option>
@@ -306,7 +306,7 @@ const AdminClientPortal: React.FC = () => {
                   </div>
                   <motion.button
                     type="submit"
-                    className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg font-semibold"
+                    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg shadow-lg font-semibold"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -351,7 +351,7 @@ const AdminClientPortal: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       required
                     />
                   </div>
@@ -361,13 +361,13 @@ const AdminClientPortal: React.FC = () => {
                     </label>
                     <input
                       type="file"
-                      className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       required
                     />
                   </div>
                   <motion.button
                     type="submit"
-                    className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg font-semibold"
+                    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg shadow-lg font-semibold"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -403,7 +403,7 @@ const AdminClientPortal: React.FC = () => {
                   </div>
                   <button
                     type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+                    className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
                   >
                     Post Notice
                   </button>

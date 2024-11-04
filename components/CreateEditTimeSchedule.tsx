@@ -118,7 +118,7 @@ const CreateEditTimeSchedule = () => {
     <div className="border rounded-lg p-4">
       <div className="text-3xl font-bold mb-4">Open : Working Time</div>
       <div className="mb-4">
-        <button className="px-4 py-2 mr-2 bg-blue-500 text-white rounded-md">
+        <button className="px-4 py-2 mr-2 bg-green-500 text-white rounded-md">
           Save
         </button>
         <button className="px-4 py-2 bg-gray-500 text-white rounded-md">
@@ -170,7 +170,7 @@ const CreateEditTimeSchedule = () => {
               <h2 className="text-lg font-semibold ">Working Time</h2>
             </div>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={handleAddRow}
             >
               Add Row

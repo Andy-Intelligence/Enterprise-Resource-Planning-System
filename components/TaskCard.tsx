@@ -99,7 +99,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ taskId, title }) => {
 
       <div className="space-y-2 mb-6">
         <div className="flex items-center text-gray-600">
-          <FaRegFolder className="mr-2 text-blue-500" />
+          <FaRegFolder className="mr-2 text-green-500" />
           <span className="text-sm">Project Name</span>
         </div>
         <div className="flex items-center text-gray-600">

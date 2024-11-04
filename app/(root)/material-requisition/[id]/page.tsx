@@ -297,7 +297,7 @@ const MaterialRequisitionDisplay: React.FC = () => {
                       rows={4}
                       placeholder="Enter your comment here..."
                     ></textarea>
-                    <Button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white">
+                    <Button className="mt-2 bg-green-500 hover:bg-green-600 text-white">
                       Submit Comment
                     </Button>
                   </div>

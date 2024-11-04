@@ -73,10 +73,10 @@ const CompanyProfileDisplay: React.FC = () => {
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white shadow-2xl rounded-3xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-600 px-8 py-12 text-white relative">
+          <div className="bg-gradient-to-r from-green-600 to-green-600 px-8 py-12 text-white relative">
             <button
               onClick={handleEdit}
-              className="absolute top-4 right-4 bg-white text-blue-600 px-4 py-2 rounded-full font-semibold flex items-center transition-colors hover:bg-blue-100"
+              className="absolute top-4 right-4 bg-white text-green-600 px-4 py-2 rounded-full font-semibold flex items-center transition-colors hover:bg-blue-100"
             >
               <FiEdit className="mr-2" /> Edit Profile
             </button>
@@ -94,7 +94,7 @@ const CompanyProfileDisplay: React.FC = () => {
                   {company.specialization}
                 </p>
                 <div className="flex items-center space-x-4">
-                  <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                     Est. {company.yearFounded}
                   </span>
                   <span className="flex items-center text-blue-200">
@@ -111,17 +111,17 @@ const CompanyProfileDisplay: React.FC = () => {
               <InfoCard
                 title="Email"
                 value={company.email}
-                icon={<FiMail className="text-blue-600 text-2xl" />}
+                icon={<FiMail className="text-green-600 text-2xl" />}
               />
               <InfoCard
                 title="Phone"
                 value={company.phoneNumber}
-                icon={<FiPhone className="text-blue-600 text-2xl" />}
+                icon={<FiPhone className="text-green-600 text-2xl" />}
               />
               <InfoCard
                 title="Website"
                 value={company.website}
-                icon={<FiGlobe className="text-blue-600 text-2xl" />}
+                icon={<FiGlobe className="text-green-600 text-2xl" />}
               />
             </div>
 
@@ -131,13 +131,13 @@ const CompanyProfileDisplay: React.FC = () => {
               </h2>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-blue-600">
+                  <p className="text-3xl font-bold text-green-600">
                     {company.projects.completed}
                   </p>
                   <p className="text-gray-600">Completed Projects</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-blue-600">
+                  <p className="text-3xl font-bold text-green-600">
                     {company.projects.ongoing}
                   </p>
                   <p className="text-gray-600">Ongoing Projects</p>

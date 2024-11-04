@@ -166,7 +166,7 @@
              <div className="mt-6 flex items-center space-x-4">
                <button
                  onClick={handleEdit}
-                 className="px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-100 transition-colors flex items-center"
+                 className="px-4 py-2 bg-white text-green-600 rounded-md hover:bg-blue-100 transition-colors flex items-center"
                >
                  <FiEdit className="mr-2" /> Edit
                </button>
@@ -184,22 +184,22 @@
                <StatCard
                  title="Hours Planned"
                  value={new Date(task.hours_planned).toLocaleTimeString()}
-                 icon={<FiClock className="text-blue-600 text-2xl" />}
+                 icon={<FiClock className="text-green-600 text-2xl" />}
                />
                <StatCard
                  title="Deadline"
                  value={new Date(task.deadline).toLocaleDateString()}
-                 icon={<FiCalendar className="text-blue-600 text-2xl" />}
+                 icon={<FiCalendar className="text-green-600 text-2xl" />}
                />
                <StatCard
                  title="Assigned To"
                  value={`User ID: ${task.assigned_to}`}
-                 icon={<FiUser className="text-blue-600 text-2xl" />}
+                 icon={<FiUser className="text-green-600 text-2xl" />}
                />
                <StatCard
                  title="Task Status"
                  value={task.stage}
-                 icon={<FiCheckSquare className="text-blue-600 text-2xl" />}
+                 icon={<FiCheckSquare className="text-green-600 text-2xl" />}
                />
              </div>
 
@@ -261,7 +261,7 @@
                          date={new Date(task.created).toLocaleDateString()}
                        />
                        <TimelineItem
-                         icon={<FiUser className="text-blue-500" />}
+                         icon={<FiUser className="text-green-500" />}
                          title="Assigned to Team"
                          date={new Date(task.created).toLocaleDateString()}
                        />

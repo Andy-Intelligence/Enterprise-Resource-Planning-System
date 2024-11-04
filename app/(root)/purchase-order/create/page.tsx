@@ -357,7 +357,7 @@ const CreatePurchaseOrder: React.FC = () => {
         {/* Add New Item Dialog */}
         <div>
           <button
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+            className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
             onClick={() => setIsDialogOpen(true)}
           >
             <FiPlus /> Add Item
@@ -404,7 +404,7 @@ const CreatePurchaseOrder: React.FC = () => {
                       onChange={(e) =>
                         handleInputChange("status", e.target.value)
                       }
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                     >
                       {statusOptions.map((option) => (
                         <option key={option.value} value={option.value}>

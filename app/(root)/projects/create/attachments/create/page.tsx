@@ -144,7 +144,7 @@ const AttachmentForm = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 max-w-fit"
+          className="bg-green-500 text-white px-4 py-2 rounded-md mt-4 max-w-fit"
         >
           Submit
         </button>

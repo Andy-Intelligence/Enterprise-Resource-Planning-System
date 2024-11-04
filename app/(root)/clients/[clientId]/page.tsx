@@ -116,7 +116,7 @@ const ClientDisplayDetails: React.FC = () => {
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-400 to-blue-500 px-8 py-12 text-white">
+          <div className="bg-gradient-to-r from-green-400 to-green-500 px-8 py-12 text-white">
             <div className="flex items-center space-x-6">
               <img
                 src={client.image}
@@ -131,7 +131,7 @@ const ClientDisplayDetails: React.FC = () => {
                 <div className="flex items-center space-x-4">
                   <button
                     onClick={handleEdit}
-                    className="px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-100 transition-colors flex items-center"
+                    className="px-4 py-2 bg-white text-green-600 rounded-md hover:bg-blue-100 transition-colors flex items-center"
                   >
                     <FiEdit className="mr-2" /> Edit
                   </button>

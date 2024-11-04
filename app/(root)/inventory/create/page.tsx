@@ -170,7 +170,7 @@ const CreateInventoryItem: React.FC = () => {
             <FiX /> Discard
           </button>
           <button
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
             onClick={() => handleAction("Quotation")}
           >
             <FiFileText /> Quotation
@@ -198,7 +198,7 @@ const CreateInventoryItem: React.FC = () => {
               type="text"
               value={inventoryCode}
               onChange={(e) => setInventoryCode(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
           <div>
@@ -209,7 +209,7 @@ const CreateInventoryItem: React.FC = () => {
               type="text"
               value={itemName}
               onChange={(e) => setItemName(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
           <div>
@@ -219,7 +219,7 @@ const CreateInventoryItem: React.FC = () => {
             <textarea
               value={itemDescription}
               onChange={(e) => setItemDescription(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
           <div>
@@ -232,7 +232,7 @@ const CreateInventoryItem: React.FC = () => {
                   type="text"
                   value={categoryInput}
                   onChange={(e) => setCategoryInput(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Search or create category"
                 />
                 <button
@@ -270,13 +270,13 @@ const CreateInventoryItem: React.FC = () => {
                       type="text"
                       value={categoryDescription}
                       onChange={(e) => setCategoryDescription(e.target.value)}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2"
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
                       placeholder="Category Description"
                     />
                     <button
                       type="button"
                       onClick={handleCreateCategory}
-                      className="w-full px-4 py-2 bg-blue-500 text-white rounded-md"
+                      className="w-full px-4 py-2 bg-green-500 text-white rounded-md"
                     >
                       Create Category
                     </button>
@@ -293,7 +293,7 @@ const CreateInventoryItem: React.FC = () => {
               onChange={(e) =>
                 setImage(e.target.files ? e.target.files[0] : null)
               }
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
           <div>
@@ -308,7 +308,7 @@ const CreateInventoryItem: React.FC = () => {
                   e.target.value === "" ? "" : parseInt(e.target.value, 10)
                 )
               }
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
           <div>
@@ -323,7 +323,7 @@ const CreateInventoryItem: React.FC = () => {
                   e.target.value === "" ? "" : parseFloat(e.target.value)
                 )
               }
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
           <div>
@@ -336,7 +336,7 @@ const CreateInventoryItem: React.FC = () => {
               onChange={(e) =>
                 setVAT(e.target.value === "" ? "" : parseFloat(e.target.value))
               }
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
         </form>
