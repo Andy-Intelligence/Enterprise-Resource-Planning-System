@@ -219,7 +219,7 @@ const Sidebar = ({ isExpanded, onToggle }: SidebarProps) => {
             ))}
           </Accordion>
 
-          <div className="pt-4 border-t border-blue-700">
+          <div className="pt-4 border-t border-green-700">
             {independentLinks.map((item) => {
               const isActive =
                 pathname === item.route ||
