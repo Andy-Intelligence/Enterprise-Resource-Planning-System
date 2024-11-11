@@ -100,9 +100,9 @@ const Sidebar = ({ isExpanded, onToggle }: SidebarProps) => {
 
     const independentLinks = [
       { imgURL: "/icons/dashboard.svg", route: "/", label: "Dashboard" },
-      { imgURL: "/icons/report.svg", route: "/report/create", label: "Reports" },
       { imgURL: "/icons/project.png", route: "/projects", label: "Projects" },
       { imgURL: "/icons/client.svg", route: "/clients", label: "Clients" },
+      { imgURL: "/icons/report.svg", route: "/report/create", label: "Reports" },
       { imgURL: "/icons/clientportal.svg", route: "/clientportal", label: "ClientPortal" },
       { imgURL: "/icons/cashbook.svg", route: "/cashbook", label: "Cashbook" },
     ];
