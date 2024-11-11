@@ -498,10 +498,6 @@
 // export default CreatePurchaseOrder;
 
 
-
-
-
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -561,9 +557,8 @@ const CreatePurchaseOrder: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
-  const projectsPerPage = 10; // Adjust as necessary
+  const projectsPerPage = 10;
 
   const getAccessToken = () => localStorage.getItem("accessToken");
   const getRefreshToken = () => localStorage.getItem("refreshToken");
@@ -574,14 +569,11 @@ const CreatePurchaseOrder: React.FC = () => {
         const refreshToken = getRefreshToken();
         const response = await axios.post(
           `${API_BASE_URL}/auth/token/refresh/`,
-          {
-            refresh: refreshToken,
-          }
+          { refresh: refreshToken }
         );
         localStorage.setItem("accessToken", response.data.access);
         return true;
       } catch (refreshError) {
-        console.error("Error refreshing token:", refreshError);
         router.push("/sign-in");
         return false;
       }
@@ -589,25 +581,23 @@ const CreatePurchaseOrder: React.FC = () => {
     return false;
   };
 
-const makeAuthenticatedRequest = async (
-  requestFn: () => Promise<any>, // Type of request function
-  retryCount = 0
-): Promise<any> => {
-  // Specify the return type as Promise<any>
-  try {
-    const accessToken = getAccessToken();
-    const response = await requestFn();
-    return response;
-  } catch (error: any) {
-    if (error.response?.status === 401 && retryCount === 0) {
-      const refreshed = await handleTokenRefresh(error);
-      if (refreshed) {
-        return makeAuthenticatedRequest(requestFn, retryCount + 1);
+  const makeAuthenticatedRequest = async (
+    requestFn: () => Promise<any>,
+    retryCount = 0
+  ): Promise<any> => {
+    try {
+      const response = await requestFn();
+      return response;
+    } catch (error: any) {
+      if (error.response?.status === 401 && retryCount === 0) {
+        const refreshed = await handleTokenRefresh(error);
+        if (refreshed) {
+          return makeAuthenticatedRequest(requestFn, retryCount + 1);
+        }
       }
+      throw error;
     }
-    throw error;
-  }
-};
+  };
 
   useEffect(() => {
     fetchProjects();
@@ -624,32 +614,21 @@ const makeAuthenticatedRequest = async (
       );
       setProjects(response.data);
     } catch (error) {
-      console.error("Error fetching projects:", error);
       setError("Failed to fetch projects.");
-      handleTokenRefresh(error);
     }
   };
+
   const fetchTasks = async () => {
     try {
-      const accessToken = await getAccessToken();
-      const response = await axios.get(
-        "https://erp-backend-nv09.onrender.com/api/projects/tasks/",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const accessToken = getAccessToken();
+      const response = await axios.get(`${API_BASE_URL}/projects/tasks/`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
       setTasks(response.data);
     } catch (error) {
-      console.error("Error fetching tasks:", error);
-      handleTokenRefresh(error);
+      setError("Failed to fetch tasks.");
     }
   };
-  // Pagination Handlers
-  const handleNextPage = () => setCurrentPage((prev) => prev + 1);
-  const handlePreviousPage = () =>
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
 
   const handleAddItem = () => {
     setPurchaseItems([
@@ -721,15 +700,10 @@ const makeAuthenticatedRequest = async (
 
       router.push("/purchase-orders");
     } catch (error) {
-      console.error("Error creating purchase order:", error);
-      setError("Failed to create purchase order. Please try again.");
+      setError("Failed to create purchase order.");
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleDiscard = () => {
-    router.push("/purchase-orders");
   };
 
   return (
@@ -739,51 +713,62 @@ const makeAuthenticatedRequest = async (
           Create Purchase Order
         </h1>
         {error && (
-          <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
-            role="alert"
-          >
-            <span className="block sm:inline">{error}</span>
+          <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
+            {error}
           </div>
         )}
 
-        {/* Save and Discard Buttons */}
-        <div className="flex flex-wrap items-center justify-start gap-3 mb-8">
-          <button
-            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2"
-            onClick={handleSave}
-            disabled={isLoading}
-          >
-            <FiSave /> {isLoading ? "Saving..." : "Save"}
-          </button>
-          <button
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center gap-2"
-            onClick={handleDiscard}
-          >
-            <FiX /> Discard
-          </button>
+        <div className="mb-4">
+          <label>Order Name</label>
+          <input
+            type="text"
+            value={purchaseDetails.name}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("name", e.target.value)
+            }
+          />
         </div>
 
-        {/* Pagination Controls */}
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="px-4 py-2 border rounded-md"
+        <div className="mb-4">
+          <label>Project</label>
+          <select
+            value={purchaseDetails.project}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("project", e.target.value)
+            }
           >
-            Previous
-          </button>
-          <span>Page {currentPage}</span>
-          <button
-            onClick={handleNextPage}
-            className="px-4 py-2 border rounded-md"
-          >
-            Next
-          </button>
+            {projects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Form Fields */}
-        {/* Your form fields go here */}
+        <div className="mb-4">
+          <label>Description</label>
+          <textarea
+            value={purchaseDetails.description}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("description", e.target.value)
+            }
+          ></textarea>
+        </div>
+
+        <div className="mb-4">
+          <label>Scheduled Date</label>
+          <input
+            type="date"
+            value={purchaseDetails.schedule_date}
+            onChange={(e) =>
+              handlePurchaseDetailsChange("schedule_date", e.target.value)
+            }
+          />
+        </div>
+
+        <button onClick={handleSave} disabled={isLoading}>
+          <FiSave /> {isLoading ? "Saving..." : "Save"}
+        </button>
       </div>
     </div>
   );
