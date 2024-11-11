@@ -498,7 +498,7 @@
 // export default CreatePurchaseOrder;
 
 
-"use client";
+"use client"
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -713,61 +713,122 @@ const CreatePurchaseOrder: React.FC = () => {
           Create Purchase Order
         </h1>
         {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
+          <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded mb-6">
             {error}
           </div>
         )}
 
-        <div className="mb-4">
-          <label>Order Name</label>
-          <input
-            type="text"
-            value={purchaseDetails.name}
-            onChange={(e) =>
-              handlePurchaseDetailsChange("name", e.target.value)
-            }
-          />
+        <div className="space-y-4 mb-8">
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Order Name
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={purchaseDetails.name}
+              onChange={(e) =>
+                handlePurchaseDetailsChange("name", e.target.value)
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Project
+            </label>
+            <select
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={purchaseDetails.project}
+              onChange={(e) =>
+                handlePurchaseDetailsChange("project", e.target.value)
+              }
+            >
+              <option value="">Select Project</option>
+              {projects.map((project) => (
+                <option key={project.id} value={project.id}>
+                  {project.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Description
+            </label>
+            <textarea
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={purchaseDetails.description}
+              onChange={(e) =>
+                handlePurchaseDetailsChange("description", e.target.value)
+              }
+            ></textarea>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Scheduled Date
+            </label>
+            <input
+              type="date"
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={purchaseDetails.schedule_date}
+              onChange={(e) =>
+                handlePurchaseDetailsChange("schedule_date", e.target.value)
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Payment Terms
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={purchaseDetails.payment_terms}
+              onChange={(e) =>
+                handlePurchaseDetailsChange("payment_terms", e.target.value)
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Shipping Method
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={purchaseDetails.shipping_method}
+              onChange={(e) =>
+                handlePurchaseDetailsChange("shipping_method", e.target.value)
+              }
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Delivery Address
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={purchaseDetails.delivery_address}
+              onChange={(e) =>
+                handlePurchaseDetailsChange("delivery_address", e.target.value)
+              }
+            />
+          </div>
         </div>
 
-        <div className="mb-4">
-          <label>Project</label>
-          <select
-            value={purchaseDetails.project}
-            onChange={(e) =>
-              handlePurchaseDetailsChange("project", e.target.value)
-            }
-          >
-            {projects.map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label>Description</label>
-          <textarea
-            value={purchaseDetails.description}
-            onChange={(e) =>
-              handlePurchaseDetailsChange("description", e.target.value)
-            }
-          ></textarea>
-        </div>
-
-        <div className="mb-4">
-          <label>Scheduled Date</label>
-          <input
-            type="date"
-            value={purchaseDetails.schedule_date}
-            onChange={(e) =>
-              handlePurchaseDetailsChange("schedule_date", e.target.value)
-            }
-          />
-        </div>
-
-        <button onClick={handleSave} disabled={isLoading}>
-          <FiSave /> {isLoading ? "Saving..." : "Save"}
+        <button
+          onClick={handleSave}
+          className="flex items-center bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          disabled={isLoading}
+        >
+          <FiSave className="mr-2" /> {isLoading ? "Saving..." : "Save"}
         </button>
       </div>
     </div>
