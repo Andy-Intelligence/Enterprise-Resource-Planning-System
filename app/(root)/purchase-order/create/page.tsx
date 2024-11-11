@@ -628,22 +628,23 @@ const CreatePurchaseOrder: React.FC = () => {
       handleTokenRefresh(error);
     }
   };
-
   const fetchTasks = async () => {
     try {
-      const response = await makeAuthenticatedRequest(() =>
-        axios.get(`${API_BASE_URL}/projects/tasks/`, {
-          headers: { Authorization: `Bearer ${getAccessToken()}` },
-        })
+      const accessToken = await getAccessToken();
+      const response = await axios.get(
+        "https://erp-backend-nv09.onrender.com/api/projects/tasks/",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       setTasks(response.data);
     } catch (error) {
       console.error("Error fetching tasks:", error);
-      setError("Failed to fetch tasks.");
       handleTokenRefresh(error);
     }
   };
-
   // Pagination Handlers
   const handleNextPage = () => setCurrentPage((prev) => prev + 1);
   const handlePreviousPage = () =>
