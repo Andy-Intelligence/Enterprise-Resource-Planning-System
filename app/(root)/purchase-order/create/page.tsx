@@ -589,24 +589,25 @@ const CreatePurchaseOrder: React.FC = () => {
     return false;
   };
 
-  const makeAuthenticatedRequest = async (
-    requestFn: () => Promise<any>,
-    retryCount = 0
-  ) => {
-    try {
-      const accessToken = getAccessToken();
-      const response = await requestFn();
-      return response;
-    } catch (error: any) {
-      if (error.response?.status === 401 && retryCount === 0) {
-        const refreshed = await handleTokenRefresh(error);
-        if (refreshed) {
-          return makeAuthenticatedRequest(requestFn, retryCount + 1);
-        }
+const makeAuthenticatedRequest = async (
+  requestFn: () => Promise<any>, // Type of request function
+  retryCount = 0
+): Promise<any> => {
+  // Specify the return type as Promise<any>
+  try {
+    const accessToken = getAccessToken();
+    const response = await requestFn();
+    return response;
+  } catch (error: any) {
+    if (error.response?.status === 401 && retryCount === 0) {
+      const refreshed = await handleTokenRefresh(error);
+      if (refreshed) {
+        return makeAuthenticatedRequest(requestFn, retryCount + 1);
       }
-      throw error;
     }
-  };
+    throw error;
+  }
+};
 
   useEffect(() => {
     fetchProjects();

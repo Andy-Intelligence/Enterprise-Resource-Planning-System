@@ -405,7 +405,7 @@ const Feature = ({
     <div className="flex-shrink-0">{icon}</div>
     <div>
       <h3 className="text-lg font-semibold">{title}</h3>
-      <p className="text-sm text-blue-100">{description}</p>
+      <p className="text-sm text-green-100">{description}</p>
     </div>
   </div>
 );
