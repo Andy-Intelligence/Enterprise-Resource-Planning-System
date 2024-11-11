@@ -248,7 +248,7 @@ const LandingPage = () => {
       <div className="max-w-6xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
         <div className="flex flex-col md:flex-row">
           {/* Left side - Landing content */}
-          <div className="w-full md:w-1/2 p-8 bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex flex-col justify-center">
+          <div className="w-full md:w-1/2 p-8 bg-gradient-to-br from-green-600 to-green-700 text-white flex flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -333,7 +333,7 @@ const LandingPage = () => {
                                 errors[field.name]
                                   ? "border-red-500"
                                   : "border-gray-300"
-                              } focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200`}
+                              } focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200`}
                             />
                             {errors[field.name] && (
                               <p className="text-red-500 text-xs mt-1">
