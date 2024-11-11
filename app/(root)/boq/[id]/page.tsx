@@ -89,7 +89,7 @@ const BOQDetailsDisplay: React.FC = () => {
       status === "Draft"
         ? "bg-yellow-100 text-yellow-800"
         : status === "Confirmed"
-        ? "bg-blue-100 text-blue-800"
+        ? "bg-green-100 text-green-800"
         : status === "In Progress"
         ? "bg-green-100 text-green-800"
         : "bg-purple-100 text-purple-800";
@@ -123,15 +123,15 @@ const BOQDetailsDisplay: React.FC = () => {
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-12 text-white">
+          <div className="bg-gradient-to-r from-green-600 to-indigo-600 px-8 py-12 text-white">
             <div className="flex justify-between items-start">
               <div>
                 <h1 className="text-4xl font-bold mb-2">{boq.project}</h1>
-                <p className="text-blue-100 mb-6">Bill of Quantity Details</p>
+                <p className="text-green-100 mb-6">Bill of Quantity Details</p>
                 <div className="flex items-center space-x-4">
                   <StatusBadge status={boq.status} />
                   <div className="flex items-center space-x-2">
-                    <FiCalendar className="text-blue-200" />
+                    <FiCalendar className="text-green-200" />
                     <span className="font-semibold">
                       {boq.startDate} - {boq.endDate}
                     </span>
@@ -154,8 +154,8 @@ const BOQDetailsDisplay: React.FC = () => {
                 <StatCard
                   title="Total Estimated"
                   value={boq.estimatedCost}
-                  icon={<TbCurrencyNaira className="text-blue-600" />}
-                  color="border-blue-600"
+                  icon={<TbCurrencyNaira className="text-green-600" />}
+                  color="border-green-600"
                 />
                 <StatCard
                   title="Subcontract"
@@ -193,7 +193,7 @@ const BOQDetailsDisplay: React.FC = () => {
                   <Progress value={boq.progress} className="h-4" />
                 </div>
                 <div className="w-1/3 text-center">
-                  <span className="text-4xl font-bold text-blue-600">
+                  <span className="text-4xl font-bold text-green-600">
                     {boq.progress}%
                   </span>
                   <p className="text-sm text-gray-600">Completed</p>

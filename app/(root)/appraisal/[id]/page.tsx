@@ -48,7 +48,7 @@ const DisplayAppraisalDetails: React.FC = () => {
     trend?: "up" | "down" | "neutral";
   }> = ({ title, value, icon, trend }) => (
     <div className="bg-white rounded-xl shadow-md p-6 flex items-center space-x-4">
-      <div className="bg-blue-100 p-3 rounded-full">{icon}</div>
+      <div className="bg-green-100 p-3 rounded-full">{icon}</div>
       <div>
         <p className="text-sm font-medium text-gray-600">{title}</p>
         <div className="flex items-center space-x-2">
@@ -71,16 +71,16 @@ const DisplayAppraisalDetails: React.FC = () => {
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-800 px-8 py-12 text-white">
+          <div className="bg-gradient-to-r from-green-600 to-green-800 px-8 py-12 text-white">
             <h1 className="text-4xl font-bold mb-2">Appraisal Details</h1>
-            <p className="text-blue-100 mb-6">
+            <p className="text-green-100 mb-6">
               Employee: {appraisal.employeeName} ({appraisal.employeeId})
             </p>
             <div className="flex items-center space-x-4">
-              <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                 {appraisal.position}
               </span>
-              <span className="flex items-center text-blue-200">
+              <span className="flex items-center text-green-200">
                 <FiCalendar className="mr-2" />
                 Appraisal Date: {appraisal.appraisalDate}
               </span>
@@ -92,7 +92,7 @@ const DisplayAppraisalDetails: React.FC = () => {
               <InfoCard
                 title="Appraisal Score"
                 value={`${appraisal.appraisalScore}%`}
-                icon={<FiAward className="text-blue-600 text-2xl" />}
+                icon={<FiAward className="text-green-600 text-2xl" />}
                 trend={
                   appraisal.appraisalScore > (appraisal.previousScore || 0)
                     ? "up"
@@ -102,21 +102,21 @@ const DisplayAppraisalDetails: React.FC = () => {
               <InfoCard
                 title="Previous Score"
                 value={`${appraisal.previousScore || "N/A"}%`}
-                icon={<FiPercent className="text-blue-600 text-2xl" />}
+                icon={<FiPercent className="text-green-600 text-2xl" />}
               />
               <InfoCard
                 title="Appraised By"
                 value={appraisal.appraisalBy}
-                icon={<FiUser className="text-blue-600 text-2xl" />}
+                icon={<FiUser className="text-green-600 text-2xl" />}
               />
             </div>
 
-            <div className="bg-blue-50 rounded-xl p-6 mb-8">
+            <div className="bg-green-50 rounded-xl p-6 mb-8">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                 Performance Overview
               </h2>
               <Progress value={appraisal.appraisalScore} className="h-4 mb-4" />
-              <p className="text-center text-lg font-semibold text-blue-600">
+              <p className="text-center text-lg font-semibold text-green-600">
                 {appraisal.appraisalScore}% Overall Performance
               </p>
             </div>
@@ -183,7 +183,7 @@ const DisplayAppraisalDetails: React.FC = () => {
                     Appraisal Comments
                   </h3>
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <FiMessageSquare className="text-blue-600 text-xl mb-2" />
+                    <FiMessageSquare className="text-green-600 text-xl mb-2" />
                     <p className="text-gray-700 whitespace-pre-wrap">
                       {appraisal.comments}
                     </p>

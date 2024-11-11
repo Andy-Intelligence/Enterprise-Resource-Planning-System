@@ -446,7 +446,7 @@ const ClientProfileForm: React.FC = () => {
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow-xl rounded-lg overflow-hidden">
-          <div className="bg-blue-600 text-white py-6 px-8">
+          <div className="bg-green-600 text-white py-6 px-8">
             <h1 className="text-3xl font-bold">Client Profile</h1>
           </div>
           <div className="p-8">
@@ -561,7 +561,7 @@ const ClientProfileForm: React.FC = () => {
                   value={profile.address}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                   placeholder="Enter full address"
                 ></textarea>
               </div>

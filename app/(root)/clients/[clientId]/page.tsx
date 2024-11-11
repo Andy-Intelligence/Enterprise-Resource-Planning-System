@@ -104,7 +104,7 @@ const ClientDisplayDetails: React.FC = () => {
     icon: React.ReactNode;
   }> = ({ title, value, icon }) => (
     <div className="bg-white rounded-xl shadow-md p-6 flex items-center space-x-4">
-      <div className="bg-blue-100 p-3 rounded-full">{icon}</div>
+      <div className="bg-green-100 p-3 rounded-full">{icon}</div>
       <div>
         <p className="text-sm font-medium text-gray-600">{title}</p>
         <p className="text-lg font-bold text-gray-800">{value}</p>
@@ -151,17 +151,17 @@ const ClientDisplayDetails: React.FC = () => {
               <InfoCard
                 title="Email"
                 value={client.email}
-                icon={<FiMail className="text-blue-600 text-2xl" />}
+                icon={<FiMail className="text-green-600 text-2xl" />}
               />
               <InfoCard
                 title="Phone"
                 value={client.phone}
-                icon={<FiPhone className="text-blue-600 text-2xl" />}
+                icon={<FiPhone className="text-green-600 text-2xl" />}
               />
               <InfoCard
                 title="Location"
                 value={`${client.state}, ${client.zipcode}`}
-                icon={<FiMapPin className="text-blue-600 text-2xl" />}
+                icon={<FiMapPin className="text-green-600 text-2xl" />}
               />
             </div>
 
