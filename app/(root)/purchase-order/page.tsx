@@ -170,8 +170,6 @@
 
 
 
-"use client"
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -260,7 +258,7 @@ const PurchaseOrderPage: React.FC = () => {
   };
 
   const getStatusClass = (status: string) => {
-    switch (status.toLowerCase()) {
+    switch (status?.toLowerCase()) {
       case "completed":
         return "bg-green-100 text-green-800";
       case "in progress":
@@ -270,12 +268,12 @@ const PurchaseOrderPage: React.FC = () => {
     }
   };
 
-  const filteredPurchaseOrders = purchaseOrders.filter(
+  const filteredPurchaseOrders = purchaseOrders?.filter(
     (po) =>
-      (filterStatus === "" || po.status === filterStatus) &&
+      (filterStatus === "" || po?.status === filterStatus) &&
       (searchQuery === "" ||
-        po.id.toString().includes(searchQuery.toLowerCase()) ||
-        po.delivery_address.toLowerCase().includes(searchQuery.toLowerCase()))
+        po?.id?.toString().includes(searchQuery?.toLowerCase()) ||
+        po?.delivery_address?.toLowerCase().includes(searchQuery?.toLowerCase()))
   );
 
   return (
