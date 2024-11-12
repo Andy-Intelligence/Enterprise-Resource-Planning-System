@@ -475,8 +475,6 @@
 
 "use client";
 
-"use client";
-
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FiSave, FiX, FiPlus } from "react-icons/fi";
@@ -506,7 +504,29 @@ const statusOptions = [
   { label: "Delivered", value: "delivered" },
 ];
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+const API_BASE_URL = "https://erp-backend-nv09.onrender.com/api";
+
+const FormField: React.FC<FormFieldProps> = ({
+  label,
+  name,
+  type = "text",
+  value,
+  onChange,
+}) => (
+  <div>
+    <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
+      {label}
+    </label>
+    <input
+      id={name}
+      name={name}
+      type={type}
+      value={value}
+      onChange={onChange}
+      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+);
 
 const CreatePurchaseOrder: React.FC = () => {
   const router = useRouter();
@@ -949,26 +969,6 @@ interface FormFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-const FormField: React.FC<FormFieldProps> = ({
-  label,
-  name,
-  type = "text",
-  value,
-  onChange,
-}) => (
-  <div>
-    <label htmlFor={name} className="block text-gray-700 font-medium mb-2">
-      {label}
-    </label>
-    <input
-      id={name}
-      name={name}
-      type={type}
-      value={value}
-      onChange={onChange}
-      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-  </div>
-);
+
 
 export default CreatePurchaseOrder;
