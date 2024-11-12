@@ -628,7 +628,7 @@ const makeAuthenticatedRequest = async (
   const fetchTasks = async () => {
     try {
       const response = await makeAuthenticatedRequest(() =>
-        axios.get(`${API_BASE_URL}/tasks/`, {
+        axios.get(`${API_BASE_URL}/projects/tasks/`, {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
           },
