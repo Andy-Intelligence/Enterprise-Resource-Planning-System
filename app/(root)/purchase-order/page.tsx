@@ -172,6 +172,7 @@
 
 "use client"
 
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -204,11 +205,17 @@ const PurchaseOrderPage: React.FC = () => {
   }, []);
 
   const getAccessToken = () => {
-    return localStorage.getItem("accessToken");
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("accessToken");
+    }
+    return null;
   };
 
   const getRefreshToken = () => {
-    return localStorage.getItem("refreshToken");
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("refreshToken");
+    }
+    return null;
   };
 
   const handleTokenRefresh = async (error: any) => {
