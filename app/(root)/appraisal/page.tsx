@@ -15,12 +15,14 @@ interface Employee {
 
 interface Appraisal {
   id: string;
-  employee: Employee;
+  // employee: Employee;
+  employee: any;
   employeeCode: string;
-  appraisedBy: {
-    id: string;
-    name: string;
-  };
+  appraisedBy: any;
+  // appraisedBy: {
+  //   id: string;
+  //   name: string;
+  // };
   appraisalDate: string;
   score: number;
   comments: string;
@@ -163,7 +165,8 @@ const AppraisalPage: React.FC = () => {
                     </div>
                   </td>
                   <td className="py-4 px-4 border-b">
-                    {appraisal.employeeCode}
+                    {/* {appraisal.employeeCode} */}
+                    {appraisal.employee}
                   </td>
                   <td className="py-4 px-4 border-b">
                     {appraisal.employee.designation}
@@ -184,7 +187,8 @@ const AppraisalPage: React.FC = () => {
                     {new Date(appraisal.appraisalDate).toLocaleDateString()}
                   </td>
                   <td className="py-4 px-4 border-b">
-                    {appraisal.appraisedBy.name}
+                    {/* {appraisal.appraisedBy.name} */}
+                    {appraisal.appraisedBy}
                   </td>
                 </tr>
               ))}
