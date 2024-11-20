@@ -44,7 +44,7 @@ const CreateAppraisalForm: React.FC = () => {
     try {
       const accessToken = await getAccessToken();
       const response = await axios.get(
-        "https://erp-backend-nv09.onrender.com/api/employees/",
+        "https://erp-backend-nv09.onrender.com/api/auths/employees/",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -62,7 +62,7 @@ const CreateAppraisalForm: React.FC = () => {
     try {
       const accessToken = await getAccessToken();
       const response = await axios.get(
-        "https://erp-backend-nv09.onrender.com/api/appraisers/",
+        "https://erp-backend-nv09.onrender.com/api/auths/employees/",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -144,7 +144,7 @@ const CreateAppraisalForm: React.FC = () => {
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow-2xl rounded-lg overflow-hidden">
-          <div className="bg-blue-600 text-white py-6 px-8 flex justify-between items-center">
+          <div className="bg-green-600 text-white py-6 px-8 flex justify-between items-center">
             <h1 className="text-3xl font-bold">New Appraisal</h1>
           </div>
           <div className="p-8">
@@ -305,7 +305,7 @@ const FormField: React.FC<FormFieldProps> = ({
           onChange={onChange}
           className={`w-full ${
             icon ? "pl-10" : "pl-3"
-          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
+          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors`}
         >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -339,7 +339,7 @@ const FormField: React.FC<FormFieldProps> = ({
           readOnly={readOnly}
           className={`w-full ${
             icon ? "pl-10" : "pl-3"
-          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+          } pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors ${
             readOnly ? "bg-gray-100" : ""
           }`}
         />

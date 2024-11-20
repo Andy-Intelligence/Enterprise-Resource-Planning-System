@@ -154,7 +154,7 @@ const AppraisalPage: React.FC = () => {
                       <img
                         src={
                           appraisal.employee.image ||
-                          "https://i.pravatar.cc/300"
+                          "https://i.pravatar.cc/300" 
                         }
                         alt={appraisal.employee.name}
                         className="w-10 h-10 rounded-full mr-3"
